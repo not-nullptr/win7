@@ -152,7 +152,7 @@ export default function NotificationProvider() {
 							src={`/icons/main/${notification.icon}`}
 						/>
 						<div className={styles.notificationText}>
-							<h2>{notification.title}</h2>
+							<h2 className={styles.header}>{notification.title}</h2>
 							<div>{notification.message}</div>
 						</div>
 					</div>

@@ -16,6 +16,10 @@
 	}
 }
 
+.header {
+	margin: 0;
+}
+
 .notificationContainer {
 	position: relative;
 	animation: notification-fade-in 2s linear;

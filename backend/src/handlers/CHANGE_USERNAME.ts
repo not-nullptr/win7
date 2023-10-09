@@ -14,10 +14,10 @@ export default function changeUsername(
 		username: data.username,
 	});
 	ConnectionManager.broadcast({
-		type: "CHANGE_NAME",
+		type: "UPDATE_USER",
 		data: {
 			id: conn.socket.id,
-			status: data.username,
+			username: data.username,
 		},
 	});
 	return;

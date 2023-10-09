@@ -45,7 +45,7 @@ interface UPDATE_USER {
 
 type Message = INITIALIZE | CONNECT | DISCONNECT | UPDATE_USER;
 
-function PfpBorder({ pfp, win }: { pfp: string; win?: Window }) {
+function PfpBorder({ pfp, win, state = "active" }: { pfp: string; win?: Window, state?: string }) {
 	const [src, setSrc] = useState("/ui/wlm/statuses/active-static.png");
 	const [prevActivity, setPrevActivity] = useState("active");
 	const [borderDummy1, setBorderDummy1] = useState(
@@ -122,6 +122,48 @@ function PfpBorder({ pfp, win }: { pfp: string; win?: Window }) {
 			if (id) win?.removeListener(id);
 		};
 	}, [borderDummy1Ref, borderDummy2Ref, borderRef, prevActivity, win]);
+	useEffect(() => {
+		const [border, borderDummy1, borderDummy2] = [
+			borderRef.current!,
+			borderDummy1Ref.current!,
+			borderDummy2Ref.current!,
+		] as HTMLImageElement[];
+		if (state !== prevActivity) {
+			setPrevActivity(state);
+			(async () => {
+				const sleep = (ms: number) =>
+					new Promise((resolve) => setTimeout(resolve, ms));
+				border.style.opacity = "0";
+				borderDummy1.style.opacity = "1";
+				borderDummy2.style.opacity = "0";
+				setBorderDummy1(`/ui/wlm/statuses/${prevActivity}-animated-from.png`);
+				await sleep(550);
+				borderDummy1.animate(
+					[
+						{
+							opacity: "1",
+						},
+						{
+							opacity: "0",
+						},
+					],
+					{
+						easing: "linear",
+						duration: 250,
+					}
+				);
+				setTimeout(() => (borderDummy1.style.opacity = "0"), 250);
+				borderDummy2.style.opacity = "1";
+				setBorderDummy2(`/ui/wlm/statuses/${state}-animated-to.png`);
+				await sleep(730);
+				borderDummy1.style.opacity = "0";
+				borderDummy2.style.opacity = "0";
+				border.style.opacity = "1";
+				setSrc(`/ui/wlm/statuses/${state}-static.png`);
+			})();
+		}
+
+	}, [state])
 	useEffect(() => {
 		// preload images
 		const cache = document.createElement("CACHE");
@@ -210,16 +252,21 @@ function Live({ win }: { win?: Window }) {
 				}
 				case "UPDATE_USER": {
 					const data = e.data.data;
-					setLiveState((old) => ({
-						...old,
-						connections: old.connections.map((c) => {
-							if (c.id === data.id) {
-								return { ...c, ...data };
-							}
-							return c;
-						}),
-					}));
-					if (data.id === liveState.id) win?.setActivity(`live/${data.status}`);
+					if (data.id !== liveState.id)
+						setLiveState((old) => ({
+							...old,
+							connections: old.connections.map((c) => {
+								if (c.id === data.id) {
+									return { ...c, ...data };
+								}
+								return c;
+							}),
+						}));
+					else { 
+						if (data.status)
+						win?.setActivity(`live/${data.status}`) 
+					setLiveState((o) => ({...o, ...data}))
+					};
 					break;
 				}
 			}
@@ -229,12 +276,12 @@ function Live({ win }: { win?: Window }) {
 	useEffect(() => {
 		console.log(win);
 	}, [win]);
-	const { sendJsonMessage } = useWebSocket("wss://win7api.nota-robot.com", {
+	const { sendJsonMessage } = useWebSocket("wss://laughing-space-garbanzo-jgpjxjrwgrh97v-4000.app.github.dev", {
 		onMessage: (e) => {
 			onMessage({ ...e, data: JSON.parse(e.data) });
 		},
 	});
-	useEffect(() => {}, [liveState]);
+	useEffect(() => { }, [liveState]);
 	const [contextMenuOpacity, setContextMenuOpacity] = useState("0");
 	useEffect(() => {
 		const id = win?.addListener((e) => {
@@ -369,6 +416,20 @@ function Live({ win }: { win?: Window }) {
 										},
 										icon: "/ui/wlm/icons/invisible.png",
 									},
+									{
+										label: "Change Username",
+										id: "changeusername",
+										onClick() {
+											const res = prompt("Enter your new username (don't worry, this box is only temporary while I sort out application state):")
+											if (!res) return;
+											sendJsonMessage({
+												type: "CHANGE_USERNAME",
+												data: {
+													username: res
+												}
+											})
+										},
+									}
 								]}
 							/>
 						</div>
@@ -389,6 +450,7 @@ function Live({ win }: { win?: Window }) {
 			<div className={styles.divider} />
 			<h1 style={{ textAlign: "center" }}>DEBUG STUFF AHEAD!</h1>
 			<div className={styles.content}>
+				<h1>Connection details</h1>
 				<div>Currently online users (according to our state?):</div>
 				{liveState.connections.map((c) => (
 					<div
@@ -396,15 +458,17 @@ function Live({ win }: { win?: Window }) {
 						style={{
 							backgroundColor: "#57b9e7",
 							marginBottom: "10px",
+							padding: 8
 						}}
 					>
 						<h1>{c.username}</h1>
-						<div>{c.status}</div>
 						<div>{c.id}</div>
+						<PfpBorder pfp={pfp} state={c.status} />
 					</div>
 				))}
+				<h1>Window info (state debugging??)</h1>
+				Window ID: {win?.id}
 			</div>
-			<div className={styles.content}>{win?.id}</div>
 		</div>
 	);
 }

@@ -1,0 +1,27 @@
+.icon {
+	width: 16px;
+	height: 16px;
+	margin-right: 12px;
+}
+
+.trayItems {
+	display: flex;
+	align-items: center;
+}
+
+.aeroPeek {
+	height: 40px;
+	width: 13px;
+	background: linear-gradient(
+			130deg,
+			rgba(255, 255, 255, 0.238) 25%,
+			rgba(0, 0, 0, 0) 35%
+		),
+		linear-gradient(
+			180deg,
+			rgba(104, 140, 206, 0.68) 0%,
+			rgba(32, 79, 133, 1) 100%
+		);
+	box-shadow: inset 0px 0px 0px 1px var(--aero-white);
+	border: solid thin var(--aero-black);
+}

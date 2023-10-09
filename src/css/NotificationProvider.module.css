@@ -1,0 +1,64 @@
+@keyframes notification-fade-out {
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+@keyframes notification-fade-in {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+.notificationContainer {
+	position: relative;
+	animation: notification-fade-in 2s linear;
+	width: fit-content;
+	height: 56px;
+	box-sizing: border-box;
+	padding: 8px;
+	background-color: #e9e9f2;
+	border-radius: 6px;
+	outline: solid 1px black;
+	box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.491);
+}
+
+.triangle {
+	position: absolute;
+	bottom: -18px;
+	right: 12px;
+}
+
+.notificationContent {
+	display: flex;
+	align-items: center;
+	height: 100%;
+}
+
+.notificationIcon {
+	align-self: center;
+	width: 32px;
+	height: 32px;
+	margin-right: 8px;
+}
+
+.notificationText {
+	margin-top: 0px;
+}
+
+.fade {
+	animation: notification-fade-out 2s linear forwards !important;
+}
+
+.notificationPosition {
+	position: absolute;
+	right: 0;
+	bottom: 48px;
+	z-index: 9999999999999999999;
+}

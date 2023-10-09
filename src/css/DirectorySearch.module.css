@@ -1,0 +1,15 @@
+.searchContainer {
+	background-color: #ffffffab;
+	border: solid thin var(--aero-black);
+	outline: solid thin var(--aero-white);
+	box-shadow: inset 0px 0px 0px 1px #eef4f9;
+	color: black;
+	padding: 4px 4px 4px 4px;
+	display: flex;
+	align-items: center;
+	flex: 1 1 auto;
+}
+
+.arrow {
+	margin: 0px 8px;
+}

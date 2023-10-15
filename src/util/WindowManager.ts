@@ -4,6 +4,7 @@ import Notepad from "../windows/Notepad";
 import NotificationSender from "../windows/NotificationSender";
 import TaskManager from "../windows/TaskManager";
 import Live from "../windows/live/Live";
+import { ProcessManager } from "./Process";
 //  ------------------------------------------------------
 //  notes
 //
@@ -80,6 +81,7 @@ export interface CreateCallbackPayload {
 	transparent: boolean;
 	minWidth: number;
 	minHeight: number;
+	initialPath?: string;
 }
 
 export interface CreateCallbackData {
@@ -130,6 +132,7 @@ export class WindowManager {
 				transparent: window.transparent,
 				minWidth: window.minWidth,
 				minHeight: window.minHeight,
+				initialPath: window.initialPath,
 			},
 		});
 		this.callListeners();
@@ -171,6 +174,7 @@ export interface WindowProps {
 	transparent?: boolean;
 	minWidth?: number;
 	minHeight?: number;
+	initialPath?: string;
 }
 
 export class Window {
@@ -199,6 +203,7 @@ export class Window {
 
 	activity: string = "";
 	id: string = "";
+	initialPath: string;
 	title: string;
 	component: ComponentKeys;
 	icon: string;
@@ -220,6 +225,7 @@ export class Window {
 		this.transparent = props.transparent || false;
 		if (props.minWidth) this.minWidth = props.minWidth;
 		if (props.minHeight) this.minHeight = props.minHeight;
+		this.initialPath = props.initialPath || "/";
 	}
 	create() {
 		WindowManager.windows.push(this);
@@ -243,5 +249,20 @@ export class Window {
 	setActivity(activity: string) {
 		this.activity = `${activity}.png`;
 		this.callListeners();
+	}
+	broadcast(type: string, ...data: any[]) {
+		const process = ProcessManager.getProcessByWindowId(this.id);
+		if (!process) return;
+		process.sendMessage(this.id, type, ...data);
+	}
+	onMessage(type: string, callback: (...data: any[]) => void) {
+		const process = ProcessManager.getProcessByWindowId(this.id);
+		if (!process) return "";
+		return process.onMessage(this.id, type, callback);
+	}
+	removeMessageListener(id: string) {
+		const process = ProcessManager.getProcessByWindowId(this.id);
+		if (!process) return;
+		process.removeMessageListener(id);
 	}
 }

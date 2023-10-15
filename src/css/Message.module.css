@@ -1,0 +1,52 @@
+.window {
+	position: relative;
+	width: 100%;
+	height: calc(100% - 1px);
+}
+
+.backgroundContainer {
+	position: absolute;
+	z-index: 0;
+	top: 0;
+	width: 100%;
+	height: calc(100% - 82px);
+}
+
+.backgroundImage {
+	height: 82px;
+	background: url("../assets/wlm/godrays.png"), #3dafe4;
+	background-position: top left;
+	background-size: 100% 100%, 100% 100%;
+	box-shadow: inset 0px 22px 5px -20px rgba(0, 0, 0, 0.438);
+}
+
+.background {
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(180deg, #e0eff5 0%, #ffffff 50%, #cae7f3 100%);
+}
+
+.toolbar {
+	width: 100%;
+	height: 32px;
+	box-shadow: inset 0px 0px 0px 1px var(--aero-white),
+		0px 0px 5px 1px rgba(0, 0, 0, 0.348);
+	background: linear-gradient(
+		180deg,
+		rgba(141, 210, 243, 1) 0%,
+		rgba(67, 181, 235, 1) 50%,
+		rgba(57, 171, 225, 1) 50%,
+		rgba(60, 178, 234, 1) 100%
+	);
+	border-bottom: solid thin #2c85af;
+}
+
+.toolbarContainer {
+	overflow: hidden;
+	padding-bottom: 8px;
+}
+
+.content {
+	z-index: 1;
+	position: relative;
+}

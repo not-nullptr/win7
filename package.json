@@ -15,11 +15,13 @@
     "ani-cursor": "^0.0.5",
     "buffer": "^6.0.3",
     "dexie": "^3.2.4",
+    "fuse.js": "^6.6.2",
     "indexeddb-fs": "^2.1.5",
     "jsstore": "^4.6.4",
     "node-vibrant": "^3.1.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.16.0",
     "react-use-websocket": "^4.5.0",
     "uuid": "^9.0.1"
   },

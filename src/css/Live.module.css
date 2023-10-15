@@ -1,5 +1,9 @@
 .window {
-	background-color: #e4f1f7;
+	background: linear-gradient(
+		180deg,
+		rgba(228, 241, 247, 1) 0%,
+		rgba(255, 255, 255, 1) 100%
+	);
 	width: 100%;
 	height: calc(100% - 1px);
 }
@@ -26,11 +30,12 @@
 	height: 1px;
 	width: 100%;
 	filter: drop-shadow(0px 2px 1px rgba(37, 91, 116, 0.459));
-	margin-bottom: 12px;
+	margin-bottom: 6px;
 }
 
 .pfpBorder {
 	position: relative;
+	transition: 0.5s linear opacity;
 }
 
 .borderDummy1,
@@ -47,7 +52,6 @@
 	position: absolute;
 	left: 19px;
 	top: 14px;
-	width: 46px;
 	border-radius: 2px;
 }
 
@@ -180,5 +184,109 @@
 }
 
 .content {
-	padding: 0px 12px 12px 12px;
+	display: flex;
+	flex-direction: column;
+	height: calc(100% - 90px);
+}
+
+.padded {
+	padding: 0px 12px 0px 12px;
+}
+
+.searchContainer {
+	height: 30px;
+	/* width: calc(100% - 90px); */
+	width: 100%;
+}
+
+.search {
+	height: 100%;
+	width: 100%;
+	border-radius: 4px;
+	border: solid thin #bbc8d9;
+	background-color: #f4f9fc;
+	box-shadow: inset 0px 0px 5px 0px #00000026;
+	box-sizing: border-box;
+	outline: none;
+	font-size: 12px;
+	padding: 8px 28px 10px 12px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.search::placeholder {
+	color: #89a1c2;
+}
+
+.search:hover,
+.search:focus {
+	border: solid thin #1486ff;
+	background-color: #fff;
+}
+
+.search:hover {
+	cursor: default;
+}
+
+.search:focus {
+	cursor: text;
+}
+
+.search:focus::placeholder {
+	color: transparent;
+}
+
+.search:valid {
+	background-color: #fff;
+	border: solid thin #1486ff;
+	box-shadow: inset 0px 0px 5px 0px #00000026, 0px 0px 4px 0px #4493fce3;
+}
+
+.contacts {
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	overflow: auto;
+	height: calc(100% - 50px);
+	width: calc(100% + 18px);
+	margin-left: -9px;
+	padding: 1px 0px;
+	margin-top: -8px;
+	position: relative;
+}
+
+.contact {
+	height: 44px;
+	display: flex;
+	align-items: center;
+	width: calc(100% - 6px);
+	border-radius: 4px;
+}
+
+.contact:hover {
+	outline: solid thin #b7e7fc;
+	background: linear-gradient(
+		180deg,
+		rgba(245, 245, 245, 0.554) 0%,
+		#c5e7fb 100%
+	);
+	box-shadow: inset 0px 0px 0px 1px var(--aero-white);
+}
+
+.contactUsername {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.searchInfo {
+	align-self: flex-start;
+	padding: 0px 10px;
+	word-wrap: break-word;
+	line-break: anywhere;
+}
+
+.searchInfo > a {
+	margin-left: 16px;
 }

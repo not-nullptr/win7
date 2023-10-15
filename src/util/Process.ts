@@ -8,12 +8,13 @@ export class Process {
 	pid: string;
 	name: string;
 	program: Program;
+	mainWindowId: string;
 	private windows: Window[] = [];
 	constructor(program: Program) {
 		this.pid = v4();
 		this.name = program.name;
 		this.program = program;
-		this.addWindow(program.mainWindow);
+		this.mainWindowId = this.addWindow(program.mainWindow).id;
 		ProcessManager.addProcess(this);
 	}
 	destroy() {
@@ -28,7 +29,6 @@ export class Process {
 		const newWindow = new Window(window);
 		newWindow.create();
 		this.windows.push(newWindow);
-		console.log(newWindow);
 		newWindow.addListener((w, isClosing) => {
 			if (isClosing) {
 				this.windows = this.windows.filter((win) => w.id !== win.id);
@@ -38,6 +38,7 @@ export class Process {
 			}
 		});
 		ProcessManager.callListeners();
+		return newWindow;
 	}
 	removeWindow(id: string) {
 		const win = this.windows.find((w) => w.id === id);
@@ -45,6 +46,39 @@ export class Process {
 		win.close();
 		this.windows = this.windows.filter((w) => w.id !== id);
 		ProcessManager.callListeners();
+	}
+	private messageListeners: {
+		id: string;
+		type: string;
+		callback: (...data: any[]) => void;
+		windowId: string;
+	}[] = [];
+
+	sendMessage(id: string, type: string, ...data: any[]) {
+		for (const l of this.messageListeners) {
+			if (l.type === type && l.windowId !== id) {
+				l.callback(...data);
+			}
+		}
+	}
+
+	onMessage(
+		windowId: string,
+		type: string,
+		callback: (...data: any[]) => void
+	) {
+		const id = v4();
+		this.messageListeners.push({
+			id,
+			type,
+			callback,
+			windowId,
+		});
+		return id;
+	}
+
+	removeMessageListener(id: string) {
+		this.messageListeners = this.messageListeners.filter((l) => l.id !== id);
 	}
 }
 
@@ -91,5 +125,10 @@ export class ProcessManager {
 	}
 	static getProcessById(id: string) {
 		return ProcessManager.processes.find((p) => p.pid === id);
+	}
+	static getProcessByWindowId(id: string) {
+		return ProcessManager.processes.find((p) =>
+			p.getWindows().find((w) => w.id === id)
+		);
 	}
 }

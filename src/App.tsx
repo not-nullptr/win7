@@ -48,6 +48,7 @@ export const programs: Program[] = [
 			minHeight: 600,
 			defaultWidth: 270,
 			defaultHeight: 600,
+			initialPath: "/live",
 		},
 		"Windows Live Messenger",
 		"../main/msn.png"

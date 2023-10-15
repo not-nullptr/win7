@@ -348,3 +348,8 @@ input[type="text"]::placeholder {
 	width: 100vw;
 	height: 100vh;
 }
+
+a {
+	color: #0066dd;
+	text-decoration: none;
+}

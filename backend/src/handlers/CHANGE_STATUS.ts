@@ -1,7 +1,7 @@
 import { Connection, ConnectionManager } from "../classes/Connection";
 
 interface ChangeStatusData {
-	status: "active" | "idle" | "dnd" | "offline";
+	status: "active" | "idle" | "dnd" | "invisible";
 }
 // ie client sends {type: "CHANGE_STATUS", data: {status: "idle"}}
 export default function changeStatus(conn: Connection, data: ChangeStatusData) {
@@ -9,7 +9,7 @@ export default function changeStatus(conn: Connection, data: ChangeStatusData) {
 		data.status !== "active" &&
 		data.status !== "idle" &&
 		data.status !== "dnd" &&
-		data.status !== "offline"
+		data.status !== "invisible"
 	)
 		return;
 	ConnectionManager.modifyConnection(conn.socket.id, { status: data.status });

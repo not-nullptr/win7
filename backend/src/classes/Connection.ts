@@ -7,7 +7,7 @@ export interface CustomWebSocket extends WebSocket {
 }
 
 export interface Connection {
-	status: "active" | "idle" | "dnd" | "offline";
+	status: "active" | "idle" | "dnd" | "invisible";
 	username: string;
 	socket: CustomWebSocket;
 }

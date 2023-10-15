@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"target": "es2016",
+		"module": "commonjs",
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"strict": true
+	},
+	"ts-node": {
+		"files": true
+	},
+	"files": ["src/index.ts", "src/global.d.ts"]
+}

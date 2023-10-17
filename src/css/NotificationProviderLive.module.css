@@ -1,0 +1,115 @@
+@keyframes entry {
+	0% {
+		opacity: 0;
+		transform: translateY(25px);
+	}
+	50% {
+		opacity: 0;
+		transform: translateY(25px);
+	}
+	95% {
+		transform: translateY(0px);
+	}
+	100% {
+		opacity: 1;
+		transform: translateY(0px);
+	}
+}
+
+@keyframes exit {
+	0% {
+		opacity: 1;
+		transform: translateY(0px);
+	}
+	50% {
+		opacity: 0;
+		transform: translateY(25px);
+	}
+	100% {
+		opacity: 0;
+		transform: translateY(25px);
+	}
+}
+
+.notification {
+	position: fixed;
+	bottom: 56px;
+	right: 20px;
+	width: 200px;
+	height: 115px;
+	background: linear-gradient(
+		180deg,
+		rgba(146, 185, 233, 0.7) 0%,
+		rgba(217, 235, 255, 0.7) 22%,
+		rgba(217, 235, 255, 0.7) 72%,
+		rgba(146, 185, 233, 0.7) 100%
+	);
+	z-index: 1;
+	opacity: 1;
+	box-shadow: inset 0px 0px 0px 1px var(--aero-white),
+		0px 0px 15px 0px #00000067, 0px 0px 0px 1px #00000067;
+	border-bottom: solid thin #00ffff7c;
+	border-right: solid thin #00ffff7c;
+	border-radius: 6px;
+	display: flex;
+	flex-direction: column;
+	visibility: hidden;
+}
+
+.notification.show {
+	animation: entry 1.25s steps(10, end);
+	visibility: visible;
+}
+
+.notification.hide {
+	animation: exit 1.25s steps(10, end);
+	visibility: visible;
+}
+
+.pseudoTitlebar {
+	display: flex;
+	padding: 8px;
+	align-items: center;
+}
+
+.notificationTitle {
+	margin-left: 4px;
+}
+
+.notificationClose {
+	background-image: url("../assets/wlm/icons/close/close.png");
+	width: 12px;
+	height: 12px;
+	filter: brightness(0.7);
+	margin-left: auto;
+	margin-right: 4px;
+}
+
+.notificationClose:hover {
+	filter: brightness(1);
+	background-image: url("../assets/wlm/icons/close/close-hover.png");
+}
+
+.notificationContentContainer {
+	margin-left: auto;
+	margin-right: auto;
+	height: calc(100% - 60px);
+	justify-content: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	box-sizing: border-box;
+	padding: 0px 12px;
+}
+
+.notificationContent {
+	width: 100%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	white-space: pre-wrap;
+	text-align: center;
+}

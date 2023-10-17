@@ -17,6 +17,13 @@
 	box-shadow: inset 0px 22px 5px -20px rgba(0, 0, 0, 0.438);
 }
 
+.paper {
+	position: absolute;
+	top: 1px;
+	right: 1px;
+	cursor: pointer;
+}
+
 .divider {
 	background: linear-gradient(
 		90deg,
@@ -135,6 +142,11 @@
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	margin-top: 8px;
+	background: none;
+	border: none;
+	outline: none;
+	padding: 0;
+	width: 100%;
 }
 
 .contextMenu {
@@ -264,6 +276,20 @@
 	border-radius: 4px;
 }
 
+.contactInfo {
+	margin-bottom: 4px;
+	width: calc(100% - 48px);
+	margin-left: 2px;
+}
+
+.contactStatus {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	width: 100%;
+	color: #888888;
+}
+
 .contact:hover {
 	outline: solid thin #b7e7fc;
 	background: linear-gradient(
@@ -289,4 +315,8 @@
 
 .searchInfo > a {
 	margin-left: 16px;
+}
+
+.statusInput {
+	height: 32px;
 }

@@ -10,6 +10,8 @@
 	top: 0;
 	width: 100%;
 	height: calc(100% - 82px);
+	box-sizing: border-box;
+	padding-top: 32px;
 }
 
 .backgroundImage {
@@ -30,7 +32,7 @@
 	width: 100%;
 	height: 32px;
 	box-shadow: inset 0px 0px 0px 1px var(--aero-white),
-		0px 0px 5px 1px rgba(0, 0, 0, 0.348);
+		0px 0px 0px 0px rgba(0, 0, 0, 0.264);
 	background: linear-gradient(
 		180deg,
 		rgba(141, 210, 243, 1) 0%,
@@ -49,4 +51,121 @@
 .content {
 	z-index: 1;
 	position: relative;
+	height: 100%;
+}
+
+.pfpContainer {
+	display: flex;
+	flex-direction: row;
+	height: 100%;
+}
+
+.ownPfp {
+	position: absolute;
+	bottom: 24px;
+	left: 24px;
+}
+
+.recepientPfp {
+	position: absolute;
+	left: 24px;
+}
+
+.contentContainer {
+	width: calc(100% + 28px);
+	height: calc(100% - 41px);
+	display: flex;
+}
+
+.messagingContainer {
+	height: 100%;
+	width: 100%;
+	margin-left: 140px;
+	box-sizing: border-box;
+	padding: 12px 28px;
+	overflow: hidden;
+}
+
+.username {
+	font-size: 18px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	width: 100%;
+	text-shadow: 0px 0px 3px rgb(255, 255, 255), 0px 0px 4px rgb(255, 255, 255),
+		0px 0px 5px rgb(255, 255, 255);
+}
+
+.divider {
+	background: linear-gradient(
+		90deg,
+		rgba(255, 255, 255, 0) 0%,
+		rgba(255, 255, 255, 0.9) 25%,
+		rgba(255, 255, 255, 1) 50%,
+		rgba(255, 255, 255, 0.9) 75%,
+		rgba(255, 255, 255, 0) 100%
+	);
+	height: 1px;
+	width: 100%;
+	filter: drop-shadow(0px 2px 1px rgba(37, 91, 116, 0.459));
+	margin-bottom: 6px;
+}
+
+.messagesContainer {
+	box-sizing: border-box;
+	width: 100%;
+	height: calc(100% - 31px - 84px);
+	padding-bottom: 8px;
+	position: relative;
+	overflow: auto;
+	padding-right: 16px;
+}
+
+.messagesContainer * {
+	font-size: 10pt;
+}
+
+.messageUsername {
+	color: #545454;
+	margin-top: 4px;
+}
+
+.messageContainer {
+	margin-left: 24px;
+}
+
+.messageContainer::before {
+	content: "▪";
+	color: #999999;
+	display: inline-block;
+	width: 1em;
+	margin-left: calc(-1em - 4px);
+}
+
+.message {
+	margin-left: 3px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	user-select: text;
+	cursor: text;
+	box-sizing: border-box;
+}
+
+.inputWidgets {
+	height: 54px;
+	width: calc(100% - 18px);
+}
+
+.messageBox {
+	border-radius: 4px;
+	border: solid thin #bdd5df;
+	outline: none;
+	width: 100%;
+	height: 28px;
+	font-size: 10pt;
+	background-color: #f6fcff;
+	box-shadow: 0px 0px 0px 1px var(--aero-white);
+	resize: none;
+	box-sizing: border-box;
+	padding: 4px 4px;
 }

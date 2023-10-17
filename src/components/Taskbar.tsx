@@ -68,7 +68,8 @@ function TaskbarIcon({ window }: { window: Window }) {
 				hoverRef.current.style.opacity = "0";
 			}
 		}
-		function mouseDown() {
+		function mouseDown(e: MouseEvent) {
+			if (e.button !== 0) return;
 			if (hoverRef.current) {
 				document.removeEventListener("mousemove", mouseMove);
 				hoverRef.current.style.setProperty(
@@ -78,7 +79,9 @@ function TaskbarIcon({ window }: { window: Window }) {
 				hoverRef.current.classList.add("pressed");
 			}
 		}
-		function mouseUp() {
+		function mouseUp(e: MouseEvent) {
+			if (e.button !== 0) return;
+
 			if (hoverRef.current) {
 				document.addEventListener("mousemove", mouseMove);
 				hoverRef.current.style.setProperty(

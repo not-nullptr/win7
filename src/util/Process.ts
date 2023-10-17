@@ -32,6 +32,9 @@ export class Process {
 		newWindow.addListener((w, isClosing) => {
 			if (isClosing) {
 				this.windows = this.windows.filter((win) => w.id !== win.id);
+				if (!this.windows.map((w) => w.id).includes(this.mainWindowId)) {
+					this.destroy();
+				}
 			}
 			if (this.windows.length === 0) {
 				this.destroy();
@@ -107,12 +110,6 @@ export class ProcessManager {
 	static addProcess(process: Process) {
 		ProcessManager.processes.push(process);
 		ProcessManager.callListeners();
-		new Notification({
-			title: process.name,
-			message: "Process started",
-			icon: process.program.icon,
-			trayId: TrayService.getItems()[0].id,
-		}).show();
 	}
 	static removeProcess(id: string) {
 		ProcessManager.processes = ProcessManager.processes.filter(

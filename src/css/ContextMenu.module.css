@@ -1,0 +1,20 @@
+.contextMenuContainer {
+}
+
+.contextMenu {
+	position: fixed;
+	visibility: hidden;
+	z-index: 9999999999999999999999999999999;
+	box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.384);
+	border: solid thin #979797;
+	background-color: #f0f0f0;
+	padding: 2px 2px;
+}
+.contextMenuItem {
+	padding: 4px 32px;
+}
+
+.contextMenuItem:hover {
+	outline: solid thin #9fc5f3;
+	background: linear-gradient(180deg, #ecf5f9 0%, #ddeefb 100%);
+}

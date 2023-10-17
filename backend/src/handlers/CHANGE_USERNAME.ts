@@ -10,6 +10,7 @@ export default function changeUsername(
 ) {
 	// for each key in the interface, if it doesn't exist in the data, return
 	if (!data.username) return;
+	if (data.username.length > 32) return;
 	ConnectionManager.modifyConnection(conn.socket.id, {
 		username: data.username,
 	});

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import useWebSocket from "react-use-websocket";
 import pfp from "../../../assets/wlm/default-pfp.png";
 import dropdown from "../../../assets/wlm/icons/dropdown.png";
@@ -8,21 +8,26 @@ import { Window } from "../../../util/WindowManager";
 import Fuse from "fuse.js";
 import { ProcessManager } from "../../../util/Process";
 import PfpBorder from "../components/PfpBorder";
+import { Menu } from "../components/ContextMenu";
+import paperOpen from "../../../assets/wlm/icons/paper/paper-open.png";
+import paperClose from "../../../assets/wlm/icons/paper/paper-close.png";
+import paperStatic from "../../../assets/wlm/icons/paper/paper-static.png";
+import NotificationProvider, {
+	LiveNotificationHandler,
+} from "../components/Notifications";
 
 type Status = "active" | "idle" | "dnd" | "invisible";
 
-interface Connection {
+export interface Connection {
 	status: Status;
 	username: string;
 	id: string;
+	statusMessage?: string;
 }
 
-export interface State {
+export type State = {
 	connections: Connection[];
-	username: string;
-	status: Status;
-	id: string;
-}
+} & Connection;
 
 interface INITIALIZE {
 	type: "INITIALIZE";
@@ -46,7 +51,18 @@ interface UPDATE_USER {
 	data: Partial<Connection> & { id: string };
 }
 
-type Message = INITIALIZE | CONNECT | DISCONNECT | UPDATE_USER;
+interface MESSAGE {
+	type: "MESSAGE";
+	data: {
+		to: string;
+		from: string;
+		message: string;
+		id: string;
+		conversationId: string;
+	};
+}
+
+type Message = INITIALIZE | CONNECT | DISCONNECT | UPDATE_USER | MESSAGE;
 
 function getStringFromActivity(activity: string) {
 	switch (activity) {
@@ -62,11 +78,15 @@ function getStringFromActivity(activity: string) {
 }
 
 function Home({ win }: { win?: Window }) {
+	const inputRef = useRef<HTMLInputElement>(null);
+	const [editingStatus, setEditingStatus] = useState(false);
+	const [paperSrc, setPaperSrc] = useState("");
 	const [liveState, setLiveStateWithoutBroadcast] = useState<State>({
 		connections: [],
 		status: "active",
 		username: "",
 		id: "",
+		statusMessage: "",
 	});
 	const setLiveState: React.Dispatch<React.SetStateAction<State>> = (s) => {
 		setLiveStateWithoutBroadcast(s);
@@ -82,64 +102,124 @@ function Home({ win }: { win?: Window }) {
 		};
 	}, [win]);
 	useEffect(() => {
+		if (!editingStatus) return;
+		inputRef.current?.focus();
+	}, [editingStatus]);
+	useEffect(() => {
 		if (!win) return;
-		const id = win.onMessage("live-state", (state) => {
-			setLiveStateWithoutBroadcast(state);
-			console.log(state);
-		});
+		const ids = [
+			win.onMessage("live-state", (state) => {
+				setLiveStateWithoutBroadcast(state);
+				console.log(state);
+			}),
+			win.onMessage("send-websocket", (type, data) => {
+				sendJsonMessage({
+					type,
+					data,
+				});
+			}),
+		];
 		return () => {
-			win.removeMessageListener(id);
+			ids.forEach((id) => win.removeMessageListener(id));
 		};
 	}, [win]);
 	const [search, setSearch] = useState("");
-	const onMessage = useCallback(
-		(e: MessageEvent<Message>) => {
-			switch (e.data.type) {
-				case "INITIALIZE": {
-					const data = e.data.data;
-					setLiveState(data);
-					break;
-				}
-				case "CONNECT": {
-					const data = e.data.data;
-					setLiveState((old) => ({
-						...old,
-						connections: [...old.connections, data],
-					}));
-					break;
-				}
-				case "DISCONNECT": {
-					const data = e.data.data;
-					setLiveState((old) => ({
-						...old,
-						connections: old.connections.filter((c) => c.id !== data.id),
-					}));
-					break;
-				}
-				case "UPDATE_USER": {
-					const data = e.data.data;
-					if (data.id !== liveState.id)
+	const { sendJsonMessage } = useWebSocket("wss://win7api.nota-robot.com", {
+		onOpen(e) {
+			const username = localStorage.getItem("username");
+			const statusMessage = localStorage.getItem("statusMessage");
+
+			sendJsonMessage({
+				type: "INITIALIZE",
+				data: {
+					username,
+					statusMessage,
+				},
+			});
+		},
+		onMessage(e) {
+			function onMessage(e: MessageEvent<Message>) {
+				win?.broadcast("receive-websocket", e.data.type, e.data.data);
+				switch (e.data.type) {
+					case "INITIALIZE": {
+						const data = e.data.data;
+						setLiveState(data);
+						break;
+					}
+					case "CONNECT": {
+						const sound = new Audio("/ui/wlm/sounds/online.mp3");
+						sound.play();
+						const data = e.data.data;
+						LiveNotificationHandler.notify({
+							text: `${data.username} is now online`,
+						});
 						setLiveState((old) => ({
 							...old,
-							connections: old.connections.map((c) => {
-								if (c.id === data.id) {
-									return { ...c, ...data };
-								}
-								return c;
-							}),
+							connections: [...old.connections, data],
 						}));
-					else {
-						if (data.status) win?.setActivity(`live/${data.status}`);
-						setLiveState((o) => ({ ...o, ...data }));
+						break;
 					}
-					break;
+					case "DISCONNECT": {
+						const data = e.data.data;
+						setLiveState((old) => ({
+							...old,
+							connections: old.connections.filter((c) => c.id !== data.id),
+						}));
+						break;
+					}
+					case "UPDATE_USER": {
+						const data = e.data.data;
+						if (data.id !== liveState.id)
+							setLiveState((old) => ({
+								...old,
+								connections: old.connections.map((c) => {
+									if (c.id === data.id) {
+										return { ...c, ...data };
+									}
+									return c;
+								}),
+							}));
+						else {
+							if (data.status) win?.setActivity(`live/${data.status}`);
+							setLiveState((o) => ({ ...o, ...data }));
+						}
+						break;
+					}
+					case "MESSAGE": {
+						const process = ProcessManager.getProcessByWindowId(
+							winState?.id || ""
+						);
+						if (!process) break;
+						const message = e.data.data;
+						const user = liveState.connections.find(
+							(c) => c.id === message.from
+						);
+						if (!user) break;
+						const window = process.getWindows().find((w) => {
+							const params = new URLSearchParams(w.initialPath.split("?")[1]);
+							return params.get("user") === message.from;
+						});
+						if (!window) {
+							process.addWindow({
+								component: "Live",
+								initialPath: `/message?user=${
+									message.from
+								}&initialState=${JSON.stringify(
+									liveState
+								)}&initialMessages=${JSON.stringify([
+									message,
+								])}&conversationId=${message.conversationId}`,
+								title: user.username,
+								icon: "msn.png",
+								defaultWidth: 483,
+								defaultHeight: 419,
+								minWidth: 483,
+								minHeight: 419,
+							});
+						}
+					}
 				}
 			}
-		},
-		[liveState, win]
-	);
-	const { sendJsonMessage } = useWebSocket("wss://win7api.nota-robot.com", {
-		onMessage: (e) => {
 			onMessage({ ...e, data: JSON.parse(e.data) });
 		},
 		shouldReconnect: () => true,
@@ -156,7 +236,7 @@ function Home({ win }: { win?: Window }) {
 	}, []);
 	const [contextMenuOpacity, setContextMenuOpacity] = useState("0");
 	useEffect(() => {
-		const id = win?.addListener((e) => {
+		const id = win?.addListener((e, closing) => {
 			const str = getStringFromActivity(e.activity);
 			if (str && str !== liveState.status) {
 				setLiveState((old) => ({ ...old, status: str }));
@@ -171,6 +251,7 @@ function Home({ win }: { win?: Window }) {
 	}, [win]);
 	useEffect(() => {
 		function mouseDown(e: MouseEvent) {
+			if (e.button !== 0) return;
 			const el = e.target as HTMLDivElement;
 			if (el.closest(`.${styles.contextMenu}`)) return;
 			if (el.closest(`.${styles.contextMenuItem}`)) return;
@@ -206,7 +287,27 @@ function Home({ win }: { win?: Window }) {
 	}
 	return (
 		<div className={styles.window}>
-			<div className={styles.background}>
+			{/*vvvvvvvvvvvvvvvvvvvv    this was such a bad idea */}
+			<NotificationProvider />
+			<div
+				className={styles.background}
+				onMouseEnter={() => {
+					setPaperSrc(paperOpen);
+					setTimeout(() => {
+						setPaperSrc((p) => {
+							if (p === paperOpen) return paperStatic;
+							return p;
+						});
+					}, 450);
+				}}
+				onMouseLeave={() => {
+					setPaperSrc(paperClose);
+					setTimeout(() => {
+						setPaperSrc("");
+					}, 450);
+				}}
+			>
+				<img src={paperSrc} className={styles.paper} />
 				<div className={styles.topInfo}>
 					<PfpBorder state={winState?.activity} pfp={pfp} />
 					<div className={styles.userInfo}>
@@ -296,6 +397,7 @@ function Home({ win }: { win?: Window }) {
 												"Enter your new username (don't worry, this box is only temporary while I sort out application state):"
 											);
 											if (!res) return;
+											localStorage.setItem("username", res);
 											sendJsonMessage({
 												type: "CHANGE_USERNAME",
 												data: {
@@ -317,7 +419,29 @@ function Home({ win }: { win?: Window }) {
 							<span className={styles.username}>{liveState.username}</span>
 							<img src={dropdown} />
 						</div>
-						<div className={styles.message}>Share a quick message</div>
+						<Menu items={[]}>
+							<input
+								placeholder="Share a quick message"
+								className={styles.message}
+								contentEditable={true}
+								onKeyDown={(e) => {
+									if (e.key === "Enter") {
+										e.currentTarget.blur();
+									}
+								}}
+								defaultValue={liveState.statusMessage || ""}
+								onBlur={(e) => {
+									const statusMessage = e.currentTarget.value;
+									sendJsonMessage({
+										type: "CHANGE_STATUS",
+										data: {
+											statusMessage,
+										},
+									});
+									localStorage.setItem("statusMessage", statusMessage);
+								}}
+							/>
+						</Menu>
 					</div>
 				</div>
 			</div>
@@ -385,7 +509,7 @@ function Home({ win }: { win?: Window }) {
 													c.id
 												}&initialState=${JSON.stringify(liveState)}`,
 												title: c.username,
-												icon: "../main/msn.png",
+												icon: "msn.png",
 												defaultWidth: 483,
 												defaultHeight: 419,
 												minWidth: 483,
@@ -394,7 +518,12 @@ function Home({ win }: { win?: Window }) {
 										}}
 									>
 										<PfpBorder pfp={pfp} state={c.status} variant="small" />
-										<div className={styles.contactUsername}>{c.username}</div>
+										<div className={styles.contactInfo}>
+											<div className={styles.contactUsername}>{c.username}</div>
+											<div className={styles.contactStatus}>
+												{c.statusMessage}
+											</div>
+										</div>
 									</div>
 								))
 							) : (

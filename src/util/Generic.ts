@@ -1,12 +1,12 @@
 export function hasParentWithClass(
 	element: HTMLElement,
 	className: string
-): boolean {
-	if (element.classList.contains(className)) return true;
+): HTMLElement | false {
+	if (element.classList.contains(className)) return element;
 	let parent = element.parentElement;
 	while (parent) {
 		if (parent.classList.contains(className)) {
-			return true;
+			return parent;
 		}
 		parent = parent.parentElement;
 	}

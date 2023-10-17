@@ -146,7 +146,11 @@ export default function PfpBorder({
 					left: 12,
 				};
 			case "large":
-				return {};
+				return {
+					width: 94,
+					left: 25,
+					top: 19,
+				};
 		}
 	}
 	return (

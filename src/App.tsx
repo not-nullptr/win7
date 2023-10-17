@@ -6,6 +6,7 @@ import WindowProvider from "./components/WindowManager";
 import { State } from "./types/State";
 import { Context } from "./util/Context";
 import { Program } from "./util/Program";
+import { Provider } from "./windows/live/components/ContextMenu";
 
 export const programs: Program[] = [
 	new Program(
@@ -43,7 +44,7 @@ export const programs: Program[] = [
 		{
 			title: "Windows Live Messenger",
 			component: "Live",
-			icon: "../main/msn.png",
+			icon: "msn.png",
 			minWidth: 270,
 			minHeight: 600,
 			defaultWidth: 270,
@@ -51,7 +52,7 @@ export const programs: Program[] = [
 			initialPath: "/live",
 		},
 		"Windows Live Messenger",
-		"../main/msn.png"
+		"msn.png"
 	),
 	new Program(
 		{
@@ -88,6 +89,7 @@ function App() {
 	}
 	useEffect(() => {
 		function mouseDown(e: MouseEvent) {
+			if (e.button !== 0) return;
 			if (!selectRef.current || !desktopRef.current) return;
 			document.addEventListener("mousemove", mouseMove);
 			document.addEventListener("mouseup", mouseUp);
@@ -95,7 +97,8 @@ function App() {
 			selectRef.current.style.top = `${e.clientY}px`;
 			selectRef.current.style.visibility = "visible";
 		}
-		function mouseUp() {
+		function mouseUp(e: MouseEvent) {
+			if (e.button !== 0) return;
 			if (!selectRef.current || !desktopRef.current) return;
 			document.removeEventListener("mousemove", mouseMove);
 			selectRef.current.style.transform = "none";
@@ -114,6 +117,7 @@ function App() {
 	}, []);
 	return (
 		<Context.Provider value={{ state, setState }}>
+			<Provider />
 			<WindowProvider>
 				<div>
 					<div className="desktop" ref={desktopRef}>

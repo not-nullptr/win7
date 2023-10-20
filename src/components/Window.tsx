@@ -321,13 +321,20 @@ export default function WindowComponent({
 			zIndex: state.zIndex + 1,
 		});
 	}, []);
+	useEffect(() => {
+		if (!windowFrame.current) return;
+		windowFrame.current.style.top = `${
+			window.innerHeight / 2 - winState?.height / 2
+		}px`;
+		windowFrame.current.style.left = `${
+			window.innerWidth / 2 - winState?.width / 2
+		}px`;
+	}, []);
 	return (
 		<div
 			style={{
 				width: winState?.width,
 				height: winState?.height,
-				top: window.innerHeight / 2 - winState?.height / 2,
-				left: window.innerWidth / 2 - winState?.width / 2,
 			}}
 			className={styles.windowFrame}
 			id={winState?.id}

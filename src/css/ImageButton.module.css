@@ -1,0 +1,13 @@
+.imageButton {
+	padding: 2px;
+	border-radius: 2px;
+}
+
+.imageButton:hover {
+	outline: solid thin #b0b1b2;
+}
+
+.imageButton:active {
+	outline: solid thin #727272;
+	box-shadow: inset 0px 0px 4px 0px #00000067;
+}

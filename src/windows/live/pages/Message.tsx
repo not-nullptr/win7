@@ -5,7 +5,43 @@ import { useEffect, useRef, useState } from "react";
 import styles from "../../../css/Message.module.css";
 import PfpBorder from "../components/PfpBorder";
 import pfp from "../../../assets/wlm/default-pfp.png";
-import { v4 } from "uuid";
+import error from "../../../assets/wlm/icons/code/error.png";
+import {
+	ClientMessage,
+	MessageType,
+	ServerMessage,
+} from "../../../../shared/src/types";
+import ImageButton from "../components/ImageButton";
+import { hasParentWithClass } from "../../../util/Generic";
+import { Canvas } from "../../TaskManager";
+import parser, { Tag } from "bbcode-to-react";
+import { Menu } from "../components/ContextMenu";
+
+function bbCodeSelection(textarea: HTMLTextAreaElement, tag: string) {
+	const selection = textarea.value.substring(
+		textarea.selectionStart,
+		textarea.selectionEnd
+	);
+	if (selection.length === 0) return;
+	const selectionWithTags = `[${tag}]${selection}[/${tag}]`;
+	textarea.value =
+		textarea.value.substring(0, textarea.selectionStart) +
+		selectionWithTags +
+		textarea.value.substring(textarea.selectionEnd);
+	textarea.focus();
+}
+
+class EmoticonTag extends Tag {
+	toReact() {
+		// using this.getContent(true) to get it's inner raw text.
+		const attributes = {
+			emoticon: this.getContent(true),
+		};
+		return <img src={attributes.emoticon} />;
+	}
+}
+
+parser.registerTag("emoticon", EmoticonTag as any);
 
 function hashCode(...strings: string[]): string {
 	const input = strings.sort().join("");
@@ -19,19 +55,39 @@ function hashCode(...strings: string[]): string {
 }
 
 function Message({ win }: { win?: Window }) {
+	const toolbarRef = useRef<HTMLDivElement>(null);
+	const [drawing, setDrawing] = useState(false);
+	const emoticonRef = useRef<HTMLDivElement>(null);
+	const [emoji, setEmoji] = useState<boolean>(false);
+	const messageBoxRef = useRef<HTMLTextAreaElement>(null);
+	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const [params] = useSearchParams();
 	const [liveState, setLiveStateWithoutBroadcast] = useState<State>(
 		JSON.parse(params.get("initialState") || "{}")
 	);
 	const playedRef = useRef(false);
-
+	const [images, setImages] = useState<string[]>([]);
+	useEffect(() => {
+		(async () => {
+			const images = await Promise.all(
+				Object.values(
+					import.meta.glob("../../../assets/wlm/emoticons/*.png")
+				).map((p) =>
+					p()
+						.then((m: any) => m.default)
+						.catch(() => "")
+				)
+			);
+			setImages(images);
+		})();
+	}, []);
 	useEffect(() => {
 		if (params.get("initialMessages") && !playedRef.current) {
 			playedRef.current = true;
 			const audio = new Audio("/ui/wlm/sounds/type.mp3");
 			audio.play();
 		}
-	}, []);
+	}, [playedRef.current]);
 	const messagesContainer = useRef<HTMLDivElement>(null);
 	const user = liveState.connections.find((c) => c.id === params.get("user"));
 	const conversationHash = hashCode(user?.id || "", liveState.id);
@@ -44,31 +100,59 @@ function Message({ win }: { win?: Window }) {
 		message: string;
 		id: string;
 	}
-	interface GroupedMessage {
-		from: string;
-		id: string;
-		messages: Omit<Message, "from">[];
-	}
-	const [messages, setMessages] = useState<Message[]>(
-		JSON.parse(params.get("initialMessages") || "[]")
-	);
-	function handleSocketMessage(type: string, data: any) {
-		switch (type) {
-			case "MESSAGE": {
-				if (data.conversationId !== conversationHash) return;
-				if (data.from !== liveState.id) {
-					const audio = new Audio("/ui/wlm/sounds/type.mp3");
-					audio.play();
-				}
-				setMessages((messages) => [
-					...messages,
-					{
-						from: data.from,
-						message: data.message,
-						id: data.id,
-					},
-				]);
+	// interface GroupedMessage {
+	// 	from: string;
+	// 	id: string;
+	// 	messages: Omit<Message, "from">[];
+	// }
+	const [messages, setMessages] = useState<ServerMessage[]>(
+		(() => {
+			try {
+				return JSON.parse(params.get("initialMessages") || "[]");
+			} catch {
+				return [];
 			}
+		})()
+	);
+
+	function handleSocketMessage(type: string, anyData: any) {
+		switch (type) {
+			case "MESSAGE":
+				{
+					const data = anyData as ServerMessage;
+					if (data.conversationId !== conversationHash) return;
+					switch (data.messageType) {
+						case MessageType.NUDGE_RESPONSE: {
+							const audio = new Audio("/ui/wlm/sounds/nudge.mp3");
+							audio.play();
+							const frame = document.getElementById(
+								win?.id || ""
+							) as HTMLDivElement;
+							if (!frame) break;
+							const min = -5;
+							const max = 5;
+							const interval = setInterval(() => {
+								const x = Math.random() * (max - min) + min;
+								const y = Math.random() * (max - min) + min;
+								frame.style.transform = `translate(${x}px, ${y}px)`;
+							}, 25);
+							setTimeout(() => {
+								clearInterval(interval);
+								frame.style.transform = "";
+							}, 2500);
+							break;
+						}
+						default: {
+							if (data.from !== liveState.id) {
+								const audio = new Audio("/ui/wlm/sounds/type.mp3");
+								audio.play();
+							}
+						}
+					}
+					setMessages((messages) => [...messages, { ...data }]);
+				}
+
+				break;
 		}
 	}
 	useEffect(() => {
@@ -85,31 +169,30 @@ function Message({ win }: { win?: Window }) {
 			ids.forEach((id) => win.removeMessageListener(id));
 		};
 	}, [win]);
-	function groupMessages(messages: Message[]): GroupedMessage[] {
-		const groupedMessages: GroupedMessage[] = [];
-		for (const message of messages) {
-			const lastMessage = groupedMessages[groupedMessages.length - 1];
-			if (lastMessage && lastMessage.from === message.from) {
-				lastMessage.messages.push({
-					message: message.message,
-					id: message.id,
-				});
-			} else {
-				groupedMessages.push({
-					from: message.from,
-					id: message.id,
-					messages: [
-						{
-							message: message.message,
-							id: message.id,
-						},
-					],
-				});
-			}
-		}
-		return groupedMessages;
-	}
-	const groupedMessages = groupMessages(messages);
+	// function groupMessages(messages: Message[]): GroupedMessage[] {
+	// 	const messages: GroupedMessage[] = [];
+	// 	for (const message of messages) {
+	// 		const lastMessage = messages[messages.length - 1];
+	// 		if (lastMessage && lastMessage.from === message.from) {
+	// 			lastMessage.messages.push({
+	// 				message: message.message,
+	// 				id: message.id,
+	// 			});
+	// 		} else {
+	// 			messages.push({
+	// 				from: message.from,
+	// 				id: message.id,
+	// 				messages: [
+	// 					{
+	// 						message: message.message,
+	// 						id: message.id,
+	// 					},
+	// 				],
+	// 			});
+	// 		}
+	// 	}
+	// 	return messages;
+	// }
 	useEffect(() => {
 		if (!messagesContainer.current) return;
 		messagesContainer.current.scrollTop =
@@ -118,6 +201,26 @@ function Message({ win }: { win?: Window }) {
 	useEffect(() => {
 		if (!user) win?.close();
 	}, [user]);
+	useEffect(() => {
+		function mouseDown(e: MouseEvent) {
+			if (
+				hasParentWithClass(e.target as HTMLElement, "emoji-button") ||
+				(e.target as HTMLElement).classList.contains("emoji-button")
+			)
+				return;
+			if (!hasParentWithClass(e.target as HTMLElement, styles.emoticons))
+				setEmoji(false);
+		}
+		document.addEventListener("mousedown", mouseDown);
+		return () => {
+			document.removeEventListener("mousedown", mouseDown);
+		};
+	}, []);
+	useEffect(() => {
+		if (!messagesContainer.current) return;
+		messagesContainer.current.scrollTop =
+			messagesContainer.current.scrollHeight;
+	}, [drawing]);
 	if (!user) return <></>;
 
 	return (
@@ -147,19 +250,98 @@ function Message({ win }: { win?: Window }) {
 							}}
 							className={styles.divider}
 						/>
-						<div className={styles.messagesContainer} ref={messagesContainer}>
-							{groupedMessages.map((m) => (
+						<div
+							style={{
+								height: drawing
+									? "calc(100% - 31px - 84px - 64px)"
+									: "calc(100% - 31px - 84px)",
+							}}
+							className={styles.messagesContainer}
+							ref={messagesContainer}
+						>
+							{messages.map((m, i) => (
 								<div key={m.id} className={styles.messageGroup}>
-									<div className={styles.messageUsername}>
-										{liveState.connections.find((c) => c.id === m.from)
-											?.username || liveState.username}{" "}
-										said:
-									</div>
-									{m.messages.map((message) => (
-										<div key={message.id} className={styles.messageContainer}>
-											<span className={styles.message}>{message.message}</span>
-										</div>
-									))}
+									{(() => {
+										const potentialUsername = (() => {
+											const msg = (
+												<div className={styles.messageUsername}>
+													{liveState.connections.find((c) => c.id === m.from)
+														?.username || liveState.username}{" "}
+													said:
+												</div>
+											);
+											if (i === 0) return msg;
+											if (messages.at(i - 1)!.from !== m.from) return msg;
+											if (messages.at(i - 1)!.messageType !== m.messageType)
+												return msg;
+											return <></>;
+										})();
+										switch (m.messageType) {
+											case MessageType.TEXT_MESSAGE_SERVER:
+												return (
+													<div>
+														{potentialUsername}
+														<div className={styles.messageContainer}>
+															<span className={styles.message}>
+																{parser.toReact(
+																	m.message
+																		.split(/(:.*?:)/g)
+																		.map((part, index) => {
+																			if (
+																				part.startsWith(":") &&
+																				part.endsWith(":")
+																			) {
+																				const imgSrc = images.find((img) =>
+																					img.endsWith(
+																						`/${part.replaceAll(":", "")}.png`
+																					)
+																				);
+																				if (imgSrc) {
+																					return `[emoticon]${imgSrc}[/emoticon]`;
+																				}
+																			}
+																			return part;
+																		})
+																		.join("")
+																)}
+															</span>
+														</div>
+													</div>
+												);
+											case MessageType.ERROR: {
+												return (
+													<div className={styles.error}>
+														<img src={error} />
+														<div className={styles.errorText}>{m.message}</div>
+													</div>
+												);
+											}
+											case MessageType.NUDGE_RESPONSE: {
+												return (
+													<div className={styles.nudge}>
+														{messages.at(i - 1)?.messageType !==
+															MessageType.NUDGE_RESPONSE && (
+															<div className={styles.nudgeDivider} />
+														)}
+														<div>
+															{m.from === liveState.id
+																? "You have just sent a nudge."
+																: `${user.username} just sent you a nudge.`}
+														</div>
+														<div className={styles.nudgeDivider} />
+													</div>
+												);
+											}
+											case MessageType.IMAGE_RESPONSE: {
+												return (
+													<div className={styles.imageContainer}>
+														{potentialUsername}
+														<img src={m.image} />
+													</div>
+												);
+											}
+										}
+									})()}
 								</div>
 							))}
 						</div>
@@ -172,28 +354,145 @@ function Message({ win }: { win?: Window }) {
 									marginBottom: 2,
 								}}
 							/>
-							<textarea
-								onKeyDown={(e) => {
-									if (e.key === "Enter" && !e.shiftKey) {
-										e.preventDefault();
-										// setMessages([
-										// 	...messages,
-										// 	{
-										// 		from: liveState,
-										// 		message: e.currentTarget.value,
-										// 		id: v4(),
-										// 	},
-										// ]);
+							{drawing ? (
+								<div className={styles.canvasContainer}>
+									<Canvas
+										className={styles.canvas}
+										height={92}
+										width={
+											toolbarRef.current
+												? toolbarRef.current.getBoundingClientRect().width - 2
+												: 0
+										}
+									/>
+									<button
+										onClick={(e) => {
+											const canvas =
+												e.currentTarget.parentElement?.querySelector(
+													"canvas"
+												) as HTMLCanvasElement;
+											if (!canvas) return;
+											const data = canvas.toDataURL();
+											win?.broadcast("send-websocket", "MESSAGE", {
+												messageType: MessageType.IMAGE_REQUEST,
+												to: user.id,
+												image: data,
+											} as ClientMessage);
+											setDrawing(false);
+										}}
+									>
+										Send
+									</button>
+								</div>
+							) : (
+								<Menu
+									items={[
+										{
+											type: "group",
+											items: [
+												{
+													type: "item",
+													label: "Bold selection",
+													onClick() {
+														if (!messageBoxRef.current) return;
+														bbCodeSelection(messageBoxRef.current, "b");
+													},
+												},
+												{
+													type: "item",
+													label: "Italicize selection",
+													onClick() {
+														if (!messageBoxRef.current) return;
+														bbCodeSelection(messageBoxRef.current, "i");
+													},
+												},
+											],
+											label: "Selection",
+										},
+									]}
+								>
+									<textarea
+										onKeyDown={(e) => {
+											if (e.key === "Enter" && !e.shiftKey) {
+												e.preventDefault();
+												// setMessages([
+												// 	...messages,
+												// 	{
+												// 		from: liveState,
+												// 		message: e.currentTarget.value,
+												// 		id: v4(),
+												// 	},
+												// ]);
+												win?.broadcast("send-websocket", "MESSAGE", {
+													message: e.currentTarget.value,
+													to: user.id,
+													messageType: MessageType.TEXT_MESSAGE_CLIENT,
+												} as ClientMessage);
+												e.currentTarget.value = "";
+											}
+										}}
+										spellCheck={false}
+										className={styles.messageBox}
+										ref={messageBoxRef}
+									></textarea>
+								</Menu>
+							)}
+							<div ref={toolbarRef} className={styles.inputToolbar}>
+								<ImageButton
+									className="emoji-button"
+									onClick={() => {
+										setEmoji((emoji) => !emoji);
+									}}
+									image={images.find((i) => i.includes("smile.png")) || ""}
+								/>
+								<ImageButton
+									onClick={() => {
 										win?.broadcast("send-websocket", "MESSAGE", {
-											message: e.currentTarget.value,
+											messageType: MessageType.NUDGE_REQUEST,
 											to: user.id,
-										});
-										e.currentTarget.value = "";
-									}
-								}}
-								spellCheck={false}
-								className={styles.messageBox}
-							></textarea>
+										} as ClientMessage);
+									}}
+									image="/ui/wlm/icons/messenger/nudge.png"
+								/>
+								<ImageButton
+									className="emoji-button"
+									onClick={() => {
+										setDrawing((drawing) => !drawing);
+									}}
+									image={images.find((i) => i.includes("wlm.png")) || ""}
+								/>
+							</div>
+						</div>
+						<div
+							ref={emoticonRef}
+							className={styles.emoticons}
+							style={{
+								pointerEvents: emoji ? "all" : "none",
+								opacity: emoji ? 1 : 0,
+							}}
+						>
+							{images.map((i) => (
+								<ImageButton
+									onClick={() => {
+										if (!messageBoxRef.current) return;
+										const emoticon = `:${i
+											.split("/")
+											.at(-1)
+											?.replace(".png", "")}:`;
+										if (
+											messageBoxRef.current.value.endsWith(" ") ||
+											messageBoxRef.current.value.length === 0
+										) {
+											messageBoxRef.current.value += `${emoticon} `;
+										} else {
+											messageBoxRef.current.value += ` ${emoticon} `;
+										}
+										messageBoxRef.current.focus();
+										setEmoji(false);
+									}}
+									image={i}
+								/>
+							))}
 						</div>
 					</div>
 				</div>

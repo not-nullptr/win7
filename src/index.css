@@ -353,3 +353,97 @@ a {
 	color: #0066dd;
 	text-decoration: none;
 }
+
+/* width */
+::-webkit-scrollbar {
+	width: 18px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+	background: linear-gradient(
+		90deg,
+		rgba(228, 228, 228, 1) 0%,
+		rgba(239, 239, 239, 1) 25%,
+		rgba(244, 244, 244, 1) 100%
+	);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb:vertical {
+	background: url("./assets/window/scrollbar-track.png") center/9px 10px
+			no-repeat,
+		linear-gradient(
+			90deg,
+			rgba(245, 245, 245, 1) 0%,
+			rgba(231, 231, 231, 1) 49%,
+			rgba(215, 215, 218, 1) 50%,
+			rgba(190, 191, 194, 1) 100%
+		);
+	border: solid thin #979797;
+	border-radius: 2px;
+	box-shadow: inset 0px 0px 0px 1px var(--aero-white);
+}
+
+::-webkit-scrollbar-thumb:vertical:hover {
+	background: url("./assets/window/scrollbar-track.png") center/9px 10px
+			no-repeat,
+		linear-gradient(
+			90deg,
+			rgba(227, 244, 252, 1) 0%,
+			rgba(214, 238, 251, 1) 49%,
+			rgba(169, 219, 246, 1) 50%,
+			rgba(156, 202, 227, 1) 100%
+		);
+}
+
+::-webkit-scrollbar-thumb:vertical:active {
+	background: url("./assets/window/scrollbar-track.png") center/9px 10px
+			no-repeat,
+		linear-gradient(
+			90deg,
+			rgba(202, 236, 249, 1) 0%,
+			rgba(175, 225, 247, 1) 49%,
+			rgba(111, 202, 240, 1) 50%,
+			rgba(108, 196, 233, 1) 100%
+		);
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+	background: url("./assets/window/scrollbar-track.png") center/9px 10px
+			no-repeat,
+		linear-gradient(
+			180deg,
+			rgba(245, 245, 245, 1) 0%,
+			rgba(231, 231, 231, 1) 49%,
+			rgba(215, 215, 218, 1) 50%,
+			rgba(190, 191, 194, 1) 100%
+		);
+	border: solid thin #979797;
+	border-radius: 2px;
+	box-shadow: inset 0px 0px 0px 1px var(--aero-white);
+}
+
+::-webkit-scrollbar-thumb:horizontal:hover {
+	background: url("./assets/window/scrollbar-track.png") center/9px 10px
+			no-repeat,
+		linear-gradient(
+			180deg,
+			rgba(227, 244, 252, 1) 0%,
+			rgba(214, 238, 251, 1) 49%,
+			rgba(169, 219, 246, 1) 50%,
+			rgba(156, 202, 227, 1) 100%
+		);
+}
+
+::-webkit-scrollbar-thumb:horizontal:active {
+	background: url("./assets/window/scrollbar-track.png") center/9px 10px
+			no-repeat,
+		linear-gradient(
+			180deg,
+			rgba(202, 236, 249, 1) 0%,
+			rgba(175, 225, 247, 1) 49%,
+			rgba(111, 202, 240, 1) 50%,
+			rgba(108, 196, 233, 1) 100%
+		);
+}

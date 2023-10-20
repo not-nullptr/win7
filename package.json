@@ -10,9 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@bbob/preset-react": "^3.0.2",
+    "@bbob/react": "^3.0.2",
     "@forlagshuset/simple-fs": "^0.5.2",
+    "@types/bbcode-to-react": "^0.2.2",
     "@vitejs/plugin-react": "^4.1.0",
     "ani-cursor": "^0.0.5",
+    "bbcode-to-react": "^0.2.9",
     "buffer": "^6.0.3",
     "dexie": "^3.2.4",
     "fuse.js": "^6.6.2",
@@ -23,7 +27,8 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.16.0",
     "react-use-websocket": "^4.5.0",
-    "uuid": "^9.0.1"
+    "uuid": "^9.0.1",
+    "ya-bbcode": "^4.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",

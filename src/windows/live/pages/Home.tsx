@@ -15,6 +15,7 @@ import paperStatic from "../../../assets/wlm/icons/paper/paper-static.png";
 import NotificationProvider, {
 	LiveNotificationHandler,
 } from "../components/Notifications";
+import { ServerMessage } from "../../../../shared/src/types";
 
 type Status = "active" | "idle" | "dnd" | "invisible";
 
@@ -53,13 +54,7 @@ interface UPDATE_USER {
 
 interface MESSAGE {
 	type: "MESSAGE";
-	data: {
-		to: string;
-		from: string;
-		message: string;
-		id: string;
-		conversationId: string;
-	};
+	data: ServerMessage;
 }
 
 type Message = INITIALIZE | CONNECT | DISCONNECT | UPDATE_USER | MESSAGE;

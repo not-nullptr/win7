@@ -136,8 +136,7 @@ function App() {
 					<div className="fullscreen-preview-container">
 						<div className="fullscreen-preview" />
 						<div className="genuine">
-							Michaelsoft Binbows 7 Build 7601.5 This copy of Michaelsoft
-							Binbows is absolutely genuine, promise
+							{"Michaelsoft Binbows 7\nBuild 7601.5\nThis copy of Michaelsoft Binbows is absolutely genuine, promise"}
 						</div>
 					</div>
 				</div>

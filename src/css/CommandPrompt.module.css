@@ -5,7 +5,13 @@
 }
 
 .window * {
-    font-family: Consolas;
+    font-family: VGA;
     color: rgb(211, 210, 210);   
-    font-size: 14px;
+    font-size: 15px;
+    user-select: text;
+}
+
+.window *::selection {
+    background-color: white;
+    color: black;
 }

@@ -3,6 +3,11 @@
 	src: url("/fonts/consolas-webfont.woff");
 }
 
+@font-face {
+	font-family: VGA;
+	src: url("/fonts/WebPlus_IBM_VGA_8x16.woff");
+}
+
 @keyframes taskbar-icon-appear {
 	from {
 		opacity: 0;
@@ -451,4 +456,14 @@ a {
 			rgba(111, 202, 240, 1) 50%,
 			rgba(108, 196, 233, 1) 100%
 		);
+}
+
+.genuine {
+	position: absolute;
+	bottom: 4px;
+	right: 4px;
+	text-align: right;
+	white-space: pre-line;
+	color: white;
+	z-index: 999999999999999999999999;
 }

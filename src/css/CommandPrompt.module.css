@@ -1,17 +1,50 @@
 .window {
-    width: 100%;
-    height: 100%;
-    background-color: #000;
+	width: 100%;
+	height: 100%;
+	background-color: #000;
+	overflow-y: auto;
 }
 
 .window * {
-    font-family: VGA;
-    color: rgb(211, 210, 210);   
-    font-size: 15px;
-    user-select: text;
+	font-family: VGA;
+	color: rgb(211, 210, 210);
+	font-size: 15px;
+	user-select: text;
+	white-space: pre-wrap;
 }
 
 .window *::selection {
-    background-color: white;
-    color: black;
+	background-color: white;
+	color: black;
+}
+
+.cursor {
+	width: 8px;
+	height: 12px;
+	background-color: white;
+}
+
+.currentLine {
+	width: fit-content;
+	display: inline;
+	height: fit-content;
+}
+
+.history {
+	margin-bottom: -2px;
+}
+
+.history * {
+	min-height: 15px;
+	white-space: pre-wrap;
+}
+
+.prompt {
+	border: none;
+	outline: none;
+	background-color: transparent;
+	height: 16px;
+	caret-color: rgb(211, 210, 210);
+	line-break: anywhere;
+	display: inline;
 }

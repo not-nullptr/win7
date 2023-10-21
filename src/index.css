@@ -1,3 +1,8 @@
+@font-face {
+	font-family: "Consolas";
+	src: url("/fonts/consolas-webfont.woff");
+}
+
 @keyframes taskbar-icon-appear {
 	from {
 		opacity: 0;

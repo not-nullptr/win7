@@ -8,7 +8,7 @@ import { Context } from "./util/Context";
 import { Program } from "./util/Program";
 import { Provider } from "./windows/live/components/ContextMenu";
 
-export const programs: Program[] = [
+export const programs = [
 	new Program(
 		{
 			title: "Notification Sender",
@@ -62,6 +62,15 @@ export const programs: Program[] = [
 		},
 		"Task Manager",
 		"task-manager.png"
+	),
+	new Program(
+		{
+			title: "Command Prompt",
+			component: "CommandPrompt",
+			icon: "command-prompt.png",
+		},
+		"Command Prompt",
+		"command-prompt.png"
 	),
 ];
 
@@ -126,6 +135,10 @@ function App() {
 					<Taskbar />
 					<div className="fullscreen-preview-container">
 						<div className="fullscreen-preview" />
+						<div className="genuine">
+							Michaelsoft Binbows 7 Build 7601.5 This copy of Michaelsoft
+							Binbows is absolutely genuine, promise
+						</div>
 					</div>
 				</div>
 				<NotificationProvider />

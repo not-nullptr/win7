@@ -157,8 +157,7 @@ function MessageComponent({ win }: { win?: Window }) {
 						setOtherTyping(true);
 						typingTimeout = setTimeout(() => {
 							setOtherTyping(false);
-							console.log("the timeout went thru");
-						}, 500);
+						}, 1500);
 						break;
 					}
 				}
@@ -482,7 +481,10 @@ function MessageComponent({ win }: { win?: Window }) {
 						{otherTyping && (
 							<div className={styles.typing}>
 								<img src={typing} />
-								<div>{user.username} is typing...</div>
+								<div>
+									<span style={{ fontWeight: "bold" }}>{user.username}</span> is
+									typing...
+								</div>
 							</div>
 						)}
 						<div

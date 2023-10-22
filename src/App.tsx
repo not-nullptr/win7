@@ -68,6 +68,8 @@ export const programs = [
 			title: "Command Prompt",
 			component: "CommandPrompt",
 			icon: "command-prompt.png",
+			defaultWidth: 678,
+			defaultHeight: 345,
 		},
 		"Command Prompt",
 		"command-prompt.png"
@@ -136,7 +138,9 @@ function App() {
 					<div className="fullscreen-preview-container">
 						<div className="fullscreen-preview" />
 						<div className="genuine">
-							{"Michaelsoft Binbows 7\nBuild 7601.5\nThis copy of Michaelsoft Binbows is absolutely genuine, promise"}
+							{
+								"Michaelsoft Binbows 7\nBuild 7601.5\nThis copy of Michaelsoft Binbows is absolutely genuine, promise"
+							}
 						</div>
 					</div>
 				</div>

@@ -1,21 +1,25 @@
 import { useSearchParams } from "react-router-dom";
 import { Window } from "../../../util/WindowManager";
-import { Connection, State } from "./Home";
 import { useEffect, useRef, useState } from "react";
 import styles from "../../../css/Message.module.css";
 import PfpBorder from "../components/PfpBorder";
 import pfp from "../../../assets/wlm/default-pfp.png";
 import error from "../../../assets/wlm/icons/code/error.png";
 import {
+	ClientData,
 	ClientMessage,
+	DataType,
+	Message,
 	MessageType,
 	ServerMessage,
+	State,
 } from "../../../../shared/src/types";
 import ImageButton from "../components/ImageButton";
 import { hasParentWithClass } from "../../../util/Generic";
 import { Canvas } from "../../TaskManager";
 import parser, { Tag } from "bbcode-to-react";
 import { Menu } from "../components/ContextMenu";
+import typing from "../../../assets/wlm/icons/typing.png";
 
 function bbCodeSelection(textarea: HTMLTextAreaElement, tag: string) {
 	const selection = textarea.value.substring(
@@ -54,7 +58,8 @@ function hashCode(...strings: string[]): string {
 	return hash.toString();
 }
 
-function Message({ win }: { win?: Window }) {
+function MessageComponent({ win }: { win?: Window }) {
+	const [otherTyping, setOtherTyping] = useState(false);
 	const toolbarRef = useRef<HTMLDivElement>(null);
 	const [drawing, setDrawing] = useState(false);
 	const emoticonRef = useRef<HTMLDivElement>(null);
@@ -95,16 +100,6 @@ function Message({ win }: { win?: Window }) {
 		setLiveStateWithoutBroadcast(state);
 		win?.broadcast("live-state", state);
 	};
-	interface Message {
-		from: string;
-		message: string;
-		id: string;
-	}
-	// interface GroupedMessage {
-	// 	from: string;
-	// 	id: string;
-	// 	messages: Omit<Message, "from">[];
-	// }
 	const [messages, setMessages] = useState<ServerMessage[]>(
 		(() => {
 			try {
@@ -114,12 +109,12 @@ function Message({ win }: { win?: Window }) {
 			}
 		})()
 	);
-
-	function handleSocketMessage(type: string, anyData: any) {
-		switch (type) {
+	let typingTimeout: NodeJS.Timeout | undefined;
+	function handleSocketMessage(e: Message) {
+		switch (e.type) {
 			case "MESSAGE":
 				{
-					const data = anyData as ServerMessage;
+					const data = e.data;
 					if (data.conversationId !== conversationHash) return;
 					switch (data.messageType) {
 						case MessageType.NUDGE_RESPONSE: {
@@ -153,6 +148,21 @@ function Message({ win }: { win?: Window }) {
 				}
 
 				break;
+			case "DATA": {
+				switch (e.data.dataType) {
+					case DataType.TYPING_BEGIN_RESPONSE: {
+						const data = e.data;
+						if (data.conversationId !== conversationHash) return;
+						if (typingTimeout) clearTimeout(typingTimeout);
+						setOtherTyping(true);
+						typingTimeout = setTimeout(() => {
+							setOtherTyping(false);
+							console.log("the timeout went thru");
+						}, 500);
+						break;
+					}
+				}
+			}
 		}
 	}
 	useEffect(() => {
@@ -161,8 +171,8 @@ function Message({ win }: { win?: Window }) {
 			win.onMessage("live-state", (state) => {
 				setLiveStateWithoutBroadcast(state);
 			}),
-			win.onMessage("receive-websocket", (type, data) => {
-				handleSocketMessage(type, data);
+			win.onMessage("receive-websocket", (e) => {
+				handleSocketMessage(e);
 			}),
 		];
 		return () => {
@@ -434,6 +444,12 @@ function Message({ win }: { win?: Window }) {
 										spellCheck={false}
 										className={styles.messageBox}
 										ref={messageBoxRef}
+										onChange={() => {
+											win?.broadcast("send-websocket", "DATA", {
+												dataType: DataType.TYPING_BEGIN_REQUEST,
+												to: user.id,
+											} as ClientData);
+										}}
 									></textarea>
 								</Menu>
 							)}
@@ -463,6 +479,24 @@ function Message({ win }: { win?: Window }) {
 								/>
 							</div>
 						</div>
+						{otherTyping && (
+							<div
+								style={{
+									display: "flex",
+									alignItems: "center",
+									marginTop: 4,
+								}}
+							>
+								<img src={typing} />
+								<div
+									style={{
+										marginLeft: 4,
+									}}
+								>
+									{user.username} is typing...
+								</div>
+							</div>
+						)}
 						<div
 							ref={emoticonRef}
 							className={styles.emoticons}
@@ -505,4 +539,4 @@ function Message({ win }: { win?: Window }) {
 	);
 }
 
-export default Message;
+export default MessageComponent;

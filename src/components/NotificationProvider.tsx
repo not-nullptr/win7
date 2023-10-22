@@ -13,6 +13,7 @@ const absolutePosition = (element: HTMLElement | null) =>
 	};
 
 export default function NotificationProvider() {
+	const [notiTrayId, setNotiTrayId] = useState("");
 	const [notiPos, setNotiPos] = useState(0);
 	const [tray, setTray] = useState<TrayItem[]>(TrayService.getItems());
 	const notificationRef = useRef<Notification | undefined>(
@@ -60,13 +61,13 @@ export default function NotificationProvider() {
 				timeoutRefs.current.push(
 					setTimeout(() => {
 						hideNotification(n);
-					}, 10000),
+					}, 10000) as any,
 					setTimeout(() => {
 						if (notificationElRef.current) {
 							notificationElRef.current.style.animation = "";
 							notificationElRef.current.classList.add(styles.fade);
 						}
-					}, 7700)
+					}, 7700) as any
 				);
 			}
 			WindowManager.addWindowListener((w) => {
@@ -98,28 +99,26 @@ export default function NotificationProvider() {
 			timeoutRefs.current.push(
 				setTimeout(() => {
 					hideNotification(notification!);
-				}, 10000),
+				}, 10000) as any,
 				setTimeout(() => {
 					if (notificationElRef.current) {
 						notificationElRef.current.style.animation = "none";
 						notificationElRef.current.classList.add(styles.fade);
 					}
-				}, 7700)
+				}, 7700) as any
 			);
 		}
 	};
 	useEffect(() => {
 		const item = new TrayItem("noti-service.png", "Notification Service");
 		item.create();
+		setNotiTrayId(item.id);
 		const noti = new Notification({
 			title: "Success",
 			message: "The notification service is running properly.",
 			trayId: item.id,
 		});
 		noti.show();
-		return () => {
-			item.destroy();
-		};
 		return () => {
 			item.destroy();
 		};

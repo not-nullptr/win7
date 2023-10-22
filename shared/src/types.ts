@@ -6,6 +6,7 @@ export enum MessageType {
 	NUDGE_RESPONSE = "NUDGE_RESPONSE",
 	IMAGE_REQUEST = "IMAGE_REQUEST",
 	IMAGE_RESPONSE = "IMAGE_RESPONSE",
+	TYPING_END = "TYPING_END",
 }
 
 interface TextMessageClient {
@@ -59,7 +60,6 @@ interface ImageResponse {
 	id: string;
 	conversationId: string;
 }
-
 export type ClientMessage = TextMessageClient | NudgeRequest | ImageRequest; // client -> server
 
 export type ServerMessage =
@@ -67,3 +67,76 @@ export type ServerMessage =
 	| Error
 	| NudgeResponse
 	| ImageResponse; // server -> client
+
+export enum DataType {
+	TYPING_BEGIN_REQUEST = "TYPING_BEGIN_REQUEST",
+	TYPING_BEGIN_RESPONSE = "TYPING_BEGIN_RESPONSE",
+}
+
+interface TypingBeginRequest {
+	dataType: DataType.TYPING_BEGIN_REQUEST;
+	to: string;
+}
+
+interface TypingBeginResponse {
+	dataType: DataType.TYPING_BEGIN_RESPONSE;
+	to: string;
+	from: string;
+	conversationId: string;
+}
+
+export type ClientData = TypingBeginRequest;
+export type ServerData = TypingBeginResponse;
+
+type Status = "active" | "idle" | "dnd" | "invisible";
+
+export interface Connection {
+	status: Status;
+	username: string;
+	id: string;
+	statusMessage?: string;
+}
+
+export type State = {
+	connections: Connection[];
+} & Connection;
+
+export interface INITIALIZE {
+	type: "INITIALIZE";
+	data: State;
+}
+
+export interface CONNECT {
+	type: "CONNECT";
+	data: Connection;
+}
+
+export interface DISCONNECT {
+	type: "DISCONNECT";
+	data: {
+		id: string;
+	};
+}
+
+export interface UPDATE_USER {
+	type: "UPDATE_USER";
+	data: Partial<Connection> & { id: string };
+}
+
+interface MESSAGE {
+	type: "MESSAGE";
+	data: ServerMessage;
+}
+
+export interface DATA {
+	type: "DATA";
+	data: ServerData;
+}
+
+export type Message =
+	| INITIALIZE
+	| CONNECT
+	| DISCONNECT
+	| UPDATE_USER
+	| MESSAGE
+	| DATA;

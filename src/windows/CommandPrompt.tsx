@@ -27,6 +27,7 @@ function CommandPrompt({ win }: { win: Window }) {
 	const windowRef = useRef<HTMLDivElement>(null);
 	useEffect(() => {
 		windowRef.current?.scrollTo(0, windowRef.current.scrollHeight);
+		inputRef.current?.focus();
 	}, [out]);
 	function printf(text: string) {
 		setOut((out) => [...out, { text }]);
@@ -102,6 +103,9 @@ function CommandPrompt({ win }: { win: Window }) {
 		}),
 		new Command("help", () => {
 			printf(commands.map((c) => c.name).join("    "));
+		}),
+		new Command("echo", (args) => {
+			printf(args.join(" "));
 		}),
 	];
 	function calculatePs2(ps2: string) {

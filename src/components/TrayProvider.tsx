@@ -14,6 +14,7 @@ export default function TrayProvider() {
 			setTrayItems([...tray]);
 		});
 		const item = new TrayItem("tray-service.png", "Tray Service");
+
 		item.create();
 		return () => {
 			item.destroy();

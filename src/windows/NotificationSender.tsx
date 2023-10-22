@@ -79,6 +79,7 @@ function NotificationSender({ win }: { win: Window }) {
 						icon,
 						trayId,
 					});
+
 					notification.show();
 				}}
 			>

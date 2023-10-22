@@ -15,49 +15,12 @@ import paperStatic from "../../../assets/wlm/icons/paper/paper-static.png";
 import NotificationProvider, {
 	LiveNotificationHandler,
 } from "../components/Notifications";
-import { ServerMessage } from "../../../../shared/src/types";
-
-type Status = "active" | "idle" | "dnd" | "invisible";
-
-export interface Connection {
-	status: Status;
-	username: string;
-	id: string;
-	statusMessage?: string;
-}
-
-export type State = {
-	connections: Connection[];
-} & Connection;
-
-interface INITIALIZE {
-	type: "INITIALIZE";
-	data: State;
-}
-
-interface CONNECT {
-	type: "CONNECT";
-	data: Connection;
-}
-
-interface DISCONNECT {
-	type: "DISCONNECT";
-	data: {
-		id: string;
-	};
-}
-
-interface UPDATE_USER {
-	type: "UPDATE_USER";
-	data: Partial<Connection> & { id: string };
-}
-
-interface MESSAGE {
-	type: "MESSAGE";
-	data: ServerMessage;
-}
-
-type Message = INITIALIZE | CONNECT | DISCONNECT | UPDATE_USER | MESSAGE;
+import {
+	Message,
+	ServerData,
+	ServerMessage,
+	State,
+} from "../../../../shared/src/types";
 
 function getStringFromActivity(activity: string) {
 	switch (activity) {
@@ -119,7 +82,7 @@ function Home({ win }: { win?: Window }) {
 		};
 	}, [win]);
 	const [search, setSearch] = useState("");
-	const { sendJsonMessage } = useWebSocket("wss://win7api.nota-robot.com", {
+	const { sendJsonMessage } = useWebSocket("ws://localhost:4000", {
 		onOpen(e) {
 			const username = localStorage.getItem("username");
 			const statusMessage = localStorage.getItem("statusMessage");
@@ -134,7 +97,7 @@ function Home({ win }: { win?: Window }) {
 		},
 		onMessage(e) {
 			function onMessage(e: MessageEvent<Message>) {
-				win?.broadcast("receive-websocket", e.data.type, e.data.data);
+				win?.broadcast("receive-websocket", e.data);
 				switch (e.data.type) {
 					case "INITIALIZE": {
 						const data = e.data.data;

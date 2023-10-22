@@ -480,21 +480,9 @@ function MessageComponent({ win }: { win?: Window }) {
 							</div>
 						</div>
 						{otherTyping && (
-							<div
-								style={{
-									display: "flex",
-									alignItems: "center",
-									marginTop: 4,
-								}}
-							>
+							<div className={styles.typing}>
 								<img src={typing} />
-								<div
-									style={{
-										marginLeft: 4,
-									}}
-								>
-									{user.username} is typing...
-								</div>
+								<div>{user.username} is typing...</div>
 							</div>
 						)}
 						<div

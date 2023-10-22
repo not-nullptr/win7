@@ -276,3 +276,17 @@
 	margin-left: 1px;
 	border-radius: 4px;
 }
+.typing {
+	display: flex;
+	align-items: center;
+	margin-top: 4px;
+	width: calc(100% - 16px);
+}
+
+.typing > div {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	margin-left: 4px;
+	margin-top: -1px;
+}

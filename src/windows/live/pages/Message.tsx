@@ -116,6 +116,7 @@ function MessageComponent({ win }: { win?: Window }) {
 				{
 					const data = e.data;
 					if (data.conversationId !== conversationHash) return;
+					setOtherTyping(false);
 					switch (data.messageType) {
 						case MessageType.NUDGE_RESPONSE: {
 							const audio = new Audio("/ui/wlm/sounds/nudge.mp3");

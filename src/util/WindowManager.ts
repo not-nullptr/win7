@@ -6,6 +6,7 @@ import TaskManager from "../windows/TaskManager";
 import Live from "../windows/live/Live";
 import { ProcessManager } from "./Process";
 import CommandPrompt from "../windows/CommandPrompt";
+import Personalization from "../windows/Personalization";
 //  ------------------------------------------------------
 //  notes
 //
@@ -68,7 +69,8 @@ export const componentMap = {
 	NotificationSender,
 	Live,
 	TaskManager,
-	CommandPrompt
+	CommandPrompt,
+	Personalization,
 };
 
 export interface CreateCallbackPayload {

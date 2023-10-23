@@ -32,10 +32,23 @@
 
 :root {
 	--accent: #434444;
-	--accent-window: color-mix(in srgb, var(--accent) 30%, #00145b);
 	--aero-white: #ffffff7a;
 	--aero-black: #000000bd;
-	--aero-accent: color-mix(in srgb, var(--accent-window) 50%, transparent);
+	--saturation: 43%;
+	--brightness: 65%;
+	--intensity: 50%;
+	--aero-color: rgba(
+		116,
+		184,
+		252,
+		calc(0.7 * var(--intensity))
+	); /* x = 0.7 * (y / 100)    where x is the desired opacity and y is the intensity, 0 - 100 */
+	--aero-accent: color-mix(
+		in srgb,
+		#000,
+		color-mix(in srgb, var(--aero-color) var(--saturation), transparent)
+			var(--brightness)
+	);
 }
 
 body {
@@ -470,5 +483,4 @@ a:hover {
 	text-align: right;
 	white-space: pre-line;
 	color: white;
-	z-index: 999999999999999999999999;
 }

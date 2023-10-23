@@ -88,6 +88,31 @@ interface TypingBeginResponse {
 export type ClientData = TypingBeginRequest;
 export type ServerData = TypingBeginResponse;
 
+export enum GameType {
+	START_GAME_REQUEST = "START_GAME_REQUEST",
+	START_GAME_RESPONSE = "START_GAME_RESPONSE",
+}
+
+type Game = "TIC_TAC_TOE";
+
+interface StartGameRequest {
+	gameType: GameType.START_GAME_REQUEST;
+	to: string;
+	game: Game;
+}
+
+interface StartGameResponse {
+	gameType: GameType.START_GAME_RESPONSE;
+	to: string;
+	from: string;
+	conversationId: string;
+	game: Game;
+	gameState: any;
+}
+
+export type ClientGame = StartGameRequest;
+export type ServerGame = StartGameResponse;
+
 type Status = "active" | "idle" | "dnd" | "invisible";
 
 export interface Connection {
@@ -133,10 +158,16 @@ export interface DATA {
 	data: ServerData;
 }
 
+export interface GAME {
+	type: "GAME";
+	data: ServerGame;
+}
+
 export type Message =
 	| INITIALIZE
 	| CONNECT
 	| DISCONNECT
 	| UPDATE_USER
 	| MESSAGE
-	| DATA;
+	| DATA
+	| GAME;

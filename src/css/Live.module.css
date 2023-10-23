@@ -149,6 +149,10 @@
 	width: 100%;
 }
 
+.message::selection {
+	text-shadow: none;
+}
+
 .contextMenu {
 	width: 268px;
 	height: fit-content;

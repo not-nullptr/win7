@@ -74,6 +74,17 @@ export const programs = [
 		"Command Prompt",
 		"command-prompt.png"
 	),
+	new Program(
+		{
+			title: "Personalization",
+			component: "Personalization",
+			icon: "personalization.png",
+			defaultWidth: 800,
+			defaultHeight: 600,
+		},
+		"Personalization",
+		"personalization.png"
+	),
 ];
 
 function App() {

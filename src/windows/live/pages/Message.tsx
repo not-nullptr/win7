@@ -9,6 +9,7 @@ import {
 	ClientData,
 	ClientMessage,
 	DataType,
+	GameType,
 	Message,
 	MessageType,
 	ServerMessage,
@@ -96,6 +97,13 @@ function MessageComponent({ win }: { win?: Window }) {
 	const messagesContainer = useRef<HTMLDivElement>(null);
 	const user = liveState.connections.find((c) => c.id === params.get("user"));
 	const conversationHash = hashCode(user?.id || "", liveState.id);
+	const [gameState, setGameState] = useState<{
+		playing: boolean;
+		state: any;
+	}>({
+		playing: false,
+		state: {},
+	});
 	const setLiveState = (state: State) => {
 		setLiveStateWithoutBroadcast(state);
 		win?.broadcast("live-state", state);
@@ -162,6 +170,21 @@ function MessageComponent({ win }: { win?: Window }) {
 						break;
 					}
 				}
+				break;
+			}
+			case "GAME": {
+				const data = e.data;
+				if (data.conversationId !== conversationHash) return;
+				switch (e.data.gameType) {
+					case GameType.START_GAME_RESPONSE: {
+						setGameState({
+							playing: true,
+							state: data.gameState,
+						});
+						break;
+					}
+				}
+				break;
 			}
 		}
 	}
@@ -526,6 +549,42 @@ function MessageComponent({ win }: { win?: Window }) {
 				<div className={styles.backgroundImage} />
 				<div className={styles.background} />
 			</div>
+			{/* <div className={styles.gameManager}>
+				<div className={styles.toolbarGameManager} />
+				<button
+					onClick={() => {
+						win?.broadcast("send-websocket", "GAME", {
+							gameType: GameType.START_GAME_REQUEST,
+							to: user.id,
+						});
+					}}
+				>
+					Start game
+				</button>
+				{gameState.playing && (
+					<div>
+						{gameState.state.board.map((row: (0 | 1 | 2)[]) => (
+							<div>
+								{row.map((r) => (
+									<span
+										style={{
+											backgroundColor: "red",
+											whiteSpace: "pre",
+											width: 12,
+											height: 12,
+										}}
+										onClick={() => {
+											
+										}}
+									>
+										{r === 0 ? "    " : r === 1 ? "X" : "O"}
+									</span>
+								))}
+							</div>
+						))}
+					</div>
+				)}
+			</div> */}
 		</div>
 	);
 }

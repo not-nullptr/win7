@@ -1,0 +1,24 @@
+.window {
+	width: 100%;
+	height: 100%;
+	box-sizing: border-box;
+	padding: 8px;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+
+.picker {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 8px;
+	width: 250px;
+	position: relative;
+	height: 32px;
+}
+
+.picker > input {
+	position: absolute;
+	right: 0;
+}

@@ -79,8 +79,10 @@ export const programs = [
 			title: "Personalization",
 			component: "Personalization",
 			icon: "personalization.png",
-			defaultWidth: 800,
-			defaultHeight: 600,
+			defaultWidth: 400,
+			defaultHeight: 240,
+			minWidth: 400,
+			minHeight: 240,
 		},
 		"Personalization",
 		"personalization.png"

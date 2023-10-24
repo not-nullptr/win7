@@ -12,6 +12,68 @@ import ThemingProvider from "./components/ThemingProvider";
 export const programs = [
 	new Program(
 		{
+			title: "Getting Started",
+			component: "GettingStarted",
+			icon: "getting-started.png",
+			defaultWidth: 750,
+			defaultHeight: 550,
+		},
+		"Getting Started",
+		"getting-started.png"
+	),
+	new Program(
+		{
+			title: "Windows Live Messenger",
+			component: "Live",
+			icon: "msn.png",
+			minWidth: 270,
+			minHeight: 600,
+			defaultWidth: 270,
+			defaultHeight: 600,
+			initialPath: "/live",
+		},
+		"Windows Live Messenger",
+		"msn.png"
+	),
+	new Program(
+		{
+			title: "Personalization",
+			component: "Personalization",
+			icon: "personalization.png",
+			defaultWidth: 400,
+			defaultHeight: 300,
+			minWidth: 400,
+			minHeight: 300,
+		},
+		"Personalization",
+		"personalization.png"
+	),
+	new Program(
+		{
+			title: "Minesweeper",
+			component: "Minesweeper",
+			icon: "minesweeper.png",
+			defaultWidth: 180,
+			defaultHeight: 240,
+			minWidth: 180,
+			minHeight: 240,
+		},
+		"Minesweeper",
+		"minesweeper.png"
+	),
+	new Program(
+		{
+			title: "Command Prompt",
+			component: "CommandPrompt",
+			icon: "command-prompt.png",
+			defaultWidth: 678,
+			defaultHeight: 345,
+		},
+		"Command Prompt",
+		"command-prompt.png"
+	),
+	new Program(
+		{
 			title: "Notification Sender",
 			component: "NotificationSender",
 			icon: "../main/tray-service.png",
@@ -43,20 +105,6 @@ export const programs = [
 	),
 	new Program(
 		{
-			title: "Windows Live Messenger",
-			component: "Live",
-			icon: "msn.png",
-			minWidth: 270,
-			minHeight: 600,
-			defaultWidth: 270,
-			defaultHeight: 600,
-			initialPath: "/live",
-		},
-		"Windows Live Messenger",
-		"msn.png"
-	),
-	new Program(
-		{
 			title: "Test Application",
 			component: "TaskManager",
 			icon: "test-app.png",
@@ -64,60 +112,20 @@ export const programs = [
 		"Test Application",
 		"test-app.png"
 	),
-	new Program(
-		{
-			title: "Command Prompt",
-			component: "CommandPrompt",
-			icon: "command-prompt.png",
-			defaultWidth: 678,
-			defaultHeight: 345,
-		},
-		"Command Prompt",
-		"command-prompt.png"
-	),
-	new Program(
-		{
-			title: "Personalization",
-			component: "Personalization",
-			icon: "personalization.png",
-			defaultWidth: 400,
-			defaultHeight: 300,
-			minWidth: 400,
-			minHeight: 300,
-		},
-		"Personalization",
-		"personalization.png"
-	),
-	new Program(
-		{
-			title: "Minesweeper",
-			component: "Minesweeper",
-			icon: "minesweeper.png",
-			defaultWidth: 180,
-			defaultHeight: 240,
-			minWidth: 180,
-			minHeight: 240,
-		},
-		"Minesweeper",
-		"minesweeper.png"
-	),
-	new Program(
-		{
-			title: "Getting Started",
-			component: "GettingStarted",
-			icon: "getting-started.png",
-			defaultWidth: 750,
-			defaultHeight: 550,
-		},
-		"Getting Started",
-		"getting-started.png"
-	),
 ];
 
 function App() {
 	const [state, setState] = useState<State>({ zIndex: 1000, windows: [] });
 	const desktopRef = useRef<HTMLDivElement>(null);
 	const selectRef = useRef<HTMLDivElement>(null);
+	let windowOpened = false;
+	useEffect(() => {
+		if (!windowOpened)
+			programs
+				.find((p) => p.mainWindow.component === "GettingStarted")
+				?.spawn();
+		windowOpened = true;
+	}, []);
 	function mouseMove(e: MouseEvent) {
 		let [width, height] = [
 			e.clientX - parseInt(selectRef.current!.style.left.replace("px", "")),

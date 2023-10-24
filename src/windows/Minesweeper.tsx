@@ -80,6 +80,7 @@ function Minesweeper({ win }: { win: Window }) {
 	const [images, setImages] = useState<string[]>([]);
 	const [smiley, setSmiley] = useState("");
 	const [first, setFirst] = useState(true);
+	const [won, setWon] = useState(false);
 	function reveal(board: Board, x: number, y: number) {
 		const cell = board[x][y];
 		if (cell.state !== CellState.Unrevealed) return;
@@ -92,7 +93,6 @@ function Minesweeper({ win }: { win: Window }) {
 			);
 			setBoard([...board]);
 			setGameOver(true);
-			return;
 		}
 		const evaluation = evaluateSurrounding(board, x, y);
 		cell.state = CellState.Revealed;
@@ -109,12 +109,29 @@ function Minesweeper({ win }: { win: Window }) {
 		setBoard([...board]);
 	}
 	useEffect(() => {
+		let won = true;
+		board.forEach((row) =>
+			row.forEach((cell) => {
+				console.log(cell.state === CellState.Unrevealed && !cell.isBomb);
+				if (cell.state === CellState.Unrevealed && !cell.isBomb) won = false;
+			})
+		);
+		setWon(won);
+		setGameOver(won);
+	}, [board]);
+	useEffect(() => {
 		if (gameOver) {
-			import("../assets/minesweeper/faces/loss.png").then((i) =>
-				setSmiley(i.default)
-			);
+			if (!won) {
+				import("../assets/minesweeper/faces/loss.png").then((i) =>
+					setSmiley(i.default)
+				);
+			} else {
+				import("../assets/minesweeper/faces/win.png").then((i) =>
+					setSmiley(i.default)
+				);
+			}
 		}
-	}, [gameOver]);
+	}, [gameOver, won]);
 	useEffect(() => {
 		import("../assets/minesweeper/faces/smile.png").then((i) =>
 			setSmiley(i.default)

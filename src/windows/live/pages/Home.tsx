@@ -82,7 +82,7 @@ function Home({ win }: { win?: Window }) {
 		};
 	}, [win]);
 	const [search, setSearch] = useState("");
-	const { sendJsonMessage } = useWebSocket("ws://localhost:4000", {
+	const { sendJsonMessage } = useWebSocket("wss://win7api.nota-robot.com", {
 		onOpen(e) {
 			const username = localStorage.getItem("username");
 			const statusMessage = localStorage.getItem("statusMessage");

@@ -158,8 +158,10 @@
 	left: 7px;
 	width: 48px;
 	height: 48px;
-	background-image: url("../assets/start/user.bmp");
-	background-size: contain;
+	background-image: var(--profile-picture);
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center;
 	box-shadow: inset 0 0 0 1px var(--aero-less-black);
 	outline: solid thin var(--aero-white);
 }

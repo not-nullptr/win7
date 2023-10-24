@@ -7,6 +7,7 @@ import Live from "../windows/live/Live";
 import { ProcessManager } from "./Process";
 import CommandPrompt from "../windows/CommandPrompt";
 import Personalization from "../windows/Personalization";
+import Minesweeper from "../windows/Minesweeper";
 //  ------------------------------------------------------
 //  notes
 //
@@ -71,6 +72,7 @@ export const componentMap = {
 	TaskManager,
 	CommandPrompt,
 	Personalization,
+	Minesweeper,
 };
 
 export interface CreateCallbackPayload {

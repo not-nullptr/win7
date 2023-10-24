@@ -7,6 +7,7 @@ import { State } from "./types/State";
 import { Context } from "./util/Context";
 import { Program } from "./util/Program";
 import { Provider } from "./windows/live/components/ContextMenu";
+import ThemingProvider from "./components/ThemingProvider";
 
 export const programs = [
 	new Program(
@@ -87,6 +88,19 @@ export const programs = [
 		"Personalization",
 		"personalization.png"
 	),
+	new Program(
+		{
+			title: "Minesweeper",
+			component: "Minesweeper",
+			icon: "minesweeper.png",
+			defaultWidth: 180,
+			defaultHeight: 240,
+			minWidth: 180,
+			minHeight: 240,
+		},
+		"Minesweeper",
+		"minesweeper.png"
+	),
 ];
 
 function App() {
@@ -142,6 +156,7 @@ function App() {
 	return (
 		<Context.Provider value={{ state, setState }}>
 			<Provider />
+			<ThemingProvider />
 			<WindowProvider>
 				<div>
 					<div className="desktop" ref={desktopRef}>

@@ -1,6 +1,7 @@
 import { Window } from "../util/WindowManager";
 import styles from "../css/Personalization.module.css";
 import { useState } from "react";
+import { ThemingService } from "../util/ThemingService";
 
 /*
 	--saturation: 43%;
@@ -14,67 +15,31 @@ import { useState } from "react";
 			var(--brightness)
 	);
 */
-function hexToRgb(hex: string): string {
-	hex = hex.replace("#", "");
-	if (hex.length === 3) {
-		hex = hex
-			.split("")
-			.map((char) => char + char)
-			.join("");
-	}
-
-	const r = parseInt(hex.substring(0, 2), 16);
-	const g = parseInt(hex.substring(2, 4), 16);
-	const b = parseInt(hex.substring(4, 6), 16);
-
-	return `rgb(${r}, ${g}, ${b})`;
-}
-
-function rgbaToHex(rgba: string): string {
-	const [r, g, b, a] = rgba.match(/\d+/g)!.map(Number);
-	return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1, 7)}`;
-}
 
 function Personalization({ win }: { win?: Window }) {
-	const root = document.querySelector(":root") as HTMLElement;
-	const computed = getComputedStyle(root);
-	const [hex, setHex] = useState(
-		rgbaToHex(getComputedStyle(root).getPropertyValue("--aero-color"))
-	);
-	const [colorIntensity, setColorIntensity] = useState(
-		parseInt(computed.getPropertyValue("--intensity").replace("%", ""))
-	);
 	function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-		switch (e.target.name) {
-			case "rgb": {
-				setHex(e.target.value);
-				root.style.setProperty(
-					"--aero-color",
-					`${hexToRgb(e.target.value).replace(
-						")",
-						""
-					)}, calc(0.7 * ${colorIntensity}%))`
-				);
-				break;
-			}
-			case "colorIntensity": {
-				setColorIntensity(parseInt(e.target.value));
-				root.style.setProperty(
-					"--aero-color",
-					`${hexToRgb(hex).replace(")", "")}, calc(0.7 * ${e.target.value}%))`
-				);
-				break;
-			}
-			case "saturation": {
-				root.style.setProperty("--saturation", `${e.target.value}%`);
-				break;
-			}
-			case "brightness": {
-				root.style.setProperty("--brightness", `${e.target.value}%`);
-				break;
-			}
-		}
+		ThemingService.modifyTheme({
+			[e.target.name]: e.target.value,
+		});
 	}
+	function onImageClick(name: string) {
+		const input = document.createElement("input");
+		input.type = "file";
+		input.name = name;
+		input.accept = "image/*";
+		input.onchange = (e) => {
+			const file = (e.target as HTMLInputElement).files?.[0];
+			if (!file) return;
+			handleChange({
+				target: {
+					name: name,
+					value: URL.createObjectURL(file),
+				},
+			} as any); // scuffed, i know
+		};
+		input.click();
+	}
+	const initialTheme = ThemingService.getTheme();
 	return (
 		<div className={styles.window}>
 			<h1>Personalize your theme (wip)</h1>
@@ -82,47 +47,63 @@ function Personalization({ win }: { win?: Window }) {
 				<div>Color</div>
 				<input
 					type="color"
-					name="rgb"
+					name="color"
+					defaultValue={initialTheme.color}
 					onChange={handleChange}
-					defaultValue={hex}
 				/>
 			</div>
 			<div className={styles.picker}>
 				<div>Color intensity</div>
 				<input
+					defaultValue={initialTheme.colorIntensity}
 					type="range"
 					min="0"
 					max="100"
 					name="colorIntensity"
-					defaultValue={colorIntensity.toString()}
 					onChange={handleChange}
 				/>
 			</div>
 			<div className={styles.picker}>
 				<div>Saturation</div>
 				<input
+					defaultValue={initialTheme.saturation}
 					type="range"
 					min="0"
 					max="100"
 					name="saturation"
 					onChange={handleChange}
-					defaultValue={computed
-						.getPropertyValue("--saturation")
-						.replace("%", "")}
 				/>
 			</div>
 			<div className={styles.picker}>
 				<div>Brightness</div>
 				<input
+					defaultValue={initialTheme.brightness}
 					type="range"
 					min="0"
 					max="100"
 					name="brightness"
 					onChange={handleChange}
-					defaultValue={computed
-						.getPropertyValue("--brightness")
-						.replace("%", "")}
 				/>
+			</div>
+			<div className={styles.picker}>
+				<div>Background</div>
+				<button
+					onClick={() => {
+						onImageClick("background");
+					}}
+				>
+					Select file
+				</button>
+			</div>
+			<div className={styles.picker}>
+				<div>User Picture</div>
+				<button
+					onClick={() => {
+						onImageClick("userPicture");
+					}}
+				>
+					Select file
+				</button>
 			</div>
 		</div>
 	);

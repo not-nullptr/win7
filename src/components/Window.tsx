@@ -324,7 +324,7 @@ export default function WindowComponent({
 	useEffect(() => {
 		if (!windowFrame.current) return;
 		windowFrame.current.style.top = `${
-			window.innerHeight / 2 - winState?.height / 2
+			window.innerHeight / 2 - winState?.height / 2 - 24
 		}px`;
 		windowFrame.current.style.left = `${
 			window.innerWidth / 2 - winState?.width / 2

@@ -15,8 +15,10 @@ export const programs = [
 			title: "Getting Started",
 			component: "GettingStarted",
 			icon: "getting-started.png",
-			defaultWidth: 750,
-			defaultHeight: 550,
+			defaultWidth: 971,
+			defaultHeight: 603,
+			minWidth: 596,
+			minHeight: 230,
 		},
 		"Getting Started",
 		"getting-started.png"

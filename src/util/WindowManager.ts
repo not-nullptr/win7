@@ -8,6 +8,7 @@ import { ProcessManager } from "./Process";
 import CommandPrompt from "../windows/CommandPrompt";
 import Personalization from "../windows/Personalization";
 import Minesweeper from "../windows/Minesweeper";
+import GettingStarted from "../windows/GettingStarted";
 //  ------------------------------------------------------
 //  notes
 //
@@ -73,6 +74,7 @@ export const componentMap = {
 	CommandPrompt,
 	Personalization,
 	Minesweeper,
+	GettingStarted,
 };
 
 export interface CreateCallbackPayload {
@@ -88,6 +90,10 @@ export interface CreateCallbackPayload {
 	minWidth: number;
 	minHeight: number;
 	initialPath?: string;
+	link: {
+		text: string;
+		link: string;
+	};
 }
 
 export interface CreateCallbackData {
@@ -139,6 +145,7 @@ export class WindowManager {
 				minWidth: window.minWidth,
 				minHeight: window.minHeight,
 				initialPath: window.initialPath,
+				link: window.link,
 			},
 		});
 		this.callListeners();
@@ -220,6 +227,13 @@ export class Window {
 	transparent: boolean;
 	minWidth: number = 400;
 	minHeight: number = 200;
+	link: {
+		text: string;
+		link: string;
+	} = {
+		link: "",
+		text: "",
+	};
 	constructor(props: WindowProps) {
 		this.component = props.component;
 		this.title = props.title;
@@ -270,5 +284,12 @@ export class Window {
 		const process = ProcessManager.getProcessByWindowId(this.id);
 		if (!process) return;
 		process.removeMessageListener(id);
+	}
+	setLink(text: string, link: string) {
+		this.link = {
+			text,
+			link,
+		};
+		this.callListeners();
 	}
 }

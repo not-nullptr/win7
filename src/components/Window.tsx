@@ -373,6 +373,11 @@ export default function WindowComponent({
 				>
 					{winState?.title}
 				</div>
+				<div className={styles.linkContainer}>
+					<a href={winState?.link.link} className={styles.link} target="_blank">
+						{winState?.link.text}
+					</a>
+				</div>
 				<div className={styles.buttonContainer}>
 					<div className={styles.windowButtons}>
 						<div

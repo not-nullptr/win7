@@ -459,3 +459,15 @@
 .minimized {
 	display: none;
 }
+
+.link {
+	color: rgb(255, 255, 255);
+	width: fit-content;
+	height: fit-content;
+	white-space: nowrap;
+	text-decoration: underline;
+	text-align: right;
+	position: absolute;
+	top: 6px;
+	right: 152px;
+}

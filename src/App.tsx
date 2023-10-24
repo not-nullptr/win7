@@ -57,12 +57,12 @@ export const programs = [
 	),
 	new Program(
 		{
-			title: "Task Manager",
+			title: "Test Application",
 			component: "TaskManager",
-			icon: "task-manager.png",
+			icon: "test-app.png",
 		},
-		"Task Manager",
-		"task-manager.png"
+		"Test Application",
+		"test-app.png"
 	),
 	new Program(
 		{
@@ -81,9 +81,9 @@ export const programs = [
 			component: "Personalization",
 			icon: "personalization.png",
 			defaultWidth: 400,
-			defaultHeight: 240,
+			defaultHeight: 300,
 			minWidth: 400,
-			minHeight: 240,
+			minHeight: 300,
 		},
 		"Personalization",
 		"personalization.png"
@@ -100,6 +100,17 @@ export const programs = [
 		},
 		"Minesweeper",
 		"minesweeper.png"
+	),
+	new Program(
+		{
+			title: "Getting Started",
+			component: "GettingStarted",
+			icon: "getting-started.png",
+			defaultWidth: 750,
+			defaultHeight: 550,
+		},
+		"Getting Started",
+		"getting-started.png"
 	),
 ];
 

@@ -112,7 +112,6 @@ function Minesweeper({ win }: { win: Window }) {
 		let won = true;
 		board.forEach((row) =>
 			row.forEach((cell) => {
-				console.log(cell.state === CellState.Unrevealed && !cell.isBomb);
 				if (cell.state === CellState.Unrevealed && !cell.isBomb) won = false;
 			})
 		);

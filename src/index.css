@@ -87,7 +87,7 @@ h2 {
 
 .taskbar.bg {
 	background-color: var(--aero-accent);
-	backdrop-filter: blur(3px);
+	backdrop-filter: blur(6px);
 }
 
 .left {

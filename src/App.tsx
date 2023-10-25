@@ -17,7 +17,7 @@ export const programs = [
 			icon: "getting-started.png",
 			defaultWidth: 971,
 			defaultHeight: 603,
-			minWidth: 596,
+			minWidth: 718,
 			minHeight: 230,
 		},
 		"Getting Started",

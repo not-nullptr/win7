@@ -54,7 +54,7 @@ function Notification({ notification }: { notification: LiveNotification }) {
 					src="/icons/window/msn.png"
 					alt="MSN"
 				/>
-				<div className={styles.notificationTitle}>Windows Live Messenger</div>
+				<div className={styles.notificationTitle}>Binbows Live Messenger</div>
 				<div className={styles.notificationClose} />
 			</div>
 			<div className={styles.notificationContentContainer}>

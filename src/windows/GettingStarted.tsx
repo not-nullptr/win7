@@ -36,7 +36,7 @@ function GettingStarted({ win }: { win: Window }) {
 						</li>
 						<li>
 							Some applications are functional. Play a game of Minesweeper, or
-							open Windows Live Messenger and chat to your friends like it's
+							open Binbows Live Messenger and chat to your friends like it's
 							2009!
 						</li>
 					</ul>

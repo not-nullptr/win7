@@ -25,7 +25,7 @@ export const programs = [
 	),
 	new Program(
 		{
-			title: "Windows Live Messenger",
+			title: "Binbows Live Messenger",
 			component: "Live",
 			icon: "msn.png",
 			minWidth: 270,
@@ -34,7 +34,7 @@ export const programs = [
 			defaultHeight: 600,
 			initialPath: "/live",
 		},
-		"Windows Live Messenger",
+		"Binbows Live Messenger",
 		"msn.png"
 	),
 	new Program(

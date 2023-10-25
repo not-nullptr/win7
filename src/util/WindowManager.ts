@@ -7,7 +7,7 @@ import Live from "../windows/live/Live";
 import { ProcessManager } from "./Process";
 import CommandPrompt from "../windows/CommandPrompt";
 import Personalization from "../windows/Personalization";
-import Minesweeper from "../windows/Minesweeper";
+import Minesweeper from "../windows/minesweeper/Minesweeper";
 import GettingStarted from "../windows/GettingStarted";
 //  ------------------------------------------------------
 //  notes

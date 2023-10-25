@@ -1,8 +1,8 @@
-import { Window } from "../util/WindowManager";
-import styles from "../css/Minesweeper.module.css";
+import { Window } from "../../../util/WindowManager";
+import styles from "../../../css/SingleplayerMinesweeper.module.css";
 import { useEffect, useState } from "react";
-import zero from "../assets/minesweeper/numbers/zero.png";
-import off from "../assets/minesweeper/numbers/off.png";
+import zero from "../../../assets/minesweeper/numbers/zero.png";
+import off from "../../../assets/minesweeper/numbers/off.png";
 
 enum CellState {
 	Unrevealed,
@@ -121,24 +121,24 @@ function Minesweeper({ win }: { win: Window }) {
 	useEffect(() => {
 		if (gameOver) {
 			if (!won) {
-				import("../assets/minesweeper/faces/loss.png").then((i) =>
+				import("../../../assets/minesweeper/faces/loss.png").then((i) =>
 					setSmiley(i.default)
 				);
 			} else {
-				import("../assets/minesweeper/faces/win.png").then((i) =>
+				import("../../../assets/minesweeper/faces/win.png").then((i) =>
 					setSmiley(i.default)
 				);
 			}
 		}
 	}, [gameOver, won]);
 	useEffect(() => {
-		import("../assets/minesweeper/faces/smile.png").then((i) =>
+		import("../../../assets/minesweeper/faces/smile.png").then((i) =>
 			setSmiley(i.default)
 		);
 		(async () => {
 			const images = await Promise.all(
 				Object.values(
-					import.meta.glob("../assets/minesweeper/buttons/*.png")
+					import.meta.glob("../../../assets/minesweeper/buttons/*.png")
 				).map((p) =>
 					p()
 						.then((m: any) => m.default)
@@ -178,7 +178,7 @@ function Minesweeper({ win }: { win: Window }) {
 					className={styles.smiley}
 					onClick={() => {
 						// if (!smiley.endsWith("/smile-pressed.png")) return;
-						import("../assets/minesweeper/faces/smile.png").then((i) =>
+						import("../../../assets/minesweeper/faces/smile.png").then((i) =>
 							setSmiley(i.default)
 						);
 						setBoard(generateBoard());
@@ -222,9 +222,9 @@ function Minesweeper({ win }: { win: Window }) {
 								className={styles.bomb}
 								onMouseDown={() => {
 									if (gameOver) return;
-									import("../assets/minesweeper/faces/anticipation.png").then(
-										(i) => setSmiley(i.default)
-									);
+									import(
+										"../../../assets/minesweeper/faces/anticipation.png"
+									).then((i) => setSmiley(i.default));
 								}}
 								onClick={() => {
 									if (gameOver) return;
@@ -251,8 +251,8 @@ function Minesweeper({ win }: { win: Window }) {
 											);
 										}
 									}
-									import("../assets/minesweeper/faces/smile.png").then((i) =>
-										setSmiley(i.default)
+									import("../../../assets/minesweeper/faces/smile.png").then(
+										(i) => setSmiley(i.default)
 									);
 									if (evaluation === 0) {
 										return reveal(board, x, y);

@@ -1,0 +1,22 @@
+.window {
+	display: flex;
+	height: 100%;
+}
+
+.board {
+	display: flex;
+}
+
+.shittyLowQualityExplosionGifLoss {
+	position: absolute;
+	height: 100%;
+	left: 0;
+	top: 0;
+}
+
+.shittyLowQualityExplosionGifWin {
+	position: absolute;
+	height: 100%;
+	right: 0;
+	top: 0;
+}

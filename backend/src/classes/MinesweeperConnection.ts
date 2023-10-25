@@ -1,78 +1,56 @@
 import { v4 } from "uuid";
 import { WebSocket } from "ws";
-import { handleMessageMessenger } from "../functions/Logic";
+import { handleMessageMinesweeper } from "../functions/Logic";
 import { CustomWebSocket } from "./MessengerConnection";
+import { MPBoard, MinesweeperUser } from "../../../shared/src/types";
 
-export interface MinesweeperConnection {
-	status: "active" | "idle" | "dnd" | "invisible";
-	statusMessage?: string;
-	username: string;
+export type MinesweeperConnection = MinesweeperUser & {
 	socket: CustomWebSocket;
+};
+
+export interface Game {
+	id: string;
+	players: MinesweeperConnection[];
+	boards: [MPBoard, MPBoard];
 }
 
 export class MinesweeperManager {
+	static games: Game[] = [];
 	static connections: MinesweeperConnection[] = [];
 	static addConnection(connection: CustomWebSocket) {
-		connection.id = v4();
 		connection.on("message", (message) => {
 			console.log(`Received message => ${message}`);
 			const json = JSON.parse(message.toString());
 			const conn = this.getConnection(connection.id);
-			type InitializeData = Partial<MinesweeperConnection>;
 			if (json.type === "INITIALIZE") {
-				function initialize(id: string, data: InitializeData) {
-					const username = data.username || id;
-					const status = data.status || "active";
-					const statusMessage = data.statusMessage || "";
-					if (username.length > 64) return;
-					if (statusMessage.length > 128) return;
-					if (
-						status !== "active" &&
-						status !== "idle" &&
-						status !== "dnd" &&
-						status !== "invisible"
-					)
-						return;
-					if (MinesweeperManager.getConnection(id)) return;
-					const conn = {
-						username,
-						status,
-						statusMessage,
-						socket: connection,
-					};
-					MinesweeperManager.connections.push(conn);
-					MinesweeperManager.broadcastExcept(conn.socket.id, {
-						type: "CONNECT",
+				connection.id = v4();
+				this.connections.push({
+					id: connection.id,
+					isInGame: false,
+					socket: connection,
+				});
+				MinesweeperManager.broadcastExcept(connection.id, {
+					type: "UPDATE_USERS",
+					data: {
+						users: MinesweeperManager.connections.map(
+							({ socket, ...rest }) => rest
+						),
+					},
+				});
+				connection.send(
+					JSON.stringify({
+						type: "INITIALIZE",
 						data: {
-							id,
-							username,
-							status,
-							statusMessage,
+							id: connection.id,
+							users: MinesweeperManager.connections.map(
+								({ socket, ...rest }) => rest
+							),
 						},
-					});
-					conn.socket.send(
-						JSON.stringify({
-							type: "INITIALIZE",
-							data: {
-								id,
-								status,
-								statusMessage,
-								username,
-								connections: MinesweeperManager.getConnections()
-									.filter((c) => c.socket.id !== conn.socket.id)
-									.map((c) => ({
-										id: c.socket.id,
-										...c,
-										socket: undefined,
-									})),
-							},
-						})
-					);
-				}
-				initialize(connection.id, json.data);
+					})
+				);
 			}
 			if (!conn) return;
-			handleMessageMessenger(json.type, conn, json.data);
+			handleMessageMinesweeper(json.type, conn, json.data);
 		});
 		connection.on("close", () => {
 			this.removeConnection(connection);

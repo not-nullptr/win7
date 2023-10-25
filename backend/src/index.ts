@@ -19,6 +19,7 @@ messengerServer.on("connection", (ws: CustomWebSocket) => {
 const minesweeperServer = new WebSocketServer({ noServer: true });
 
 minesweeperServer.on("connection", (ws: CustomWebSocket) => {
+	console.log("conn");
 	MinesweeperManager.addConnection(ws);
 });
 

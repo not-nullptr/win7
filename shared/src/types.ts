@@ -171,3 +171,119 @@ export type Message =
 	| MESSAGE
 	| DATA
 	| GAME;
+
+export interface MinesweeperUser {
+	id: string;
+	isInGame: boolean;
+}
+
+export interface MinesweeperInstance {
+	id: string;
+	hash: string;
+	players: [MinesweeperUser, MinesweeperUser];
+}
+
+export enum CellState {
+	Unrevealed,
+	Revealed,
+}
+
+export interface BoardCell {
+	state: CellState;
+	isBomb: boolean;
+}
+
+export type Board = BoardCell[][];
+
+export type MPBoard = {
+	board: Board;
+	id: string;
+};
+
+export const BOARD_SIZE = 9; // 9 x 9
+export const BOMB_COUNT = 10;
+
+// im going to fucking kill myself
+export function evaluateSurrounding(board: Board, x: number, y: number) {
+	let count = 0;
+	for (let i = x - 1; i <= x + 1; i++) {
+		if (i < 0 || i >= BOARD_SIZE) continue;
+		for (let j = y - 1; j <= y + 1; j++) {
+			if (j < 0 || j >= BOARD_SIZE) continue;
+			if (board[i][j].isBomb) count++;
+		}
+	}
+	return count;
+}
+
+export function generateBoard() {
+	const board: {
+		state: CellState;
+		isBomb: boolean;
+	}[][] = [];
+	for (let i = 0; i < BOARD_SIZE; i++) {
+		board.push([]);
+		for (let j = 0; j < BOARD_SIZE; j++) {
+			board[i].push({
+				state: CellState.Unrevealed,
+				isBomb: false,
+			});
+		}
+	}
+	for (let i = 0; i < BOMB_COUNT; i++) {
+		const x = Math.floor(Math.random() * BOARD_SIZE);
+		const y = Math.floor(Math.random() * BOARD_SIZE);
+		board[x][y].isBomb = true;
+	}
+	return board;
+}
+
+export function reveal(
+	board: Board,
+	x: number,
+	y: number
+):
+	| {
+			gameState: "ongoing" | "win" | "loss";
+			board: Board;
+	  }
+	| undefined {
+	const cell = board[x][y];
+	if (cell.state !== CellState.Unrevealed) return;
+	if (cell.isBomb) {
+		// reveal all bombs and end the game
+		board.forEach((row) =>
+			row.forEach((cell) => {
+				if (cell.isBomb) cell.state = CellState.Revealed;
+			})
+		);
+		return {
+			gameState: "loss",
+			board,
+		};
+	}
+	const evaluation = evaluateSurrounding(board, x, y);
+	cell.state = CellState.Revealed;
+	if (evaluation === 0) {
+		// reveal all adjacent cells that are not bombs
+		for (let i = x - 1; i <= x + 1; i++) {
+			if (i < 0 || i >= BOARD_SIZE) continue;
+			for (let j = y - 1; j <= y + 1; j++) {
+				if (j < 0 || j >= BOARD_SIZE) continue;
+				reveal(board, i, j);
+			}
+		}
+	}
+	const won = !board
+		.flat()
+		.some((c) => c.state !== CellState.Unrevealed && !c.isBomb);
+	if (won)
+		return {
+			gameState: "win",
+			board: board,
+		};
+	return {
+		gameState: "ongoing",
+		board,
+	};
+}

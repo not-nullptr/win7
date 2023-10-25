@@ -55,12 +55,27 @@ export const programs = [
 			title: "Minesweeper",
 			component: "Minesweeper",
 			icon: "minesweeper.png",
+			initialPath: "/singleplayer",
 			defaultWidth: 180,
 			defaultHeight: 240,
 			minWidth: 180,
 			minHeight: 240,
 		},
 		"Minesweeper",
+		"minesweeper.png"
+	),
+	new Program(
+		{
+			title: "Live for Binbows - Minesweeper",
+			component: "Minesweeper",
+			icon: "minesweeper.png",
+			initialPath: "/multiplayer",
+			defaultWidth: 376,
+			defaultHeight: 240,
+			minWidth: 376,
+			minHeight: 240,
+		},
+		"Minesweeper for Two",
 		"minesweeper.png"
 	),
 	new Program(

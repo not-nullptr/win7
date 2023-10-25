@@ -1,29 +1,28 @@
 import { v4 } from "uuid";
 import { WebSocket } from "ws";
-import { handleMessage } from "../functions/Logic";
+import { handleMessageMessenger } from "../functions/Logic";
 
 export interface CustomWebSocket extends WebSocket {
 	id: string;
 }
 
-export interface Connection {
+export interface MessengerConnection {
 	status: "active" | "idle" | "dnd" | "invisible";
 	statusMessage?: string;
 	username: string;
 	socket: CustomWebSocket;
 }
 
-export class ConnectionManager {
-	static connections: Connection[] = [];
+export class MessengerManager {
+	static connections: MessengerConnection[] = [];
 	static addConnection(connection: CustomWebSocket) {
 		connection.id = v4();
 		connection.on("message", (message) => {
 			console.log(`Received message => ${message}`);
 			const json = JSON.parse(message.toString());
 			const conn = this.getConnection(connection.id);
+			type InitializeData = Partial<MessengerConnection>;
 			if (json.type === "INITIALIZE") {
-				type InitializeData = Partial<Connection>;
-
 				function initialize(id: string, data: InitializeData) {
 					const username = data.username || id;
 					const status = data.status || "active";
@@ -37,15 +36,15 @@ export class ConnectionManager {
 						status !== "invisible"
 					)
 						return;
-					if (ConnectionManager.getConnection(id)) return;
+					if (MessengerManager.getConnection(id)) return;
 					const conn = {
 						username,
 						status,
 						statusMessage,
 						socket: connection,
 					};
-					ConnectionManager.connections.push(conn);
-					ConnectionManager.broadcastExcept(conn.socket.id, {
+					MessengerManager.connections.push(conn);
+					MessengerManager.broadcastExcept(conn.socket.id, {
 						type: "CONNECT",
 						data: {
 							id,
@@ -62,7 +61,7 @@ export class ConnectionManager {
 								status,
 								statusMessage,
 								username,
-								connections: ConnectionManager.getConnections()
+								connections: MessengerManager.getConnections()
 									.filter((c) => c.socket.id !== conn.socket.id)
 									.map((c) => ({
 										id: c.socket.id,
@@ -76,14 +75,14 @@ export class ConnectionManager {
 				initialize(connection.id, json.data);
 			}
 			if (!conn) return;
-			handleMessage(json.type, conn, json.data);
+			handleMessageMessenger(json.type, conn, json.data);
 		});
 		connection.on("close", () => {
 			this.removeConnection(connection);
 		});
 	}
 	static removeConnection(connection: CustomWebSocket) {
-		ConnectionManager.connections = ConnectionManager.connections.filter(
+		MessengerManager.connections = MessengerManager.connections.filter(
 			(c) => c.socket !== connection
 		);
 		this.broadcast({
@@ -94,26 +93,28 @@ export class ConnectionManager {
 		});
 	}
 	static getConnection(id: string) {
-		return ConnectionManager.connections.find((c) => c.socket.id === id);
+		return MessengerManager.connections.find((c) => c.socket.id === id);
 	}
 	static getConnections() {
-		return ConnectionManager.connections;
+		return MessengerManager.connections;
 	}
-	static modifyConnection(id: string, data: Partial<Connection>) {
+	static modifyConnection(id: string, data: Partial<MessengerConnection>) {
 		const conn = this.getConnection(id);
 		if (!conn) return;
 		Object.assign(conn, data);
 	}
 	static broadcast(data: { type: string; data: any }) {
-		ConnectionManager.connections.forEach((c) => {
+		MessengerManager.connections.forEach((c) => {
 			c.socket.send(JSON.stringify(data));
 		});
 	}
 	static broadcastExcept(id: string, data: { type: string; data: any }) {
-		ConnectionManager.connections
+		MessengerManager.connections
 			.filter((c) => c.socket.id !== id)
 			.forEach((c) => {
 				c.socket.send(JSON.stringify(data));
 			});
 	}
 }
+
+export class GameManager {}

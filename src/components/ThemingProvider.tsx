@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Theme, ThemingService } from "../util/ThemingService";
 import styles from "../css/ThemingProvider.module.css";
+import { openDB } from "idb";
 
 function hexToRgb(hex: string): string {
 	hex = hex.replace("#", "");
@@ -77,6 +78,7 @@ function ThemingProvider() {
 		);
 		root.style.setProperty("--profile-picture", `url(${theme.userPicture})`);
 	}, [theme]);
+	useEffect(() => {}, []);
 	return (
 		<div>
 			<div

@@ -1,10 +1,13 @@
 import { v4 } from "uuid";
-import { Connection, ConnectionManager } from "../classes/Connection";
+import {
+	MessengerConnection,
+	MessengerManager,
+} from "../../classes/MessengerConnection";
 import {
 	ServerMessage,
 	ClientMessage,
 	MessageType,
-} from "../../../shared/src/types";
+} from "../../../../shared/src/types";
 
 function hashCode(...strings: string[]): string {
 	const input = strings.sort().join("");
@@ -17,11 +20,14 @@ function hashCode(...strings: string[]): string {
 	return hash.toString();
 }
 
-export default function receiveMessage(conn: Connection, data: ClientMessage) {
+export default function receiveMessage(
+	conn: MessengerConnection,
+	data: ClientMessage
+) {
 	switch (data.messageType) {
 		case MessageType.TEXT_MESSAGE_CLIENT: {
 			if (!data.message || !data.to) return;
-			const to = ConnectionManager.getConnection(data.to);
+			const to = MessengerManager.getConnection(data.to);
 			if (!to) return;
 			if (data.message.startsWith("!triggerError")) {
 				const payload = {
@@ -57,7 +63,7 @@ export default function receiveMessage(conn: Connection, data: ClientMessage) {
 		}
 		case MessageType.NUDGE_REQUEST: {
 			if (!data.to) return;
-			const to = ConnectionManager.getConnection(data.to);
+			const to = MessengerManager.getConnection(data.to);
 			if (!to) return;
 			const payload = {
 				type: "MESSAGE",
@@ -75,7 +81,7 @@ export default function receiveMessage(conn: Connection, data: ClientMessage) {
 		}
 		case MessageType.IMAGE_REQUEST: {
 			if (!data.to || !data.image) return;
-			const to = ConnectionManager.getConnection(data.to);
+			const to = MessengerManager.getConnection(data.to);
 			if (!to) return;
 			const payload = {
 				type: "MESSAGE",

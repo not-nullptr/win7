@@ -1,5 +1,8 @@
 import { v4 } from "uuid";
-import { Connection, ConnectionManager } from "../classes/Connection";
+import {
+	MessengerConnection,
+	MessengerManager,
+} from "../../classes/MessengerConnection";
 import {
 	ServerMessage,
 	ClientMessage,
@@ -7,7 +10,7 @@ import {
 	ClientData,
 	DataType,
 	ServerData,
-} from "../../../shared/src/types";
+} from "../../../../shared/src/types";
 
 function hashCode(...strings: string[]): string {
 	const input = strings.sort().join("");
@@ -20,11 +23,14 @@ function hashCode(...strings: string[]): string {
 	return hash.toString();
 }
 
-export default function receiveData(conn: Connection, data: ClientData) {
+export default function receiveData(
+	conn: MessengerConnection,
+	data: ClientData
+) {
 	switch (data.dataType) {
 		case DataType.TYPING_BEGIN_REQUEST: {
 			if (!data.to) return;
-			const to = ConnectionManager.getConnection(data.to);
+			const to = MessengerManager.getConnection(data.to);
 			if (!to) return;
 			const payload = {
 				type: "DATA",

@@ -1,13 +1,45 @@
 import { WebSocketServer } from "ws";
-import { ConnectionManager, CustomWebSocket } from "./classes/Connection";
+import {
+	MessengerManager,
+	CustomWebSocket,
+} from "./classes/MessengerConnection";
 import "./functions/Logic";
+import http from "http";
+import url from "url";
+import { MinesweeperManager } from "./classes/MinesweeperConnection";
 
-const wss = new WebSocketServer({ port: 4000 });
+const server = http.createServer();
 
-wss.on("connection", (ws: CustomWebSocket) => {
-	ConnectionManager.addConnection(ws);
+const messengerServer = new WebSocketServer({ noServer: true });
+
+messengerServer.on("connection", (ws: CustomWebSocket) => {
+	MessengerManager.addConnection(ws);
 });
 
-wss.on("listening", () => {
-	console.log("Listening on port 4000");
+const minesweeperServer = new WebSocketServer({ noServer: true });
+
+minesweeperServer.on("connection", (ws: CustomWebSocket) => {
+	MinesweeperManager.addConnection(ws);
 });
+
+server.on("upgrade", (request, socket, head) => {
+	const pathname = url.parse(request.url!).pathname;
+
+	if (pathname === "/messenger") {
+		messengerServer.handleUpgrade(request, socket, head, (ws) => {
+			messengerServer.emit("connection", ws);
+		});
+	} else if (pathname === "/minesweeper") {
+		minesweeperServer.handleUpgrade(request, socket, head, (ws) => {
+			minesweeperServer.emit("connection", ws);
+		});
+	} else {
+		socket.destroy();
+	}
+});
+
+server.on("listening", () => {
+	console.log("4000, yo");
+});
+
+server.listen(4000);

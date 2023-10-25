@@ -82,106 +82,109 @@ function Home({ win }: { win?: Window }) {
 		};
 	}, [win]);
 	const [search, setSearch] = useState("");
-	const { sendJsonMessage } = useWebSocket("wss://win7api.nota-robot.com", {
-		onOpen(e) {
-			const username = localStorage.getItem("username");
-			const statusMessage = localStorage.getItem("statusMessage");
+	const { sendJsonMessage } = useWebSocket(
+		"wss://win7api.nota-robot.com/messenger",
+		{
+			onOpen(e) {
+				const username = localStorage.getItem("username");
+				const statusMessage = localStorage.getItem("statusMessage");
 
-			sendJsonMessage({
-				type: "INITIALIZE",
-				data: {
-					username,
-					statusMessage,
-				},
-			});
-		},
-		onMessage(e) {
-			function onMessage(e: MessageEvent<Message>) {
-				win?.broadcast("receive-websocket", e.data);
-				switch (e.data.type) {
-					case "INITIALIZE": {
-						const data = e.data.data;
-						setLiveState(data);
-						break;
-					}
-					case "CONNECT": {
-						const sound = new Audio("/ui/wlm/sounds/online.mp3");
-						sound.play();
-						const data = e.data.data;
-						LiveNotificationHandler.notify({
-							text: `${data.username} is now online`,
-						});
-						setLiveState((old) => ({
-							...old,
-							connections: [...old.connections, data],
-						}));
-						break;
-					}
-					case "DISCONNECT": {
-						const data = e.data.data;
-						setLiveState((old) => ({
-							...old,
-							connections: old.connections.filter((c) => c.id !== data.id),
-						}));
-						break;
-					}
-					case "UPDATE_USER": {
-						const data = e.data.data;
-						if (data.id !== liveState.id)
+				sendJsonMessage({
+					type: "INITIALIZE",
+					data: {
+						username,
+						statusMessage,
+					},
+				});
+			},
+			onMessage(e) {
+				function onMessage(e: MessageEvent<Message>) {
+					win?.broadcast("receive-websocket", e.data);
+					switch (e.data.type) {
+						case "INITIALIZE": {
+							const data = e.data.data;
+							setLiveState(data);
+							break;
+						}
+						case "CONNECT": {
+							const sound = new Audio("/ui/wlm/sounds/online.mp3");
+							sound.play();
+							const data = e.data.data;
+							LiveNotificationHandler.notify({
+								text: `${data.username} is now online`,
+							});
 							setLiveState((old) => ({
 								...old,
-								connections: old.connections.map((c) => {
-									if (c.id === data.id) {
-										return { ...c, ...data };
-									}
-									return c;
-								}),
+								connections: [...old.connections, data],
 							}));
-						else {
-							if (data.status) win?.setActivity(`live/${data.status}`);
-							setLiveState((o) => ({ ...o, ...data }));
+							break;
 						}
-						break;
-					}
-					case "MESSAGE": {
-						const process = ProcessManager.getProcessByWindowId(
-							winState?.id || ""
-						);
-						if (!process) break;
-						const message = e.data.data;
-						const user = liveState.connections.find(
-							(c) => c.id === message.from
-						);
-						if (!user) break;
-						const window = process.getWindows().find((w) => {
-							const params = new URLSearchParams(w.initialPath.split("?")[1]);
-							return params.get("user") === message.from;
-						});
-						if (!window) {
-							process.addWindow({
-								component: "Live",
-								initialPath: `/message?user=${
-									message.from
-								}&initialState=${JSON.stringify(
-									liveState
-								)}&initialMessages=${JSON.stringify([
-									message,
-								])}&conversationId=${message.conversationId}`,
-								title: user.username,
-								icon: "msn.png",
-								defaultWidth: 483,
-								defaultHeight: 419,
-								minWidth: 483,
-								minHeight: 419,
+						case "DISCONNECT": {
+							const data = e.data.data;
+							setLiveState((old) => ({
+								...old,
+								connections: old.connections.filter((c) => c.id !== data.id),
+							}));
+							break;
+						}
+						case "UPDATE_USER": {
+							const data = e.data.data;
+							if (data.id !== liveState.id)
+								setLiveState((old) => ({
+									...old,
+									connections: old.connections.map((c) => {
+										if (c.id === data.id) {
+											return { ...c, ...data };
+										}
+										return c;
+									}),
+								}));
+							else {
+								if (data.status) win?.setActivity(`live/${data.status}`);
+								setLiveState((o) => ({ ...o, ...data }));
+							}
+							break;
+						}
+						case "MESSAGE": {
+							const process = ProcessManager.getProcessByWindowId(
+								winState?.id || ""
+							);
+							if (!process) break;
+							const message = e.data.data;
+							const user = liveState.connections.find(
+								(c) => c.id === message.from
+							);
+							if (!user) break;
+							const window = process.getWindows().find((w) => {
+								const params = new URLSearchParams(w.initialPath.split("?")[1]);
+								return params.get("user") === message.from;
 							});
+							if (!window) {
+								process.addWindow({
+									component: "Live",
+									initialPath: `/message?user=${
+										message.from
+									}&initialState=${JSON.stringify(
+										liveState
+									)}&initialMessages=${JSON.stringify([
+										message,
+									])}&conversationId=${message.conversationId}`,
+									title: user.username,
+									icon: "msn.png",
+									defaultWidth: 483,
+									defaultHeight: 419,
+									minWidth: 483,
+									minHeight: 419,
+								});
+							}
 						}
 					}
 				}
-			}
-			onMessage({ ...e, data: JSON.parse(e.data) });
-		},
-		shouldReconnect: () => true,
-	});
+				onMessage({ ...e, data: JSON.parse(e.data) });
+			},
+			shouldReconnect: () => true,
+		}
+	);
 	useEffect(() => {
 		const interval = setInterval(() => {
 			sendJsonMessage({

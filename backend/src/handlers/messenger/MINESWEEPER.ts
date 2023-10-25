@@ -1,5 +1,8 @@
-import { Connection, ConnectionManager } from "../classes/Connection";
-import { ClientGame, GameType, ServerGame } from "../../../shared/src/types";
+import {
+	MessengerConnection,
+	MessengerManager,
+} from "../../classes/MessengerConnection";
+import { ClientGame, GameType, ServerGame } from "../../../../shared/src/types";
 
 type TTTSpace = 0 | 1 | 2;
 
@@ -76,28 +79,9 @@ function hashCode(...strings: string[]): string {
 	return hash.toString();
 }
 
-export default function GameHandler(conn: Connection, data: ClientGame) {
-	if (!data.to) return;
-	switch (data.gameType) {
-		case GameType.START_GAME_REQUEST: {
-			const conversationId = hashCode(conn.socket.id, data.to);
-			const game = new TicTacToe();
-			games[conversationId] = game;
-			const payload = {
-				type: "GAME",
-				data: {
-					gameType: GameType.START_GAME_RESPONSE,
-					to: data.to,
-					from: conn.socket.id,
-					conversationId,
-					game: game.type,
-					gameState: game.state,
-				} as ServerGame,
-			};
-			const to = ConnectionManager.getConnection(data.to);
-			if (!to) return;
-			to.socket.send(JSON.stringify(payload));
-			conn.socket.send(JSON.stringify(payload));
-		}
-	}
+export default function GameHandler(
+	conn: MessengerConnection,
+	data: ClientGame
+) {
+	console.log("minesweeper woo");
 }

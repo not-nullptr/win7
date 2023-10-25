@@ -183,77 +183,72 @@ function Multiplayer({ win }: { win: Window }) {
 	useEffect(() => {
 		console.log(myBoard, opponentBoard);
 	}, [myBoard, opponentBoard]);
-	const { sendJsonMessage } = useWebSocket(
-		"wss://win7api.nota-robot.com/minesweeper",
-		{
-			onMessage(e) {
-				const { type, data } = JSON.parse(e.data) as {
-					type: string;
-					data: any;
-				};
-				if (!type || !data) return;
-				switch (type) {
-					case "INITIALIZE": {
-						setId(data.id);
-						setUsers(
-							data.users.filter((u: MinesweeperUser) => u.id !== data.id)
-						);
-						console.log(data);
-						break;
-					}
-					case "UPDATE_USERS": {
-						setUsers(data.users);
-						break;
-					}
-					case "START_GAME": {
-						const players = data.players as MinesweeperUser[];
-						const opponent = players.find((p) => p.id !== id);
-						if (!opponent) return;
-						let emptyBoard: Board = [];
-						for (let i = 0; i < BOARD_SIZE; i++) {
-							emptyBoard.push([]);
-							for (let j = 0; j < BOARD_SIZE; j++) {
-								emptyBoard[i].push({
-									isBomb: false,
-									state: CellState.Unrevealed,
-								});
-							}
+	const { sendJsonMessage } = useWebSocket("ws://localhost:4000/minesweeper", {
+		onMessage(e) {
+			const { type, data } = JSON.parse(e.data) as {
+				type: string;
+				data: any;
+			};
+			if (!type || !data) return;
+			switch (type) {
+				case "INITIALIZE": {
+					setId(data.id);
+					setUsers(data.users.filter((u: MinesweeperUser) => u.id !== data.id));
+					console.log(data);
+					break;
+				}
+				case "UPDATE_USERS": {
+					setUsers(data.users);
+					break;
+				}
+				case "START_GAME": {
+					const players = data.players as MinesweeperUser[];
+					const opponent = players.find((p) => p.id !== id);
+					if (!opponent) return;
+					let emptyBoard: Board = [];
+					for (let i = 0; i < BOARD_SIZE; i++) {
+						emptyBoard.push([]);
+						for (let j = 0; j < BOARD_SIZE; j++) {
+							emptyBoard[i].push({
+								isBomb: false,
+								state: CellState.Unrevealed,
+							});
 						}
-						setOpponent(opponent);
-						setBoards(data.boards);
-						setMyBoard(emptyBoard);
-						setOpponentBoard(emptyBoard);
-						break;
 					}
-					case "MAKE_MOVE": {
-						if (!data.board) return;
-						setBoards((boards) => {
-							if (!boards) return;
-							if (data.id === opponent?.id) {
-								setOpponentBoard(data.board);
-							} else {
-								setMyBoard(data.board);
-							}
-							const newBoards = boards.filter((b) => b.id !== data.id);
-							newBoards.push(data.board);
-							return newBoards as any;
-						});
-						break;
-					}
-					case "GAME_OVER": {
-						if (data.winner.id === id) {
-							setGameState("win");
+					setOpponent(opponent);
+					setBoards(data.boards);
+					setMyBoard(emptyBoard);
+					setOpponentBoard(emptyBoard);
+					break;
+				}
+				case "MAKE_MOVE": {
+					if (!data.board) return;
+					setBoards((boards) => {
+						if (!boards) return;
+						if (data.id === opponent?.id) {
+							setOpponentBoard(data.board);
 						} else {
-							setGameState("loss");
+							setMyBoard(data.board);
 						}
+						const newBoards = boards.filter((b) => b.id !== data.id);
+						newBoards.push(data.board);
+						return newBoards as any;
+					});
+					break;
+				}
+				case "GAME_OVER": {
+					if (data.winner === id) {
+						setGameState("win");
+					} else {
+						setGameState("loss");
 					}
 				}
-			},
-			onOpen() {
-				sendMessage("INITIALIZE", null);
-			},
-		}
-	);
+			}
+		},
+		onOpen() {
+			sendMessage("INITIALIZE", null);
+		},
+	});
 	useEffect(() => {
 		if (gameState !== "ongoing") {
 			const timeout = setTimeout(() => {

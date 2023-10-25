@@ -14,7 +14,7 @@ export async function handleMessageMessenger(
 	const files = fs.readdirSync(path);
 	for (const file of files) {
 		if (file.split(".")[0] !== type) continue;
-		const imported = await import(`../handlers/${file}`);
+		const imported = await import(`../handlers/messenger/${file}`);
 		module = imported.default;
 		break;
 	}
@@ -34,7 +34,7 @@ export async function handleMessageMinesweeper(
 	const files = fs.readdirSync(path);
 	for (const file of files) {
 		if (file.split(".")[0] !== type) continue;
-		const imported = await import(`../handlers/${file}`);
+		const imported = await import(`../handlers/minesweeper/${file}`);
 		module = imported.default;
 		break;
 	}

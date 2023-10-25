@@ -291,19 +291,28 @@ function Multiplayer({ win }: { win: Window }) {
 					<GameBoard interactive={false} initialBoard={opponentBoard} />
 				</div>
 			) : (
-				<div className={extraStyles.users}>
-					{users
-						.filter((u) => u.id !== user?.id)
-						.map((u) => (
-							<div
-								onClick={() => {
-									sendMessage("START_GAME", { id: u.id });
-								}}
-								key={u.id}
-							>
-								{u.id}
-							</div>
-						))}
+				<div className={extraStyles.main}>
+					<h1>Users waiting for a partner:</h1>
+					<div>Click on a user to begin a game.</div>
+					<div className={extraStyles.users}>
+						{users.length > 0 ? (
+							users
+								.filter((u) => u.id !== user?.id)
+								.map((u) => (
+									<div
+										className={extraStyles.user}
+										onClick={() => {
+											sendMessage("START_GAME", { id: u.id });
+										}}
+										key={u.id}
+									>
+										{u.id}
+									</div>
+								))
+						) : (
+							<div className={extraStyles.disappointment}>(...none)</div>
+						)}
+					</div>
 				</div>
 			)}
 		</div>

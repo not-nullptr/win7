@@ -1,6 +1,9 @@
 .window {
 	display: flex;
 	height: 100%;
+	width: 100%;
+	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 .board {
@@ -19,4 +22,29 @@
 	height: 100%;
 	right: 0;
 	top: 0;
+}
+
+.main {
+	margin-left: 16px;
+	margin-top: 4px;
+}
+
+.users {
+	margin-top: 16px;
+}
+
+.disappointment {
+	color: #888;
+	font-size: 8pt;
+	transform: skewX(-15deg);
+}
+
+.user {
+	color: #0066dd;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.user:hover {
+	text-decoration: underline;
 }

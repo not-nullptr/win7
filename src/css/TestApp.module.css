@@ -1,0 +1,28 @@
+.window {
+	height: 150px;
+	box-sizing: border-box;
+	padding: 0px 16px;
+}
+
+.window > h1 {
+	font-size: 20px;
+}
+
+.window ul {
+	margin: 0;
+	padding: 0;
+	padding-left: 8px;
+}
+
+.window li {
+	margin: 0;
+	position: relative;
+	margin-left: 16px;
+}
+
+.window li::before {
+	content: "•";
+	height: 100%;
+	position: absolute;
+	left: -16px;
+}

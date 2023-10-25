@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
-import styles from "../css/Canvas.module.css";
+import styles from "../css/TestApp.module.css";
+import { Window } from "../util/WindowManager";
 
 export function Canvas(
 	props: React.DetailedHTMLProps<
@@ -50,11 +51,30 @@ export function Canvas(
 	return <canvas {...props} ref={canvasRef}></canvas>;
 }
 
-function TaskManager() {
+function TaskManager({ win }: { win: Window }) {
 	return (
-		<>
-			<Canvas width="250px" className={styles.canvas} />
-		</>
+		<div className={styles.window}>
+			<h1>To-do list</h1>
+			<ul>
+				<li>
+					Live for Binbows games (multiplayer minesweeper? todo: architectural
+					arrangements)
+				</li>
+				<li>Software SDK, maybe??</li>
+				<li>Add widget thingy to clock, bottom right</li>
+				<li>
+					Fix aero hide button (transparency is fucky, change theme to see)
+				</li>
+				<li>Potentially gadgets? Later 7 builds excluded them</li>
+				<li>Fix colours for Getting Started when I get home</li>
+				<li>
+					Window component <b>TOTAL REWRITE, NOT OPTIONAL.</b>
+				</li>
+				<li>
+					Fix saturation (multiplies colours behind?? huh) for more accurate DWM
+				</li>
+			</ul>
+		</div>
 	);
 }
 

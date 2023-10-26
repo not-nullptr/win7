@@ -298,6 +298,7 @@ function Multiplayer({ win }: { win: Window }) {
 						{users.length > 0 ? (
 							users
 								.filter((u) => u.id !== user?.id)
+								.filter((u) => !u.isInGame)
 								.map((u) => (
 									<div
 										className={extraStyles.user}

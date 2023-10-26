@@ -37,6 +37,12 @@ export default function startGame(
 		data: game,
 	});
 	conn.socket.send(payload);
+	MinesweeperManager.modifyConnection(conn.id, {
+		isInGame: true,
+	});
+	MinesweeperManager.modifyConnection(otherConn.id, {
+		isInGame: true,
+	});
 	otherConn.socket.send(payload);
 	return;
 }

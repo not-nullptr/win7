@@ -48,3 +48,28 @@
 .user:hover {
 	text-decoration: underline;
 }
+
+.username {
+	opacity: 50%;
+	font-size: 9pt;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	width: 100% !important;
+	text-align: center;
+	box-sizing: border-box;
+	padding: 0px 4px;
+}
+
+.info {
+	width: calc(100% - 4px);
+	height: 48px;
+	border-top: solid 2px #808080;
+	border-left: solid 2px #808080;
+	border-right: solid 2px #fff;
+	border-bottom: solid 2px #fff;
+	display: flex;
+	overflow: hidden;
+	align-items: center;
+	justify-content: center;
+}

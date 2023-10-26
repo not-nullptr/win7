@@ -20,10 +20,12 @@ function GameBoard({
 	interactive,
 	initialBoard,
 	onCellClick,
+	player,
 }: {
 	interactive: boolean;
 	initialBoard: Board;
 	onCellClick?: (x: number, y: number) => void;
+	player?: MinesweeperUser;
 }) {
 	useEffect(() => {
 		// preload images
@@ -97,8 +99,8 @@ function GameBoard({
 				width: 180,
 			}}
 		>
-			<div className={styles.info}>
-				<div>
+			<div className={extraStyles.info}>
+				{/* <div>
 					<img src={zero} />
 					<img
 						src={off}
@@ -108,23 +110,15 @@ function GameBoard({
 						}}
 					/>
 					<img src={zero} />
+				</div> */}
+				<div className={extraStyles.username}>
+					{player?.username || player?.id}
 				</div>
-				{interactive && (
-					<div
-						className={styles.smiley}
-						style={{
-							backgroundImage: `url(${smiley})`,
-							height: "100%",
-							backgroundPosition: "center center",
-							backgroundRepeat: "no-repeat",
-						}}
-					/>
-				)}
-				<div>
+				{/* <div>
 					<img src={zero} />
 					<img src={zero} />
 					<img src={zero} />
-				</div>
+				</div> */}
 			</div>
 			<div className={styles.board}>
 				{initialBoard.map((row, x) => (
@@ -289,8 +283,13 @@ function Multiplayer({ win }: { win: Window }) {
 						}}
 						interactive
 						initialBoard={myBoard}
+						player={user}
 					/>
-					<GameBoard interactive={false} initialBoard={opponentBoard} />
+					<GameBoard
+						player={opponent}
+						interactive={false}
+						initialBoard={opponentBoard}
+					/>
 				</div>
 			) : (
 				<div className={extraStyles.main}>

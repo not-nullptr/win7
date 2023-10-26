@@ -90,7 +90,7 @@ function CommandPrompt({ win }: { win: Window }) {
 				p.getWindows().forEach((w) => {
 					printf(``);
 					printf(`        Window title:     ${w.title}`);
-					printf(`        Window component: ${w.component}`);
+					printf(`        Window component: ${w.component.name}`);
 				});
 				printf(``);
 			});

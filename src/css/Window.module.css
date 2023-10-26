@@ -157,7 +157,12 @@
 }
 
 .windowFrame.fullscreen > .titleBar > .buttonContainer {
-	right: 16px;
+	right: 0px;
+}
+
+.windowFrame.fullscreen .link {
+	top: 1px;
+	right: calc(152px - 17px);
 }
 
 .windowContents {
@@ -178,11 +183,12 @@
 	align-items: center;
 	padding: 0px 8px;
 	flex-direction: row;
-	width: 100%;
+	width: calc(100% - 17px);
 	position: absolute;
 	height: 28px;
 	z-index: 1000;
 	border-radius: 6px 6px 0px 0px;
+	overflow: hidden;
 }
 
 .windowIcon {
@@ -196,7 +202,7 @@
 .windowTitle {
 	pointer-events: none;
 	font-size: 9pt;
-	width: calc(100% - 150px);
+	width: calc(100% - 140px);
 	white-space: nowrap;
 	text-overflow: ellipsis;
 	position: relative;
@@ -339,7 +345,7 @@
 
 .buttonContainer {
 	position: absolute;
-	right: 24px;
+	right: calc(24px - 17px);
 	box-sizing: border-box;
 	top: 0px;
 	background: #ffffff36;

@@ -16,7 +16,7 @@ export default function Start({
 	return (
 		<div className={styles.startMenuFrame}>
 			<div className={styles.startMenuContents}>
-				{programs.map((p) => (
+				{programs.slice(0, 10).map((p) => (
 					<div
 						key={p.name}
 						onClick={() => {

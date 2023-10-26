@@ -139,20 +139,26 @@ export function useWindowManagement(
 			if (isResizing) {
 				const deltaX = e.clientX - initialResizePosition.x;
 				const deltaY = e.clientY - initialResizePosition.y;
+				const shouldMoveX =
+					initialWindowSize.width === winState?.minWidth && deltaX < 0;
+				const shouldMoveY =
+					initialWindowSize.height === winState?.minHeight && deltaY < 0;
 				let newWidth = initialWindowSize.width;
 				let newHeight = initialWindowSize.height;
+				let newTop = Number(windowFrame.current.style.top.replace("px", ""));
+				let newLeft = Number(windowFrame.current.style.left.replace("px", ""));
 
 				switch (resizeHandle) {
 					case styles.leftHandle:
 						newWidth -= deltaX;
-						windowFrame.current.style.left = `${e.clientX}px`;
+						newLeft = e.clientX;
 						break;
 					case styles.rightHandle:
 						newWidth += deltaX;
 						break;
 					case styles.topHandle:
 						newHeight -= deltaY;
-						windowFrame.current.style.top = `${e.clientY}px`;
+						newTop = e.clientY;
 						break;
 					case styles.bottomHandle:
 						newHeight += deltaY;
@@ -160,18 +166,18 @@ export function useWindowManagement(
 					case styles.topLeft:
 						newWidth -= deltaX;
 						newHeight -= deltaY;
-						windowFrame.current.style.top = `${e.clientY}px`;
-						windowFrame.current.style.left = `${e.clientX}px`;
+						newLeft = e.clientX;
+						newTop = e.clientY;
 						break;
 					case styles.topRight:
 						newWidth += deltaX;
 						newHeight -= deltaY;
-						windowFrame.current.style.top = `${e.clientY}px`;
+						newTop = e.clientY;
 						break;
 					case styles.bottomLeft:
 						newWidth -= deltaX;
 						newHeight += deltaY;
-						windowFrame.current.style.left = `${e.clientX}px`;
+						newLeft = e.clientX;
 						break;
 					case styles.bottomRight:
 						newWidth += deltaX;
@@ -183,6 +189,9 @@ export function useWindowManagement(
 
 				if (newWidth < winState?.minWidth) newWidth = winState?.minWidth;
 				if (newHeight < winState?.minHeight) newHeight = winState?.minHeight;
+
+				if (shouldMoveX) windowFrame.current.style.left = `${newLeft}px`;
+				if (shouldMoveY) windowFrame.current.style.top = `${newTop}px`;
 				windowFrame.current.style.width = `${newWidth}px`;
 				windowFrame.current.style.height = `${newHeight}px`;
 				return;
@@ -249,11 +258,6 @@ export function useWindowManagement(
 					setFromFullscreen(true);
 					windowFrame.current.classList.remove(styles.fullscreen);
 				}
-				(
-					windowFrame.current.getElementsByClassName(
-						styles.windowFrameFg,
-					)[0] as HTMLDivElement
-				).style.backgroundPosition = `${newX / 6}px ${newY / 8}px`;
 			}
 		};
 

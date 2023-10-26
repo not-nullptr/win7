@@ -1,6 +1,3 @@
-declare module "*.cur";
-declare module "*.ani";
-
 declare module "@forlagshuset/simple-fs" {
 	export class FileSystem {
 		constructor(storage?: any);
@@ -17,3 +14,5 @@ declare module "@forlagshuset/simple-fs" {
 		stats(path: string): Promise<any>;
 	}
 }
+
+declare global {}

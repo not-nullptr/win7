@@ -21,6 +21,7 @@ import {
 	ServerMessage,
 	State,
 } from "../../../../shared/src/types";
+import Live from "../Live";
 
 function getStringFromActivity(activity: string) {
 	switch (activity) {
@@ -161,7 +162,7 @@ function Home({ win }: { win?: Window }) {
 							});
 							if (!window) {
 								process.addWindow({
-									component: "Live",
+									component: Live,
 									initialPath: `/message?user=${
 										message.from
 									}&initialState=${JSON.stringify(
@@ -465,7 +466,7 @@ function Home({ win }: { win?: Window }) {
 												winState?.id || "",
 											);
 											process?.addWindow({
-												component: "Live",
+												component: Live,
 												initialPath: `/message?user=${
 													c.id
 												}&initialState=${JSON.stringify(liveState)}`,

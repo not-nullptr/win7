@@ -17,6 +17,8 @@ import NotificationSender from "./windows/NotificationSender";
 import Notepad from "./windows/Notepad";
 import Explorer from "./windows/Explorer";
 import TaskManager from "./windows/TaskManager";
+import { Notification } from "./util/NotificationService";
+import { TrayService } from "./util/TrayService";
 
 export const programs = [
 	new Program(

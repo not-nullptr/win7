@@ -250,7 +250,9 @@ function Multiplayer({ win }: { win: Window }) {
 				}
 			},
 			onOpen() {
-				sendMessage("INITIALIZE", null);
+				sendMessage("INITIALIZE", {
+					username: localStorage.getItem("username"),
+				});
 			},
 		},
 	);
@@ -307,7 +309,7 @@ function Multiplayer({ win }: { win: Window }) {
 										}}
 										key={u.id}
 									>
-										{u.id}
+										{u.username}
 									</div>
 								))
 						) : (

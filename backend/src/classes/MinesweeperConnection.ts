@@ -28,6 +28,7 @@ export class MinesweeperManager {
 					id: connection.id,
 					isInGame: false,
 					socket: connection,
+					username: json.data.username || connection.id,
 				});
 				MinesweeperManager.broadcastExcept(connection.id, {
 					type: "UPDATE_USERS",

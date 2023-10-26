@@ -175,6 +175,7 @@ export type Message =
 export interface MinesweeperUser {
 	id: string;
 	isInGame: boolean;
+	username: string;
 }
 
 export interface MinesweeperInstance {

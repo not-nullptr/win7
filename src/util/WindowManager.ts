@@ -65,21 +65,21 @@ import GettingStarted from "../windows/GettingStarted";
 //  i hope this all interested u a bit and provided insight
 //  into my process when programming. bye<3
 
-export const componentMap = {
-	Explorer,
-	Notepad,
-	NotificationSender,
-	Live,
-	TaskManager,
-	CommandPrompt,
-	Personalization,
-	Minesweeper,
-	GettingStarted,
-};
+// export const componentMap = {
+// 	Explorer,
+// 	Notepad,
+// 	NotificationSender,
+// 	Live,
+// 	TaskManager,
+// 	CommandPrompt,
+// 	Personalization,
+// 	Minesweeper,
+// 	GettingStarted,
+// };
 
 export interface CreateCallbackPayload {
 	title: string;
-	component: ComponentKeys;
+	component: (...args: any[]) => JSX.Element;
 	icon: string;
 	id: string;
 	readonly width: number;
@@ -116,7 +116,7 @@ export type CallbackData =
 	| RemoveCallbackData
 	| UpdateCallbackData;
 
-export type ComponentKeys = keyof typeof componentMap;
+// export type ComponentKeys = keyof typeof componentMap;
 
 export class WindowManager {
 	private static listeners: {
@@ -178,7 +178,7 @@ export class WindowManager {
 
 export interface WindowProps {
 	title: string;
-	component: ComponentKeys;
+	component: (...args: any[]) => JSX.Element;
 	icon: string;
 	defaultWidth?: number;
 	defaultHeight?: number;
@@ -218,7 +218,7 @@ export class Window {
 	id: string = "";
 	initialPath: string;
 	title: string;
-	component: ComponentKeys;
+	component: (...args: any[]) => JSX.Element;
 	icon: string;
 	readonly width: number = 800;
 	readonly height: number = 600;

@@ -39,53 +39,28 @@
 	width: 800px;
 	height: 600px;
 	position: absolute;
-	border-radius: 12px;
-	box-shadow: 0px 0px 15px 2px #000000c3;
+	box-shadow:
+		0px 0px 15px 2px #000000c3,
+		inset 0px 0px 0px 1px var(--aero-black),
+		inset 0px 0px 0px 2px #d9e2eb;
 	/* overflow: hidden; */
 	background: linear-gradient(
 			139deg,
-			rgba(255, 255, 255, 0.887) 0%,
+			rgba(255, 255, 255, 0.463) 0%,
 			rgba(0, 0, 0, 0) 25%
 		),
-		linear-gradient(-139deg, rgba(135, 173, 190, 0.47) 0%, rgba(0, 0, 0, 0) 25%);
+		linear-gradient(-139deg, rgba(135, 173, 190, 0.47) 0%, rgba(0, 0, 0, 0) 25%),
+		var(--aero-accent);
+	border-radius: 6px;
+	position: absolute;
+	top: 0;
+	left: 0;
+	backdrop-filter: blur(3px);
 }
 
 .windowClosing {
 	animation: 0.4s windowClose cubic-bezier(0.19, 1, 0.22, 1);
 }
-
-.windowFrame,
-.windowFrameBg,
-.windowFrameFg {
-	border-radius: 6px;
-	position: absolute;
-	top: 0;
-	left: 0;
-}
-
-.windowFrameFg {
-	width: 100%;
-	height: 100%;
-	/* background: url("../assets/window/glass.png") center center / cover repeat
-		fixed; */
-	background-size: 100vw 100vh;
-	box-shadow:
-		inset 0px 0px 0px 1px var(--aero-black),
-		inset 0px 0px 0px 2px #d9e2eb;
-	display: flex;
-	flex-direction: row;
-}
-
-.windowFrameBg {
-	width: 100%;
-	height: 100%;
-	/* background-color: color-mix(in srgb, rgb(55, 59, 82), transparent 49%); */
-	/* background-color: #dfdfdf; */
-	/* background-color: var(--aero-accent); */
-	background-color: var(--aero-accent);
-	backdrop-filter: blur(3px);
-}
-
 .windowFrame.unfocused {
 	box-shadow: 0px 0px 20px 0px #0000006f;
 }

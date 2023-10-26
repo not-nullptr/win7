@@ -8,12 +8,21 @@ import { Context } from "./util/Context";
 import { Program } from "./util/Program";
 import { Provider } from "./windows/live/components/ContextMenu";
 import ThemingProvider from "./components/ThemingProvider";
+import GettingStarted from "./windows/GettingStarted";
+import Live from "./windows/live/Live";
+import Personalization from "./windows/Personalization";
+import Minesweeper from "./windows/minesweeper/Minesweeper";
+import CommandPrompt from "./windows/CommandPrompt";
+import NotificationSender from "./windows/NotificationSender";
+import Notepad from "./windows/Notepad";
+import Explorer from "./windows/Explorer";
+import TaskManager from "./windows/TaskManager";
 
 export const programs = [
 	new Program(
 		{
 			title: "Getting Started",
-			component: "GettingStarted",
+			component: GettingStarted,
 			icon: "getting-started.png",
 			defaultWidth: 971,
 			defaultHeight: 603,
@@ -26,7 +35,7 @@ export const programs = [
 	new Program(
 		{
 			title: "Binbows Live Messenger",
-			component: "Live",
+			component: Live,
 			icon: "msn.png",
 			minWidth: 270,
 			minHeight: 600,
@@ -40,7 +49,7 @@ export const programs = [
 	new Program(
 		{
 			title: "Personalization",
-			component: "Personalization",
+			component: Personalization,
 			icon: "personalization.png",
 			defaultWidth: 400,
 			defaultHeight: 300,
@@ -53,7 +62,7 @@ export const programs = [
 	new Program(
 		{
 			title: "Minesweeper",
-			component: "Minesweeper",
+			component: Minesweeper,
 			icon: "minesweeper.png",
 			initialPath: "/singleplayer",
 			defaultWidth: 180,
@@ -67,7 +76,7 @@ export const programs = [
 	new Program(
 		{
 			title: "Live for Binbows - Minesweeper",
-			component: "Minesweeper",
+			component: Minesweeper,
 			icon: "minesweeper.png",
 			initialPath: "/multiplayer",
 			defaultWidth: 376,
@@ -81,7 +90,7 @@ export const programs = [
 	new Program(
 		{
 			title: "Command Prompt",
-			component: "CommandPrompt",
+			component: CommandPrompt,
 			icon: "command-prompt.png",
 			defaultWidth: 678,
 			defaultHeight: 345,
@@ -92,7 +101,7 @@ export const programs = [
 	new Program(
 		{
 			title: "Notification Sender",
-			component: "NotificationSender",
+			component: NotificationSender,
 			icon: "../main/tray-service.png",
 			defaultWidth: 500,
 			defaultHeight: 300,
@@ -103,7 +112,7 @@ export const programs = [
 	new Program(
 		{
 			title: "Notepad",
-			component: "Notepad",
+			component: Notepad,
 			icon: "notepad.png",
 		},
 		"Notepad",
@@ -112,7 +121,7 @@ export const programs = [
 	new Program(
 		{
 			title: "Explorer",
-			component: "Explorer",
+			component: Explorer,
 			icon: "explorer.png",
 			titleBarHeight: 58,
 			transparent: true,
@@ -123,7 +132,7 @@ export const programs = [
 	new Program(
 		{
 			title: "Test Application",
-			component: "TaskManager",
+			component: TaskManager,
 			icon: "test-app.png",
 		},
 		"Test Application",
@@ -138,9 +147,7 @@ function App() {
 	let windowOpened = false;
 	useEffect(() => {
 		if (!windowOpened)
-			programs
-				.find((p) => p.mainWindow.component === "GettingStarted")
-				?.spawn();
+			programs.find((p) => p.name === "Getting Started")?.spawn();
 		windowOpened = true;
 	}, []);
 	function mouseMove(e: MouseEvent) {

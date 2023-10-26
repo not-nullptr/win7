@@ -1,11 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import styles from "../css/Window.module.css";
 import { TrayItem } from "../util/TrayService";
-import {
-	CreateCallbackPayload,
-	WindowManager,
-	componentMap,
-} from "../util/WindowManager";
+import { CreateCallbackPayload, WindowManager } from "../util/WindowManager";
 import WindowComponent from "./Window";
 import { Context } from "../util/Context";
 
@@ -70,12 +66,13 @@ function WindowProvider({ children }: { children: React.ReactNode }) {
 			{windows.map((w) => (
 				<WindowComponent
 					key={w.id}
-					map={componentMap as any}
 					win={(() => {
 						const win = WindowManager.getWindowById(w.id);
 						return win;
 					})()}
-				/>
+				>
+					<w.component />
+				</WindowComponent>
 			))}
 			{children}
 		</div>

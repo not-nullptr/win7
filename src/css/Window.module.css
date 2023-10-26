@@ -68,7 +68,8 @@
 	/* background: url("../assets/window/glass.png") center center / cover repeat
 		fixed; */
 	background-size: 100vw 100vh;
-	box-shadow: inset 0px 0px 0px 1px var(--aero-black),
+	box-shadow:
+		inset 0px 0px 0px 1px var(--aero-black),
 		inset 0px 0px 0px 2px #d9e2eb;
 	display: flex;
 	flex-direction: row;
@@ -223,8 +224,13 @@
 	overflow: hidden;
 	padding: 6px 16px;
 	left: -16px;
-	text-shadow: 0px 0px 16px #ffffff, 0px 0px 16px #ffffff, 0px 0px 16px #ffffff,
-		0px 0px 16px #ffffff, 0px 0px 16px #ffffff, 0px 0px 16px #ffffff,
+	text-shadow:
+		0px 0px 16px #ffffff,
+		0px 0px 16px #ffffff,
+		0px 0px 16px #ffffff,
+		0px 0px 16px #ffffff,
+		0px 0px 16px #ffffff,
+		0px 0px 16px #ffffff,
 		0px 0px 16px #ffffff;
 }
 
@@ -257,7 +263,8 @@
 }
 
 .windowButton:hover {
-	box-shadow: inset 0px 0px 0px 1px var(--aero-white),
+	box-shadow:
+		inset 0px 0px 0px 1px var(--aero-white),
 		0px 0px 15px 10px #61cdfb5b;
 	background: linear-gradient(
 		180deg,
@@ -295,7 +302,8 @@
 }
 
 .windowButton.close:hover {
-	box-shadow: inset 0px 0px 0px 1px var(--aero-white),
+	box-shadow:
+		inset 0px 0px 0px 1px var(--aero-white),
 		0px 0px 15px 10px #fda0899b;
 	background: linear-gradient(
 		180deg,

@@ -7,7 +7,7 @@ import windowStyles from "../css/Window.module.css";
 
 export default function TrayProvider() {
 	const [trayItems, setTrayItems] = useState<TrayItem[]>(
-		TrayService.getItems()
+		TrayService.getItems(),
 	);
 	useEffect(() => {
 		const id = TrayService.addListener((tray) => {
@@ -39,11 +39,11 @@ export default function TrayProvider() {
 					onClick={() => {
 						WindowManager.windows.forEach((w) => {
 							const windowFrame = document.getElementById(
-								w.id
+								w.id,
 							) as HTMLDivElement | null;
 							if (!windowFrame) return;
 							const taskbarItem = document.getElementById(
-								`icon-${w.id}`
+								`icon-${w.id}`,
 							) as HTMLDivElement;
 							if (!taskbarItem || !windowFrame) return;
 							const box = taskbarItem.getBoundingClientRect();
@@ -66,7 +66,7 @@ export default function TrayProvider() {
 								{
 									duration: 200,
 									easing: "ease-out",
-								}
+								},
 							).onfinish = () => {
 								windowFrame.classList.remove(windowStyles.fullscreen);
 								windowFrame.classList.add(windowStyles.minimized);

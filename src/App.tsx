@@ -21,7 +21,7 @@ export const programs = [
 			minHeight: 230,
 		},
 		"Getting Started",
-		"getting-started.png"
+		"getting-started.png",
 	),
 	new Program(
 		{
@@ -35,7 +35,7 @@ export const programs = [
 			initialPath: "/live",
 		},
 		"Binbows Live Messenger",
-		"msn.png"
+		"msn.png",
 	),
 	new Program(
 		{
@@ -48,7 +48,7 @@ export const programs = [
 			minHeight: 300,
 		},
 		"Personalization",
-		"personalization.png"
+		"personalization.png",
 	),
 	new Program(
 		{
@@ -62,7 +62,7 @@ export const programs = [
 			minHeight: 240,
 		},
 		"Minesweeper",
-		"minesweeper.png"
+		"minesweeper.png",
 	),
 	new Program(
 		{
@@ -76,7 +76,7 @@ export const programs = [
 			minHeight: 240,
 		},
 		"Minesweeper for Two",
-		"minesweeper.png"
+		"minesweeper.png",
 	),
 	new Program(
 		{
@@ -87,7 +87,7 @@ export const programs = [
 			defaultHeight: 345,
 		},
 		"Command Prompt",
-		"command-prompt.png"
+		"command-prompt.png",
 	),
 	new Program(
 		{
@@ -98,7 +98,7 @@ export const programs = [
 			defaultHeight: 300,
 		},
 		"Notification Sender",
-		"../main/tray-service.png"
+		"../main/tray-service.png",
 	),
 	new Program(
 		{
@@ -107,7 +107,7 @@ export const programs = [
 			icon: "notepad.png",
 		},
 		"Notepad",
-		"notepad.png"
+		"notepad.png",
 	),
 	new Program(
 		{
@@ -118,7 +118,7 @@ export const programs = [
 			transparent: true,
 		},
 		"Explorer",
-		"explorer.png"
+		"explorer.png",
 	),
 	new Program(
 		{
@@ -127,7 +127,7 @@ export const programs = [
 			icon: "test-app.png",
 		},
 		"Test Application",
-		"test-app.png"
+		"test-app.png",
 	),
 ];
 

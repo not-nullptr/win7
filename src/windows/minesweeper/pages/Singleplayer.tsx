@@ -89,7 +89,7 @@ function Minesweeper({ win }: { win: Window }) {
 			board.forEach((row) =>
 				row.forEach((cell) => {
 					if (cell.isBomb) cell.state = CellState.Revealed;
-				})
+				}),
 			);
 			setBoard([...board]);
 			setGameOver(true);
@@ -113,7 +113,7 @@ function Minesweeper({ win }: { win: Window }) {
 		board.forEach((row) =>
 			row.forEach((cell) => {
 				if (cell.state === CellState.Unrevealed && !cell.isBomb) won = false;
-			})
+			}),
 		);
 		setWon(won);
 		setGameOver(won);
@@ -122,28 +122,28 @@ function Minesweeper({ win }: { win: Window }) {
 		if (gameOver) {
 			if (!won) {
 				import("../../../assets/minesweeper/faces/loss.png").then((i) =>
-					setSmiley(i.default)
+					setSmiley(i.default),
 				);
 			} else {
 				import("../../../assets/minesweeper/faces/win.png").then((i) =>
-					setSmiley(i.default)
+					setSmiley(i.default),
 				);
 			}
 		}
 	}, [gameOver, won]);
 	useEffect(() => {
 		import("../../../assets/minesweeper/faces/smile.png").then((i) =>
-			setSmiley(i.default)
+			setSmiley(i.default),
 		);
 		(async () => {
 			const images = await Promise.all(
 				Object.values(
-					import.meta.glob("../../../assets/minesweeper/buttons/*.png")
+					import.meta.glob("../../../assets/minesweeper/buttons/*.png"),
 				).map((p) =>
 					p()
 						.then((m: any) => m.default)
-						.catch(() => "")
-				)
+						.catch(() => ""),
+				),
 			);
 			setImages(images);
 		})();
@@ -167,8 +167,8 @@ function Minesweeper({ win }: { win: Window }) {
 												state: CellState.Revealed,
 											};
 										} else return cell;
-									})
-								)
+									}),
+								),
 							);
 						}}
 					/>
@@ -179,7 +179,7 @@ function Minesweeper({ win }: { win: Window }) {
 					onClick={() => {
 						// if (!smiley.endsWith("/smile-pressed.png")) return;
 						import("../../../assets/minesweeper/faces/smile.png").then((i) =>
-							setSmiley(i.default)
+							setSmiley(i.default),
 						);
 						setBoard(generateBoard());
 						setGameOver(false);
@@ -209,12 +209,12 @@ function Minesweeper({ win }: { win: Window }) {
 										mine.state === CellState.Revealed
 											? mine.isBomb
 												? `url(${images.find((i) =>
-														i.endsWith("/red-mine.png")
+														i.endsWith("/red-mine.png"),
 												  )})`
 												: `url(${images.find((i) =>
 														i.endsWith(
-															`${evaluateSurrounding(board, x, y)}.png`
-														)
+															`${evaluateSurrounding(board, x, y)}.png`,
+														),
 												  )})`
 											: undefined,
 								}}
@@ -246,13 +246,13 @@ function Minesweeper({ win }: { win: Window }) {
 																state: CellState.Revealed,
 															};
 														} else return cell;
-													})
-												)
+													}),
+												),
 											);
 										}
 									}
 									import("../../../assets/minesweeper/faces/smile.png").then(
-										(i) => setSmiley(i.default)
+										(i) => setSmiley(i.default),
 									);
 									if (evaluation === 0) {
 										return reveal(board, x, y);

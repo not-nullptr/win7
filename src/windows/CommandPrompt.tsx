@@ -35,7 +35,7 @@ function CommandPrompt({ win }: { win: Window }) {
 	class Command {
 		constructor(
 			public name: string,
-			public execute: (args: string[]) => Promise<void> | void
+			public execute: (args: string[]) => Promise<void> | void,
 		) {}
 	}
 	const commands = [
@@ -53,7 +53,7 @@ function CommandPrompt({ win }: { win: Window }) {
 						setPath((path) =>
 							path.split("\\").length === 1
 								? path
-								: path.split("\\").slice(0, -1).join("\\")
+								: path.split("\\").slice(0, -1).join("\\"),
 						);
 						break;
 					}
@@ -184,7 +184,7 @@ function CommandPrompt({ win }: { win: Window }) {
 		const cmd = commands.find((cmd) => cmd.name === command);
 		if (!cmd) {
 			return printf(
-				`'${command}' is not recognized as an internal or external command, operable program or batch file.`
+				`'${command}' is not recognized as an internal or external command, operable program or batch file.`,
 			);
 		}
 		await cmd.execute(args);

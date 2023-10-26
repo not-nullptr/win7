@@ -5,7 +5,7 @@ export class Program {
 	constructor(
 		public mainWindow: WindowProps,
 		public name: string,
-		public icon: string
+		public icon: string,
 	) {}
 	spawn() {
 		return new Process(this);

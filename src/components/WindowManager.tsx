@@ -37,7 +37,7 @@ function WindowProvider({ children }: { children: React.ReactNode }) {
 								return { ...w, ...e.data };
 							}
 							return w;
-						})
+						}),
 					);
 				}
 			}
@@ -46,7 +46,7 @@ function WindowProvider({ children }: { children: React.ReactNode }) {
 	useEffect(() => {
 		// get element with highest z index
 		const windows = Array.from(
-			document.getElementsByClassName(styles.windowFrame)
+			document.getElementsByClassName(styles.windowFrame),
 		) as HTMLDivElement[];
 		let highest = 0;
 		windows.forEach((w) => {

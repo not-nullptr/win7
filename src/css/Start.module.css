@@ -6,8 +6,8 @@
 	z-index: 999999999999999; /* im not a good programmer */
 	bottom: 40px;
 	left: 0;
-	background: url("../assets/window/glass.png") center center / cover no-repeat
-			fixed,
+	background:
+		url("../assets/window/glass.png") center center / cover no-repeat fixed,
 		linear-gradient(
 			180deg,
 			rgba(158, 186, 212, 0.412) 0%,

@@ -81,7 +81,7 @@ function hashCode(...strings: string[]): string {
 
 export default function GameHandler(
 	conn: MessengerConnection,
-	data: ClientGame
+	data: ClientGame,
 ) {
 	console.log("minesweeper woo");
 }

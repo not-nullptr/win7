@@ -25,7 +25,7 @@ function hashCode(...strings: string[]): string {
 
 export default function receiveData(
 	conn: MessengerConnection,
-	data: ClientData
+	data: ClientData,
 ) {
 	switch (data.dataType) {
 		case DataType.TYPING_BEGIN_REQUEST: {

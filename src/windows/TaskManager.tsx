@@ -6,7 +6,7 @@ export function Canvas(
 	props: React.DetailedHTMLProps<
 		React.CanvasHTMLAttributes<HTMLCanvasElement>,
 		HTMLCanvasElement
-	> & { color?: string; lineWidth?: number }
+	> & { color?: string; lineWidth?: number },
 ) {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	useEffect(() => {

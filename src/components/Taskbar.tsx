@@ -35,7 +35,7 @@ function TaskbarIcon({ window }: { window: Window }) {
 				const color = await vibrant.getPalette();
 				hoverRef.current.style.setProperty(
 					"--color",
-					color.LightVibrant?.hex || "#000"
+					color.LightVibrant?.hex || "#000",
 				);
 			}
 		})();
@@ -57,7 +57,7 @@ function TaskbarIcon({ window }: { window: Window }) {
 			if (hoverRef.current) {
 				hoverRef.current.style.setProperty(
 					"--secondary",
-					"rgb(255, 255, 255, 0.239)"
+					"rgb(255, 255, 255, 0.239)",
 				);
 				hoverRef.current.style.opacity = "1";
 			}
@@ -74,7 +74,7 @@ function TaskbarIcon({ window }: { window: Window }) {
 				document.removeEventListener("mousemove", mouseMove);
 				hoverRef.current.style.setProperty(
 					"--secondary",
-					"rgb(255, 255, 255, 0.5)"
+					"rgb(255, 255, 255, 0.5)",
 				);
 				hoverRef.current.classList.add("pressed");
 			}
@@ -86,7 +86,7 @@ function TaskbarIcon({ window }: { window: Window }) {
 				document.addEventListener("mousemove", mouseMove);
 				hoverRef.current.style.setProperty(
 					"--secondary",
-					"rgb(255, 255, 255, 0.239)"
+					"rgb(255, 255, 255, 0.239)",
 				);
 				hoverRef.current.classList.remove("pressed");
 			}
@@ -110,7 +110,7 @@ function TaskbarIcon({ window }: { window: Window }) {
 				let maxZIndex = 0;
 
 				for (const w of Array.from(
-					document.querySelectorAll(`.${windowStyles.windowFrame}`)
+					document.querySelectorAll(`.${windowStyles.windowFrame}`),
 				) as HTMLDivElement[]) {
 					if (w.style.zIndex !== "") {
 						maxZIndex = Math.max(maxZIndex, parseInt(w.style.zIndex));
@@ -121,7 +121,7 @@ function TaskbarIcon({ window }: { window: Window }) {
 					windowFrame.style.transform = "scale(0.5)";
 					windowFrame.style.zIndex = `${maxZIndex + 1}`;
 					for (const w of Array.from(
-						document.querySelectorAll(`.${windowStyles.windowFrame}`)
+						document.querySelectorAll(`.${windowStyles.windowFrame}`),
 					) as HTMLDivElement[]) {
 						w.classList.add(windowStyles.unfocused);
 					}
@@ -141,7 +141,7 @@ function TaskbarIcon({ window }: { window: Window }) {
 						{
 							duration: 250,
 							easing: "ease-in-out",
-						}
+						},
 					).onfinish = () => {
 						windowFrame.style.transform = "scale(1)";
 						windowFrame.style.transformOrigin = "center center";
@@ -150,7 +150,7 @@ function TaskbarIcon({ window }: { window: Window }) {
 				} else {
 					if (!windowFrame.classList.contains(windowStyles.unfocused)) {
 						const taskbarItem = document.getElementById(
-							`icon-${window?.id}`
+							`icon-${window?.id}`,
 						) as HTMLDivElement;
 						if (!taskbarItem || !windowFrame) return;
 						const box = taskbarItem.getBoundingClientRect();
@@ -173,7 +173,7 @@ function TaskbarIcon({ window }: { window: Window }) {
 							{
 								duration: 200,
 								easing: "ease-out",
-							}
+							},
 						).onfinish = () => {
 							windowFrame.classList.remove(windowStyles.fullscreen);
 							windowFrame.classList.add(windowStyles.minimized);
@@ -237,7 +237,7 @@ function Taskbar() {
 										// Store a key value map of databases
 										const getFromStorage = () =>
 											JSON.parse(
-												window.localStorage[LOCALSTORAGE_CACHE_KEY] || "{}"
+												window.localStorage[LOCALSTORAGE_CACHE_KEY] || "{}",
 											);
 
 										// Write the database to local storage
@@ -252,8 +252,8 @@ function Taskbar() {
 														acc.push({ name, version });
 														return acc;
 													},
-													[]
-												)
+													[],
+												),
 											);
 
 										// Intercept the existing open handler to write our DBs names

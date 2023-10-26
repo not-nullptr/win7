@@ -1,3 +1,3 @@
 export function joinClasses(...classes: string[]) {
-    return classes.join(" ");
+	return classes.join(" ");
 }

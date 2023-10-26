@@ -241,7 +241,7 @@ export function generateBoard() {
 export function reveal(
 	board: Board,
 	x: number,
-	y: number
+	y: number,
 ):
 	| {
 			gameState: "ongoing" | "win" | "loss";
@@ -255,7 +255,7 @@ export function reveal(
 		board.forEach((row) =>
 			row.forEach((cell) => {
 				if (cell.isBomb) cell.state = CellState.Revealed;
-			})
+			}),
 		);
 		return {
 			gameState: "loss",

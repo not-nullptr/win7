@@ -9,10 +9,10 @@ export default function makeMove(
 	data: {
 		x: number;
 		y: number;
-	}
+	},
 ) {
 	const game = MinesweeperManager.games.find((game) =>
-		game.players.some((player) => player.id === conn.id)
+		game.players.some((player) => player.id === conn.id),
 	);
 	if (!game) return;
 	const board = game.boards.find((b) => b.id === conn.id);

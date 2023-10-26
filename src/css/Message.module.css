@@ -18,7 +18,9 @@
 	height: 82px;
 	background: url("../assets/wlm/godrays.png"), #3dafe4;
 	background-position: top left;
-	background-size: 100% 100%, 100% 100%;
+	background-size:
+		100% 100%,
+		100% 100%;
 	box-shadow: inset 0px 22px 5px -20px rgba(0, 0, 0, 0.438);
 }
 
@@ -31,7 +33,8 @@
 .toolbar {
 	width: 100%;
 	height: 32px;
-	box-shadow: inset 0px 0px 0px 1px var(--aero-white),
+	box-shadow:
+		inset 0px 0px 0px 1px var(--aero-white),
 		0px 0px 0px 0px rgba(0, 0, 0, 0.264);
 	background: linear-gradient(
 		180deg,
@@ -92,7 +95,9 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	width: 100%;
-	text-shadow: 0px 0px 3px rgb(255, 255, 255), 0px 0px 4px rgb(255, 255, 255),
+	text-shadow:
+		0px 0px 3px rgb(255, 255, 255),
+		0px 0px 4px rgb(255, 255, 255),
 		0px 0px 5px rgb(255, 255, 255);
 }
 
@@ -200,7 +205,8 @@
 	border: solid thin #bdd5df;
 	border-top: none;
 	border-radius: 0px 0px 4px 4px;
-	box-shadow: 0px 0px 0px 1px var(--aero-white),
+	box-shadow:
+		0px 0px 0px 1px var(--aero-white),
 		inset 0px 0px 0px 1px var(--aero-white);
 	background: linear-gradient(
 		180deg,
@@ -228,8 +234,8 @@
 
 .emoticons {
 	position: absolute;
-	background: url("../assets/window/glass.png") center center / cover no-repeat
-			fixed,
+	background:
+		url("../assets/window/glass.png") center center / cover no-repeat fixed,
 		#71a7e693;
 	outline: solid thin var(--aero-black);
 	border: solid thin #dedede;
@@ -255,7 +261,8 @@
 
 .canvas {
 	border-radius: 4px 4px 0px 0px;
-	box-shadow: 0px 0px 0px 1px var(--aero-white),
+	box-shadow:
+		0px 0px 0px 1px var(--aero-white),
 		inset 0px 0px 0px 1px var(--aero-white);
 	border: solid thin #bdd5df;
 	border-bottom: none;
@@ -271,7 +278,8 @@
 .imageContainer > img {
 	margin-top: 4px;
 	border: solid thin #dedede;
-	box-shadow: 0px 0px 0px 1px var(--aero-white),
+	box-shadow:
+		0px 0px 0px 1px var(--aero-white),
 		inset 0px 0px 0px 1px var(--aero-white);
 	margin-left: 1px;
 	border-radius: 4px;

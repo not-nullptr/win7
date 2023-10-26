@@ -14,7 +14,7 @@ function NotificationSender({ win }: { win: Window }) {
 		const item = new TrayItem(
 			"uac.png",
 			"Notification Sender Process",
-			win?.id
+			win?.id,
 		);
 		item.create();
 		const notification = new Notification({

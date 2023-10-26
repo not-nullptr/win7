@@ -22,7 +22,7 @@ function hashCode(...strings: string[]): string {
 
 export default function receiveMessage(
 	conn: MessengerConnection,
-	data: ClientMessage
+	data: ClientMessage,
 ) {
 	switch (data.messageType) {
 		case MessageType.TEXT_MESSAGE_CLIENT: {

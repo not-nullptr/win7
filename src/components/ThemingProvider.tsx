@@ -74,7 +74,7 @@ function ThemingProvider() {
 			"--aero-color",
 			`${hexToRgb(theme.color).replace(")", "")}, calc(0.7 * ${
 				theme.colorIntensity
-			}%))`
+			}%))`,
 		);
 		root.style.setProperty("--profile-picture", `url(${theme.userPicture})`);
 	}, [theme]);

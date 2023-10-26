@@ -28,14 +28,14 @@ export default function PfpBorder({
 	}
 	const containerRef = useRef<HTMLDivElement>(null);
 	const [src, setSrc] = useState(
-		`/ui/wlm/statuses/${variant}/active-static.png`
+		`/ui/wlm/statuses/${variant}/active-static.png`,
 	);
 	const [prevActivity, setPrevActivity] = useState("active");
 	const [borderDummy1, setBorderDummy1] = useState(
-		`/ui/wlm/statuses/${variant}/active-animated-from.png`
+		`/ui/wlm/statuses/${variant}/active-animated-from.png`,
 	);
 	const [borderDummy2, setBorderDummy2] = useState(
-		`/ui/wlm/statuses/${variant}/active-animated-to.png`
+		`/ui/wlm/statuses/${variant}/active-animated-to.png`,
 	);
 
 	const [borderRef, borderDummy1Ref, borderDummy2Ref] = [
@@ -72,16 +72,18 @@ export default function PfpBorder({
 						setBorderDummy1(
 							`/ui/wlm/statuses/${variant}/${
 								state || "active"
-							}-animated-from.png`
+							}-animated-from.png`,
 						);
 						setBorderDummy2(
-							`/ui/wlm/statuses/${variant}/${state || "active"}-animated-to.png`
+							`/ui/wlm/statuses/${variant}/${
+								state || "active"
+							}-animated-to.png`,
 						);
 					} else {
 						setBorderDummy1(
 							`/ui/wlm/statuses/${variant}/${
 								prevActivity || "active"
-							}-animated-from.png`
+							}-animated-from.png`,
 						);
 					}
 					await sleep(550);
@@ -97,12 +99,12 @@ export default function PfpBorder({
 						{
 							easing: "linear",
 							duration: 250,
-						}
+						},
 					);
 					setTimeout(() => (borderDummy1.style.opacity = "0"), 250);
 					borderDummy2.style.opacity = "1";
 					setBorderDummy2(
-						`/ui/wlm/statuses/${variant}/${state}-animated-to.png`
+						`/ui/wlm/statuses/${variant}/${state}-animated-to.png`,
 					);
 					await sleep(730);
 					borderDummy1.style.opacity = "0";

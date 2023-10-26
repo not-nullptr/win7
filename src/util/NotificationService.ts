@@ -28,7 +28,7 @@ export class NotificationService {
 		return NotificationService.currrentNotification;
 	}
 	static addNotificationListener(
-		callback: (notification?: Notification) => void
+		callback: (notification?: Notification) => void,
 	) {
 		const id = v4();
 		NotificationService.listeners.push({
@@ -39,7 +39,7 @@ export class NotificationService {
 	}
 	static removeNotificationListener(id: string) {
 		NotificationService.listeners = NotificationService.listeners.filter(
-			(l) => l.id !== id
+			(l) => l.id !== id,
 		);
 	}
 }
@@ -69,11 +69,11 @@ export class Notification {
 		this.windowId = notification.windowId;
 		if (this.windowId) {
 			const win = WindowManager.windows.find(
-				(w) => w.id === notification.windowId
+				(w) => w.id === notification.windowId,
 			);
 			if (!win)
 				throw new Error(
-					`Attempted to create notification for non-existent window ${notification.windowId}`
+					`Attempted to create notification for non-existent window ${notification.windowId}`,
 				);
 			this.window = win;
 		}

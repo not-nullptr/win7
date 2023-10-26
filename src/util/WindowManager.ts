@@ -253,7 +253,7 @@ export class Window {
 	}
 	close() {
 		WindowManager.windows = WindowManager.windows.filter(
-			(w) => w.id !== this.id
+			(w) => w.id !== this.id,
 		);
 		WindowManager.remove(this.id);
 		this.callListeners(true);

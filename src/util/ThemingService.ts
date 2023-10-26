@@ -35,7 +35,7 @@ export class ThemingService {
 	}
 	static removeListener(id: string) {
 		ThemingService.listeners = ThemingService.listeners.filter(
-			(l) => l.id !== id
+			(l) => l.id !== id,
 		);
 	}
 	static modifyTheme(theme: Partial<Theme>) {

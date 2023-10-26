@@ -69,7 +69,7 @@ export class MessengerManager {
 										socket: undefined,
 									})),
 							},
-						})
+						}),
 					);
 				}
 				initialize(connection.id, json.data);
@@ -83,7 +83,7 @@ export class MessengerManager {
 	}
 	static removeConnection(connection: CustomWebSocket) {
 		MessengerManager.connections = MessengerManager.connections.filter(
-			(c) => c.socket !== connection
+			(c) => c.socket !== connection,
 		);
 		this.broadcast({
 			type: "DISCONNECT",

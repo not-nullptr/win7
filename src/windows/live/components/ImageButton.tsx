@@ -6,7 +6,7 @@ function ImageButton(
 		HTMLDivElement
 	> & {
 		image: string;
-	}
+	},
 ) {
 	return (
 		<div {...props} className={styles.imageButton}>

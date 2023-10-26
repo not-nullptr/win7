@@ -37,7 +37,7 @@ function Item(item: ContextMenuElement) {
 							(menu as HTMLDivElement).style.visibility = "hidden";
 						});
 						const handles = document.querySelectorAll(
-							`.${windowStyles.handle}`
+							`.${windowStyles.handle}`,
 						);
 						handles.forEach((handle) => {
 							(handle as HTMLDivElement).style.pointerEvents = "all";
@@ -61,13 +61,13 @@ function Item(item: ContextMenuElement) {
 							(menu as HTMLDivElement).style.visibility = "hidden";
 						});
 						const children = document.querySelectorAll(
-							`.${styles.contextMenuChild}`
+							`.${styles.contextMenuChild}`,
 						);
 						children.forEach((child) => {
 							(child as HTMLDivElement).style.visibility = "hidden";
 						});
 						const handles = document.querySelectorAll(
-							`.${windowStyles.handle}`
+							`.${windowStyles.handle}`,
 						);
 						handles.forEach((handle) => {
 							(handle as HTMLDivElement).style.pointerEvents = "all";
@@ -76,15 +76,15 @@ function Item(item: ContextMenuElement) {
 					onMouseEnter={(e) => {
 						const contextMenu = hasParentWithClass(
 							e.target as HTMLElement,
-							styles.contextMenu
+							styles.contextMenu,
 						);
 						if (!contextMenu) return;
 						const contextMenuChild = contextMenu.querySelector(
-							`.${styles.contextMenuChild}`
+							`.${styles.contextMenuChild}`,
 						) as HTMLElement;
 						contextMenuChild.style.visibility = "visible";
 						const handles = document.querySelectorAll(
-							`.${windowStyles.handle}`
+							`.${windowStyles.handle}`,
 						);
 						handles.forEach((handle) => {
 							(handle as HTMLDivElement).style.pointerEvents = "none";
@@ -93,15 +93,15 @@ function Item(item: ContextMenuElement) {
 					onMouseLeave={(e) => {
 						const contextMenu = hasParentWithClass(
 							e.target as HTMLElement,
-							styles.contextMenu
+							styles.contextMenu,
 						);
 						if (!contextMenu) return;
 						const contextMenuChild = contextMenu.querySelector(
-							`.${styles.contextMenuChild}`
+							`.${styles.contextMenuChild}`,
 						) as HTMLElement;
 						contextMenuChild.style.visibility = "hidden";
 						const handles = document.querySelectorAll(
-							`.${windowStyles.handle}`
+							`.${windowStyles.handle}`,
 						);
 					}}
 				>
@@ -158,11 +158,11 @@ export function Provider() {
 			e.preventDefault();
 			const contextMenuContainer = hasParentWithClass(
 				e.target as HTMLElement,
-				styles.contextMenuContainer
+				styles.contextMenuContainer,
 			);
 			if (!contextMenuContainer) return;
 			const contextMenu = contextMenuContainer.querySelector(
-				`.${styles.contextMenu}`
+				`.${styles.contextMenu}`,
 			) as HTMLElement;
 			contextMenu.style.visibility = "visible";
 			contextMenu.style.left = `${e.clientX}px`;

@@ -1,8 +1,8 @@
 {
-  "compilerOptions": {
-    "composite": true,
-    "rootDir": "./src",
-    "outDir": "./dist",
-    "module": "commonjs"
-  }
+	"compilerOptions": {
+		"composite": true,
+		"rootDir": "./src",
+		"outDir": "./dist",
+		"module": "commonjs"
+	}
 }

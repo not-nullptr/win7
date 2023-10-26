@@ -14,7 +14,7 @@ function GettingStarted({ win }: { win: Window }) {
 	useEffect(() => {
 		win?.setLink(
 			"Join the r/unixporn Discord server",
-			"https://discord.gg/unixporn"
+			"https://discord.gg/unixporn",
 		);
 	}, []);
 	return (

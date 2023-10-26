@@ -10,7 +10,7 @@ interface ChangeStatusData {
 // ie client sends {type: "CHANGE_STATUS", data: {status: "idle"}}
 export default function changeStatus(
 	conn: MessengerConnection,
-	data: ChangeStatusData
+	data: ChangeStatusData,
 ) {
 	if (data.status) {
 		if (

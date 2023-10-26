@@ -1,10 +1,9 @@
-
 export interface State {
-    zIndex: number;
-    windows: { title: string; children?: React.ReactNode; icon: string }[]
+	zIndex: number;
+	windows: { title: string; children?: React.ReactNode; icon: string }[];
 }
 
 export interface IContext {
-    state: State;
-    setState: (newState: State) => void;
+	state: State;
+	setState: (newState: State) => void;
 }

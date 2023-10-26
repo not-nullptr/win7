@@ -7,12 +7,12 @@ import { MPBoard, generateBoard } from "../../../../shared/src/types";
 
 export default function startGame(
 	conn: MinesweeperConnection,
-	data: { id: string }
+	data: { id: string },
 ) {
 	const otherGame = MinesweeperManager.games.find((game) =>
 		game.players.some(
-			(player) => player.id === data.id || player.id === conn.socket.id
-		)
+			(player) => player.id === data.id || player.id === conn.socket.id,
+		),
 	);
 	if (otherGame) return;
 	const otherConn = MinesweeperManager.getConnection(data.id);

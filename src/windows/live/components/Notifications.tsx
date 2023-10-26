@@ -23,7 +23,7 @@ export class LiveNotificationHandler {
 	}
 	static notify(notification: Omit<LiveNotification, "id">) {
 		LiveNotificationHandler.listeners.forEach((l) =>
-			l.cb({ ...notification, id: v4() })
+			l.cb({ ...notification, id: v4() }),
 		);
 	}
 }
@@ -71,7 +71,7 @@ function NotificationProvider() {
 			setNotifications((notifications) => [...notifications, notification]);
 			setTimeout(() => {
 				setNotifications((notifications) =>
-					notifications.filter((n) => n.id !== notification.id)
+					notifications.filter((n) => n.id !== notification.id),
 				);
 			}, 15000);
 		});

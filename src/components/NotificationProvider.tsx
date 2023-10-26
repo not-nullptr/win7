@@ -17,10 +17,10 @@ export default function NotificationProvider() {
 	const [notiPos, setNotiPos] = useState(0);
 	const [tray, setTray] = useState<TrayItem[]>(TrayService.getItems());
 	const notificationRef = useRef<Notification | undefined>(
-		NotificationService.getNotification()
+		NotificationService.getNotification(),
 	);
 	const [notification, setNotification] = useState<Notification | undefined>(
-		notificationRef.current
+		notificationRef.current,
 	);
 	const timeoutRefs = useRef<number[]>([]);
 	const notificationElRef = useRef<HTMLDivElement>(null);
@@ -67,14 +67,14 @@ export default function NotificationProvider() {
 							notificationElRef.current.style.animation = "";
 							notificationElRef.current.classList.add(styles.fade);
 						}
-					}, 7700) as any
+					}, 7700) as any,
 				);
 			}
 			WindowManager.addWindowListener((w) => {
 				if (notificationRef.current) {
 					// check if the tray has a window handle
 					const tray = TrayService.getItems().find(
-						(t) => t.id === notificationRef.current?.trayId
+						(t) => t.id === notificationRef.current?.trayId,
 					);
 					if (!tray || !tray?.windowId) return;
 					if (!w.map((h) => h.id).includes(tray?.windowId || "nonexistant")) {
@@ -105,7 +105,7 @@ export default function NotificationProvider() {
 						notificationElRef.current.style.animation = "none";
 						notificationElRef.current.classList.add(styles.fade);
 					}
-				}, 7700) as any
+				}, 7700) as any,
 			);
 		}
 	};
@@ -125,7 +125,7 @@ export default function NotificationProvider() {
 	}, []);
 	useEffect(() => {
 		const abs = absolutePosition(
-			document.getElementById(notification?.trayId || "")
+			document.getElementById(notification?.trayId || ""),
 		);
 		if (!abs) return;
 		setNotiPos(window.innerWidth - abs.left);

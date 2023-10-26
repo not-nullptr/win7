@@ -5,7 +5,7 @@ import { MinesweeperConnection } from "../classes/MinesweeperConnection";
 export async function handleMessageMessenger(
 	type: string,
 	connection: MessengerConnection,
-	data: any
+	data: any,
 ) {
 	let module: ((conn: MessengerConnection, data: any) => any) | undefined =
 		undefined;
@@ -25,7 +25,7 @@ export async function handleMessageMessenger(
 export async function handleMessageMinesweeper(
 	type: string,
 	connection: MinesweeperConnection,
-	data: any
+	data: any,
 ) {
 	let module: ((conn: MinesweeperConnection, data: any) => any) | undefined =
 		undefined;

@@ -1,6 +1,6 @@
 export function hasParentWithClass(
 	element: HTMLElement,
-	className: string
+	className: string,
 ): HTMLElement | false {
 	if (element.classList.contains(className)) return element;
 	let parent = element.parentElement;

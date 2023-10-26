@@ -33,7 +33,7 @@ export class MinesweeperManager {
 					type: "UPDATE_USERS",
 					data: {
 						users: MinesweeperManager.connections.map(
-							({ socket, ...rest }) => rest
+							({ socket, ...rest }) => rest,
 						),
 					},
 				});
@@ -43,10 +43,10 @@ export class MinesweeperManager {
 						data: {
 							id: connection.id,
 							users: MinesweeperManager.connections.map(
-								({ socket, ...rest }) => rest
+								({ socket, ...rest }) => rest,
 							),
 						},
-					})
+					}),
 				);
 			}
 			if (!conn) return;
@@ -58,7 +58,7 @@ export class MinesweeperManager {
 	}
 	static removeConnection(connection: CustomWebSocket) {
 		MinesweeperManager.connections = MinesweeperManager.connections.filter(
-			(c) => c.socket !== connection
+			(c) => c.socket !== connection,
 		);
 		this.broadcast({
 			type: "DISCONNECT",

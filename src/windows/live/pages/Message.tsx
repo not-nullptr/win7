@@ -25,7 +25,7 @@ import typing from "../../../assets/wlm/icons/typing.png";
 function bbCodeSelection(textarea: HTMLTextAreaElement, tag: string) {
 	const selection = textarea.value.substring(
 		textarea.selectionStart,
-		textarea.selectionEnd
+		textarea.selectionEnd,
 	);
 	if (selection.length === 0) return;
 	const selectionWithTags = `[${tag}]${selection}[/${tag}]`;
@@ -69,7 +69,7 @@ function MessageComponent({ win }: { win?: Window }) {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const [params] = useSearchParams();
 	const [liveState, setLiveStateWithoutBroadcast] = useState<State>(
-		JSON.parse(params.get("initialState") || "{}")
+		JSON.parse(params.get("initialState") || "{}"),
 	);
 	const playedRef = useRef(false);
 	const [images, setImages] = useState<string[]>([]);
@@ -77,12 +77,12 @@ function MessageComponent({ win }: { win?: Window }) {
 		(async () => {
 			const images = await Promise.all(
 				Object.values(
-					import.meta.glob("../../../assets/wlm/emoticons/*.png")
+					import.meta.glob("../../../assets/wlm/emoticons/*.png"),
 				).map((p) =>
 					p()
 						.then((m: any) => m.default)
-						.catch(() => "")
-				)
+						.catch(() => ""),
+				),
 			);
 			setImages(images);
 		})();
@@ -115,7 +115,7 @@ function MessageComponent({ win }: { win?: Window }) {
 			} catch {
 				return [];
 			}
-		})()
+		})(),
 	);
 	let typingTimeout: NodeJS.Timeout | undefined;
 	function handleSocketMessage(e: Message) {
@@ -130,7 +130,7 @@ function MessageComponent({ win }: { win?: Window }) {
 							const audio = new Audio("/ui/wlm/sounds/nudge.mp3");
 							audio.play();
 							const frame = document.getElementById(
-								win?.id || ""
+								win?.id || "",
 							) as HTMLDivElement;
 							if (!frame) break;
 							const min = -5;
@@ -326,8 +326,8 @@ function MessageComponent({ win }: { win?: Window }) {
 																			) {
 																				const imgSrc = images.find((img) =>
 																					img.endsWith(
-																						`/${part.replaceAll(":", "")}.png`
-																					)
+																						`/${part.replaceAll(":", "")}.png`,
+																					),
 																				);
 																				if (imgSrc) {
 																					return `[emoticon]${imgSrc}[/emoticon]`;
@@ -335,7 +335,7 @@ function MessageComponent({ win }: { win?: Window }) {
 																			}
 																			return part;
 																		})
-																		.join("")
+																		.join(""),
 																)}
 															</span>
 														</div>
@@ -402,7 +402,7 @@ function MessageComponent({ win }: { win?: Window }) {
 										onClick={(e) => {
 											const canvas =
 												e.currentTarget.parentElement?.querySelector(
-													"canvas"
+													"canvas",
 												) as HTMLCanvasElement;
 											if (!canvas) return;
 											const data = canvas.toDataURL();

@@ -258,7 +258,9 @@ h2 {
 	height: 0px;
 	border-radius: 6px;
 	border: solid thin var(--aero-black);
-	box-shadow: inset 0px 0px 0px 1px var(--aero-white), 0px 0px 15px -1px #000;
+	box-shadow:
+		inset 0px 0px 0px 1px var(--aero-white),
+		0px 0px 15px -1px #000;
 	transition: linear all 0.25s;
 	visibility: hidden;
 	pointer-events: none;
@@ -399,8 +401,8 @@ a:hover {
 
 /* Handle */
 ::-webkit-scrollbar-thumb:vertical {
-	background: url("./assets/window/scrollbar-track.png") center/9px 10px
-			no-repeat,
+	background:
+		url("./assets/window/scrollbar-track.png") center/9px 10px no-repeat,
 		linear-gradient(
 			90deg,
 			rgba(245, 245, 245, 1) 0%,
@@ -414,8 +416,8 @@ a:hover {
 }
 
 ::-webkit-scrollbar-thumb:vertical:hover {
-	background: url("./assets/window/scrollbar-track.png") center/9px 10px
-			no-repeat,
+	background:
+		url("./assets/window/scrollbar-track.png") center/9px 10px no-repeat,
 		linear-gradient(
 			90deg,
 			rgba(227, 244, 252, 1) 0%,
@@ -426,8 +428,8 @@ a:hover {
 }
 
 ::-webkit-scrollbar-thumb:vertical:active {
-	background: url("./assets/window/scrollbar-track.png") center/9px 10px
-			no-repeat,
+	background:
+		url("./assets/window/scrollbar-track.png") center/9px 10px no-repeat,
 		linear-gradient(
 			90deg,
 			rgba(202, 236, 249, 1) 0%,
@@ -438,8 +440,8 @@ a:hover {
 }
 
 ::-webkit-scrollbar-thumb:horizontal {
-	background: url("./assets/window/scrollbar-track.png") center/9px 10px
-			no-repeat,
+	background:
+		url("./assets/window/scrollbar-track.png") center/9px 10px no-repeat,
 		linear-gradient(
 			180deg,
 			rgba(245, 245, 245, 1) 0%,
@@ -453,8 +455,8 @@ a:hover {
 }
 
 ::-webkit-scrollbar-thumb:horizontal:hover {
-	background: url("./assets/window/scrollbar-track.png") center/9px 10px
-			no-repeat,
+	background:
+		url("./assets/window/scrollbar-track.png") center/9px 10px no-repeat,
 		linear-gradient(
 			180deg,
 			rgba(227, 244, 252, 1) 0%,
@@ -465,8 +467,8 @@ a:hover {
 }
 
 ::-webkit-scrollbar-thumb:horizontal:active {
-	background: url("./assets/window/scrollbar-track.png") center/9px 10px
-			no-repeat,
+	background:
+		url("./assets/window/scrollbar-track.png") center/9px 10px no-repeat,
 		linear-gradient(
 			180deg,
 			rgba(202, 236, 249, 1) 0%,

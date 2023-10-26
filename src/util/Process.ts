@@ -68,7 +68,7 @@ export class Process {
 	onMessage(
 		windowId: string,
 		type: string,
-		callback: (...data: any[]) => void
+		callback: (...data: any[]) => void,
 	) {
 		const id = v4();
 		this.messageListeners.push({
@@ -104,7 +104,7 @@ export class ProcessManager {
 	}
 	static removeListener(id: string) {
 		ProcessManager.listeners = ProcessManager.listeners.filter(
-			(l) => l.id !== id
+			(l) => l.id !== id,
 		);
 	}
 	static addProcess(process: Process) {
@@ -113,7 +113,7 @@ export class ProcessManager {
 	}
 	static removeProcess(id: string) {
 		ProcessManager.processes = ProcessManager.processes.filter(
-			(p) => p.pid !== id
+			(p) => p.pid !== id,
 		);
 		ProcessManager.callListeners();
 	}
@@ -125,7 +125,7 @@ export class ProcessManager {
 	}
 	static getProcessByWindowId(id: string) {
 		return ProcessManager.processes.find((p) =>
-			p.getWindows().find((w) => w.id === id)
+			p.getWindows().find((w) => w.id === id),
 		);
 	}
 }

@@ -147,12 +147,12 @@ function Home({ win }: { win?: Window }) {
 						}
 						case "MESSAGE": {
 							const process = ProcessManager.getProcessByWindowId(
-								winState?.id || ""
+								winState?.id || "",
 							);
 							if (!process) break;
 							const message = e.data.data;
 							const user = liveState.connections.find(
-								(c) => c.id === message.from
+								(c) => c.id === message.from,
 							);
 							if (!user) break;
 							const window = process.getWindows().find((w) => {
@@ -165,7 +165,7 @@ function Home({ win }: { win?: Window }) {
 									initialPath: `/message?user=${
 										message.from
 									}&initialState=${JSON.stringify(
-										liveState
+										liveState,
 									)}&initialMessages=${JSON.stringify([
 										message,
 									])}&conversationId=${message.conversationId}`,
@@ -183,7 +183,7 @@ function Home({ win }: { win?: Window }) {
 				onMessage({ ...e, data: JSON.parse(e.data) });
 			},
 			shouldReconnect: () => true,
-		}
+		},
 	);
 	useEffect(() => {
 		const interval = setInterval(() => {
@@ -281,7 +281,7 @@ function Home({ win }: { win?: Window }) {
 							}}
 							className={joinClasses(
 								styles.contextMenu,
-								styles.nameContextMenu
+								styles.nameContextMenu,
 							)}
 						>
 							{/* <div className={styles.contextMenuItem}>
@@ -355,7 +355,7 @@ function Home({ win }: { win?: Window }) {
 										id: "changeusername",
 										onClick() {
 											const res = prompt(
-												"Enter your new username (don't worry, this box is only temporary while I sort out application state):"
+												"Enter your new username (don't worry, this box is only temporary while I sort out application state):",
 											);
 											if (!res) return;
 											localStorage.setItem("username", res);
@@ -462,7 +462,7 @@ function Home({ win }: { win?: Window }) {
 										key={c.id}
 										onDoubleClick={() => {
 											const process = ProcessManager.getProcessByWindowId(
-												winState?.id || ""
+												winState?.id || "",
 											);
 											process?.addWindow({
 												component: "Live",

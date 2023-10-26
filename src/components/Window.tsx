@@ -51,7 +51,7 @@ export default function WindowComponent({
 	}, [win]);
 	useEffect(() => {
 		const windows = Array.from(
-			document.getElementsByClassName(styles.windowFrame)
+			document.getElementsByClassName(styles.windowFrame),
 		) as HTMLDivElement[];
 		windows.forEach((w) => {
 			w.classList.add(styles.unfocused);
@@ -112,8 +112,9 @@ export default function WindowComponent({
 					styles.bottomRight,
 				];
 
-				const handle = resizeHandles.find((handleClass) =>
-					(e.target as HTMLDivElement)?.classList.contains(handleClass)
+				const handle = resizeHandles.find(
+					(handleClass) =>
+						(e.target as HTMLDivElement)?.classList.contains(handleClass),
 				);
 
 				if (handle) {
@@ -188,7 +189,7 @@ export default function WindowComponent({
 				let newY = e.clientY - position.y;
 				if (newY < 0) newY = 0;
 				const preview = document.getElementsByClassName(
-					"fullscreen-preview"
+					"fullscreen-preview",
 				)[0] as HTMLDivElement;
 				if (e.clientY < 3 && !fullscreenIndicator) {
 					setfullscreenIndicator(true);
@@ -232,7 +233,7 @@ export default function WindowComponent({
 					const width = Number(
 						window
 							.getComputedStyle(windowFrame.current!)
-							.width.replace("px", "")
+							.width.replace("px", ""),
 					);
 					windowFrame.current!.style.left = `${
 						e.clientX - width + width / 2
@@ -249,7 +250,7 @@ export default function WindowComponent({
 				}
 				(
 					windowFrame.current!.getElementsByClassName(
-						styles.windowFrameFg
+						styles.windowFrameFg,
 					)[0] as HTMLDivElement
 				).style.backgroundPosition = `${newX / 6}px ${newY / 8}px`;
 			}
@@ -263,7 +264,7 @@ export default function WindowComponent({
 			setResizeHandle("");
 			if (fullscreenOnRelease) {
 				const preview = document.getElementsByClassName(
-					"fullscreen-preview"
+					"fullscreen-preview",
 				)[0] as HTMLDivElement;
 				setFullScreenOnRelease(false);
 				setsavedTranslate({
@@ -384,7 +385,7 @@ export default function WindowComponent({
 							className={joinClasses(styles.windowButton, styles.minimize)}
 							onClick={() => {
 								const taskbarItem = document.getElementById(
-									`icon-${winState?.id}`
+									`icon-${winState?.id}`,
 								) as HTMLDivElement;
 								if (!taskbarItem || !windowFrame.current) return;
 								const box = taskbarItem.getBoundingClientRect();
@@ -407,7 +408,7 @@ export default function WindowComponent({
 									{
 										duration: 200,
 										easing: "ease-out",
-									}
+									},
 								).onfinish = () => {
 									windowFrame.current!.classList.remove(styles.fullscreen);
 									windowFrame.current!.classList.add(styles.minimized);

@@ -160,7 +160,7 @@ function GameBoard({
 function Multiplayer({ win }: { win: Window }) {
 	const [users, setUsers] = useState<MinesweeperUser[]>([]);
 	const [id, setId] = useState("");
-	const user = users.find((u) => u.id === id);
+	const [user, setUser] = useState<MinesweeperUser>();
 	const [opponent, setOpponent] = useState<MinesweeperUser>();
 	const [boards, setBoards] = useState<[MPBoard, MPBoard]>([] as any);
 
@@ -189,9 +189,8 @@ function Multiplayer({ win }: { win: Window }) {
 				switch (type) {
 					case "INITIALIZE": {
 						setId(data.id);
-						setUsers(
-							data.users.filter((u: MinesweeperUser) => u.id !== data.id),
-						);
+						setUsers(data.users);
+						setUser(data.users.find((u: MinesweeperUser) => u.id === data.id));
 						console.log(data);
 						break;
 					}
@@ -213,6 +212,7 @@ function Multiplayer({ win }: { win: Window }) {
 								});
 							}
 						}
+						setUser(players.find((p) => p.id === id));
 						setOpponent(opponent);
 						setBoards(data.boards);
 						setMyBoard(emptyBoard);

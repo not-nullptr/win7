@@ -1,5 +1,5 @@
 import styles from "../../../css/SingleplayerMinesweeper.module.css";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import zero from "../../../assets/minesweeper/numbers/zero.png";
 import off from "../../../assets/minesweeper/numbers/off.png";
 
@@ -78,7 +78,7 @@ function Minesweeper() {
 	const [board, setBoard] = useState<Board>(generateBoard());
 	const [gameOver, setGameOver] = useState(false);
 	const [smiley, setSmiley] = useState("");
-	const [first, setFirst] = useState(true);
+	const first = useRef(true);
 	const [won, setWon] = useState(false);
 	function reveal(board: Board, x: number, y: number) {
 		const cell = board[x][y];
@@ -91,6 +91,7 @@ function Minesweeper() {
 				}),
 			);
 			setBoard([...board]);
+			console.log("game over?");
 			setGameOver(true);
 		}
 		const evaluation = evaluateSurrounding(board, x, y);
@@ -115,7 +116,6 @@ function Minesweeper() {
 			}),
 		);
 		setWon(won);
-		setGameOver(won);
 	}, [board]);
 	useEffect(() => {
 		if (gameOver) {
@@ -182,7 +182,17 @@ function Minesweeper() {
 						);
 						setBoard(generateBoard());
 						setGameOver(false);
-						setFirst(true);
+						first.current = true;
+					}}
+					onMouseDown={() => {
+						import("../../../assets/minesweeper/faces/smile-pressed.png").then(
+							(i) => setSmiley(i.default),
+						);
+					}}
+					onMouseUp={() => {
+						import("../../../assets/minesweeper/faces/smile.png").then((i) =>
+							setSmiley(i.default),
+						);
 					}}
 					style={{
 						backgroundImage: `url(${smiley})`,
@@ -221,25 +231,27 @@ function Minesweeper() {
 								className={styles.bomb}
 								onMouseDown={() => {
 									if (gameOver) return;
+									console.log(gameOver);
 									import(
 										"../../../assets/minesweeper/faces/anticipation.png"
 									).then((i) => setSmiley(i.default));
 								}}
 								onClick={() => {
 									if (gameOver) return;
-									setFirst(false);
+									first.current = false;
 									const evaluation = evaluateSurrounding(board, x, y);
 									if (mine.state === CellState.Revealed) return;
 									if (mine.isBomb) {
-										if (first) {
+										if (first.current) {
 											mine.isBomb = false;
 										} else {
 											setGameOver(true);
-
+											setWon(false);
 											return setBoard((board) =>
 												board.map((row) =>
 													row.map((cell) => {
 														if (cell.isBomb) {
+															setGameOver(true);
 															return {
 																isBomb: true,
 																state: CellState.Revealed,

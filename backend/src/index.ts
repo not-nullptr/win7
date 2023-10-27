@@ -7,6 +7,9 @@ import "./functions/Logic";
 import http from "http";
 import url from "url";
 import { MinesweeperManager } from "./classes/MinesweeperConnection";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const server = http.createServer();
 
@@ -43,4 +46,4 @@ server.on("listening", () => {
 	console.log("4000, yo");
 });
 
-server.listen(4000);
+server.listen(process.env.PORT || 4000);

@@ -310,7 +310,7 @@ function Home({ win }: { win?: Window }) {
 												},
 											});
 										},
-										icon: "/ui/wlm/icons/active.png",
+										icon: `${import.meta.env.BASE_URL}ui/wlm/icons/active.png`,
 									},
 									{
 										label: "Busy",
@@ -323,7 +323,7 @@ function Home({ win }: { win?: Window }) {
 												},
 											});
 										},
-										icon: "/ui/wlm/icons/dnd.png",
+										icon: `${import.meta.env.BASE_URL}ui/wlm/icons/dnd.png`,
 									},
 									{
 										label: "Away",
@@ -336,7 +336,7 @@ function Home({ win }: { win?: Window }) {
 												},
 											});
 										},
-										icon: "/ui/wlm/icons/idle.png",
+										icon: `${import.meta.env.BASE_URL}/ui/wlm/icons/idle.png`,
 									},
 									{
 										label: "Appear offline",
@@ -349,7 +349,9 @@ function Home({ win }: { win?: Window }) {
 												},
 											});
 										},
-										icon: "/ui/wlm/icons/invisible.png",
+										icon: `${
+											import.meta.env.BASE_URL
+										}ui/wlm/icons/invisible.png`,
 									},
 									{
 										label: "Change Username",

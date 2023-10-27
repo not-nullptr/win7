@@ -3,6 +3,7 @@
 		"composite": true,
 		"rootDir": "./src",
 		"outDir": "./dist",
-		"module": "commonjs"
+		"module": "commonjs",
+		"declaration": true
 	}
 }

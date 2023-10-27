@@ -11,12 +11,12 @@ export interface Theme {
 
 export class ThemingService {
 	private static theme: Theme = {
-		background: "/bg.jpg",
+		background: `${import.meta.env.BASE_URL}bg.jpg`,
 		colorIntensity: 50,
 		saturation: 43,
 		brightness: 65,
 		color: "#74b8fc",
-		userPicture: "/user.bmp",
+		userPicture: `${import.meta.env.BASE_URL}user.bmp`,
 	};
 	private static listeners: {
 		function: (theme: Theme) => void;

@@ -51,7 +51,7 @@ function Notification({ notification }: { notification: LiveNotification }) {
 			<div className={styles.pseudoTitlebar}>
 				<img
 					className={styles.notificationIcon}
-					src="/icons/window/msn.png"
+					src={`${import.meta.env.BASE_URL}icons/window/msn.png`}
 					alt="MSN"
 				/>
 				<div className={styles.notificationTitle}>Binbows Live Messenger</div>

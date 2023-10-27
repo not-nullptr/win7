@@ -130,9 +130,21 @@ export default function PfpBorder({
 			cache.appendChild(img);
 		}
 		["active", "dnd", "idle"].forEach((state) => {
-			preloadImage(`/ui/wlm/statuses/${variant}/${state}-static.png`);
-			preloadImage(`/ui/wlm/statuses/${variant}/${state}-animated-from.png`);
-			preloadImage(`/ui/wlm/statuses/${variant}/${state}-animated-to.png`);
+			preloadImage(
+				`${
+					import.meta.env.BASE_URL
+				}ui/wlm/statuses/${variant}/${state}-static.png`,
+			);
+			preloadImage(
+				`${
+					import.meta.env.BASE_URL
+				}ui/wlm/statuses/${variant}/${state}-animated-from.png`,
+			);
+			preloadImage(
+				`${
+					import.meta.env.BASE_URL
+				}ui/wlm/statuses/${variant}/${state}-animated-to.png`,
+			);
 		});
 		return () => {
 			document.body.removeChild(cache);
@@ -158,7 +170,11 @@ export default function PfpBorder({
 	}
 	return (
 		<div ref={containerRef} className={styles.pfpBorder}>
-			<img ref={borderRef} src={src} id="border" />
+			<img
+				ref={borderRef}
+				src={`${import.meta.env.BASE_URL}.${src}`}
+				id="border"
+			/>
 			<img
 				ref={borderDummy2Ref}
 				src={borderDummy2}

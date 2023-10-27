@@ -30,7 +30,7 @@ function TaskbarIcon({ window }: { window: Window }) {
 		(async () => {
 			if (hoverRef.current) {
 				const img = new Image();
-				img.src = `/icons/main/${w.icon}`;
+				img.src = `${import.meta.env.BASE_URL}icons/main/${w.icon}`;
 				const vibrant = Vibrant.from(img);
 				const color = await vibrant.getPalette();
 				hoverRef.current.style.setProperty(

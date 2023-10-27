@@ -1,5 +1,4 @@
 import { v4 } from "uuid";
-import { WebSocket } from "ws";
 import { handleMessageMinesweeper } from "../functions/Logic";
 import { CustomWebSocket } from "./MessengerConnection";
 import { MPBoard, MinesweeperUser } from "../../../shared/src/types";
@@ -34,6 +33,7 @@ export class MinesweeperManager {
 					type: "UPDATE_USERS",
 					data: {
 						users: MinesweeperManager.connections.map(
+							// eslint-disable-next-line @typescript-eslint/no-unused-vars
 							({ socket, ...rest }) => rest,
 						),
 					},
@@ -44,6 +44,7 @@ export class MinesweeperManager {
 						data: {
 							id: connection.id,
 							users: MinesweeperManager.connections.map(
+								// eslint-disable-next-line @typescript-eslint/no-unused-vars
 								({ socket, ...rest }) => rest,
 							),
 						},

@@ -1,5 +1,5 @@
 import React from "react";
-import { CreateCallbackPayload, Window } from "../util/WindowManager";
+import { CreateCallbackPayload } from "../util/WindowManager";
 import { WindowManager } from "../util/WindowManager";
 import styles from "../css/Window.module.css";
 import { joinClasses } from "../util/Module";

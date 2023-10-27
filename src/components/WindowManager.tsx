@@ -7,7 +7,7 @@ import { Context } from "../util/Context";
 
 function WindowProvider({ children }: { children: React.ReactNode }) {
 	const [windows, setWindows] = useState<CreateCallbackPayload[]>([]);
-	const { state, setState } = useContext(Context);
+	const { state } = useContext(Context);
 	// TODO: migrate this to new listener system
 	useEffect(() => {
 		WindowManager.setWindowProviderCallback((e) => {

@@ -8,7 +8,7 @@ function Minesweeper({ win }: { win: Window }) {
 		<MemoryRouter>
 			<Routes>
 				<Route path="/" element={<Navigate to={win?.initialPath} />} />
-				<Route path="/singleplayer" element={<Singleplayer win={win} />} />
+				<Route path="/singleplayer" element={<Singleplayer />} />
 				<Route path="/multiplayer" element={<Multiplayer win={win} />} />
 			</Routes>
 		</MemoryRouter>

@@ -53,7 +53,7 @@ function Explorer({ win }: { win: Window }) {
 							<div className={styles.titleBarNavigationButton} />
 							<div className={styles.titleBarNavigationButton} />
 						</div>
-						<DirectorySearch path="/Documents/Not porn/0000.mp4" />
+						<DirectorySearch />
 						<input
 							placeholder={`Search Not porn...`}
 							className={styles.search}

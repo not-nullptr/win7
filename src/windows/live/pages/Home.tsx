@@ -15,12 +15,7 @@ import paperStatic from "../../../assets/wlm/icons/paper/paper-static.png";
 import NotificationProvider, {
 	LiveNotificationHandler,
 } from "../components/Notifications";
-import {
-	Message,
-	ServerData,
-	ServerMessage,
-	State,
-} from "../../../../shared/src/types";
+import { Message, State } from "../../../../shared/src/types";
 import Live from "../Live";
 
 function getStringFromActivity(activity: string) {
@@ -38,7 +33,7 @@ function getStringFromActivity(activity: string) {
 
 function Home({ win }: { win?: Window }) {
 	const inputRef = useRef<HTMLInputElement>(null);
-	const [editingStatus, setEditingStatus] = useState(false);
+	const [editingStatus] = useState(false);
 	const [paperSrc, setPaperSrc] = useState("");
 	const [liveState, setLiveStateWithoutBroadcast] = useState<State>({
 		connections: [],
@@ -47,10 +42,13 @@ function Home({ win }: { win?: Window }) {
 		id: "",
 		statusMessage: "",
 	});
-	const setLiveState: React.Dispatch<React.SetStateAction<State>> = (s) => {
-		setLiveStateWithoutBroadcast(s);
-		win?.broadcast("live-state", s);
-	};
+	const setLiveState: React.Dispatch<React.SetStateAction<State>> = useCallback(
+		(s) => {
+			setLiveStateWithoutBroadcast(s);
+			win?.broadcast("live-state", s);
+		},
+		[win],
+	);
 	const [winState, setWinState] = useState(win);
 	useEffect(() => {
 		const id = win?.addListener((e) => {
@@ -64,29 +62,11 @@ function Home({ win }: { win?: Window }) {
 		if (!editingStatus) return;
 		inputRef.current?.focus();
 	}, [editingStatus]);
-	useEffect(() => {
-		if (!win) return;
-		const ids = [
-			win.onMessage("live-state", (state) => {
-				setLiveStateWithoutBroadcast(state);
-				console.log(state);
-			}),
-			win.onMessage("send-websocket", (type, data) => {
-				sendJsonMessage({
-					type,
-					data,
-				});
-			}),
-		];
-		return () => {
-			ids.forEach((id) => win.removeMessageListener(id));
-		};
-	}, [win]);
 	const [search, setSearch] = useState("");
 	const { sendJsonMessage } = useWebSocket(
 		"wss://win7api.nota-robot.com/messenger",
 		{
-			onOpen(e) {
+			onOpen() {
 				const username = localStorage.getItem("username");
 				const statusMessage = localStorage.getItem("statusMessage");
 
@@ -187,6 +167,24 @@ function Home({ win }: { win?: Window }) {
 		},
 	);
 	useEffect(() => {
+		if (!win) return;
+		const ids = [
+			win.onMessage("live-state", (state) => {
+				setLiveStateWithoutBroadcast(state);
+				console.log(state);
+			}),
+			win.onMessage("send-websocket", (type, data) => {
+				sendJsonMessage({
+					type,
+					data,
+				});
+			}),
+		];
+		return () => {
+			ids.forEach((id) => win.removeMessageListener(id));
+		};
+	}, [win, sendJsonMessage]);
+	useEffect(() => {
 		const interval = setInterval(() => {
 			sendJsonMessage({
 				type: "PING",
@@ -195,10 +193,10 @@ function Home({ win }: { win?: Window }) {
 		return () => {
 			clearInterval(interval);
 		};
-	}, []);
+	}, [sendJsonMessage]);
 	const [contextMenuOpacity, setContextMenuOpacity] = useState("0");
 	useEffect(() => {
-		const id = win?.addListener((e, closing) => {
+		const id = win?.addListener((e) => {
 			const str = getStringFromActivity(e.activity);
 			if (str && str !== liveState.status) {
 				setLiveState((old) => ({ ...old, status: str }));
@@ -207,7 +205,7 @@ function Home({ win }: { win?: Window }) {
 		return () => {
 			if (id) win?.removeListener(id);
 		};
-	}, [win, liveState]);
+	}, [win, liveState, setLiveState]);
 	useEffect(() => {
 		win?.setActivity("live/active");
 	}, [win]);
@@ -500,6 +498,7 @@ function Home({ win }: { win?: Window }) {
 									<a
 										href={`https://www.google.com/search?q=${search}`}
 										target="_blank"
+										rel="noreferrer"
 									>
 										Search the web for "{search}"
 									</a>

@@ -56,6 +56,7 @@ export class Notification {
 	windowId?: string;
 	trayId: string;
 	constructor(notification: NotificationProps) {
+		this.window;
 		this.icon =
 			notification.icon ||
 			TrayService.getItemById(notification.trayId)?.icon ||

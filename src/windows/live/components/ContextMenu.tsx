@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect } from "react";
 import { hasParentWithClass } from "../../../util/Generic";
 import styles from "../../../css/ContextMenu.module.css";
 import windowStyles from "../../../css/Window.module.css";
@@ -100,9 +100,6 @@ function Item(item: ContextMenuElement) {
 							`.${styles.contextMenuChild}`,
 						) as HTMLElement;
 						contextMenuChild.style.visibility = "hidden";
-						const handles = document.querySelectorAll(
-							`.${windowStyles.handle}`,
-						);
 					}}
 				>
 					{item.label}

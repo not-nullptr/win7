@@ -1,4 +1,4 @@
-import { Window, WindowManager } from "../util/WindowManager";
+import { WindowManager } from "../util/WindowManager";
 import styles from "../css/CommandPrompt.module.css";
 import { useEffect, useRef, useState } from "react";
 import { ProcessManager } from "../util/Process";
@@ -8,7 +8,7 @@ interface Output {
 	text: string; // \n should work here?
 }
 
-function CommandPrompt({ win }: { win: Window }) {
+function CommandPrompt() {
 	const ps2 = "%dir%>";
 	const [path, setPath] = useState("C:\\Binbows\\System32");
 	const [out, setOut] = useState<Output[]>([
@@ -108,37 +108,37 @@ function CommandPrompt({ win }: { win: Window }) {
 			printf(args.join(" "));
 		}),
 		new Command("donut", async () => {
-			var A = 1,
+			let A = 1,
 				B = 1;
 
-			var asciiframe = () => {
+			const asciiframe = () => {
 				inputRef.current!.innerText = "";
 				console.log("we're fucked!");
-				var b = [];
-				var z = [];
+				const b = [] as any[];
+				const z = [] as any[];
 				A += 0.07;
 				B += 0.03;
-				var cA = Math.cos(A),
+				const cA = Math.cos(A),
 					sA = Math.sin(A),
 					cB = Math.cos(B),
 					sB = Math.sin(B);
-				for (var k = 0; k < 1760; k++) {
+				for (let k = 0; k < 1760; k++) {
 					b[k] = k % 80 == 79 ? "\n" : " ";
 					z[k] = 0;
 				}
-				for (var j = 0; j < 6.28; j += 0.07) {
+				for (let j = 0; j < 6.28; j += 0.07) {
 					// j <=> theta
-					var ct = Math.cos(j),
+					const ct = Math.cos(j),
 						st = Math.sin(j);
 					for (let i = 0; i < 6.28; i += 0.02) {
 						// i <=> phi
-						var sp = Math.sin(i),
+						const sp = Math.sin(i),
 							cp = Math.cos(i),
 							h = ct + 2, // R1 + R2*cos(theta)
 							D = 1 / (sp * h * sA + st * cA + 5), // this is 1/z
 							t = sp * h * cA - st * sA; // this is a clever factoring of some of the terms in x' and y'
 
-						var x = 0 | (40 + 30 * D * (cp * h * cB - t * sB)),
+						const x = 0 | (40 + 30 * D * (cp * h * cB - t * sB)),
 							y = 0 | (12 + 15 * D * (cp * h * sB + t * cB)),
 							o = x + 80 * y,
 							N =

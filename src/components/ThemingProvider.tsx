@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Theme, ThemingService } from "../util/ThemingService";
 import styles from "../css/ThemingProvider.module.css";
-import { openDB } from "idb";
 
 function hexToRgb(hex: string): string {
 	hex = hex.replace("#", "");
@@ -17,11 +16,6 @@ function hexToRgb(hex: string): string {
 	const b = parseInt(hex.substring(4, 6), 16);
 
 	return `rgb(${r}, ${g}, ${b})`;
-}
-
-function rgbaToHex(rgba: string): string {
-	const [r, g, b, a] = rgba.match(/\d+/g)!.map(Number);
-	return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1, 7)}`;
 }
 
 function ThemingProvider() {

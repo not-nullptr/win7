@@ -13,7 +13,7 @@ const absolutePosition = (element: HTMLElement | null) =>
 	};
 
 export default function NotificationProvider() {
-	const [notiTrayId, setNotiTrayId] = useState("");
+	const [, setNotiTrayId] = useState("");
 	const [notiPos, setNotiPos] = useState(0);
 	const [tray, setTray] = useState<TrayItem[]>(TrayService.getItems());
 	const notificationRef = useRef<Notification | undefined>(

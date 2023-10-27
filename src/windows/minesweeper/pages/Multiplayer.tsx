@@ -2,8 +2,6 @@ import { Window } from "../../../util/WindowManager";
 import extraStyles from "../../../css/MultiplayerMinesweeper.module.css";
 import styles from "../../../css/SingleplayerMinesweeper.module.css";
 import { useEffect, useState } from "react";
-import zero from "../../../assets/minesweeper/numbers/zero.png";
-import off from "../../../assets/minesweeper/numbers/off.png";
 import useWebSocket from "react-use-websocket";
 import lowQualityExplosion from "../../../assets/minesweeper/explosion.gif";
 
@@ -27,6 +25,7 @@ function GameBoard({
 	onCellClick?: (x: number, y: number) => void;
 	player?: MinesweeperUser;
 }) {
+	const [images, setImages] = useState<string[]>([]);
 	useEffect(() => {
 		// preload images
 		const cache = document.createElement("CACHE");
@@ -46,12 +45,8 @@ function GameBoard({
 		return () => {
 			document.body.removeChild(cache);
 		};
-	}, []);
+	}, [images]);
 	const [gameOver, setGameOver] = useState(false);
-	const [images, setImages] = useState<string[]>([]);
-	const [smiley, setSmiley] = useState("");
-	const [first, setFirst] = useState(true);
-	const [won, setWon] = useState(false);
 	useEffect(() => {
 		let won = true;
 		initialBoard.forEach((row) =>
@@ -59,26 +54,9 @@ function GameBoard({
 				if (cell.state === CellState.Unrevealed && !cell.isBomb) won = false;
 			}),
 		);
-		setWon(won);
 		setGameOver(won);
 	}, [initialBoard]);
 	useEffect(() => {
-		if (gameOver) {
-			if (!won) {
-				import("../../../assets/minesweeper/faces/loss.png").then((i) =>
-					setSmiley(i.default),
-				);
-			} else {
-				import("../../../assets/minesweeper/faces/win.png").then((i) =>
-					setSmiley(i.default),
-				);
-			}
-		}
-	}, [gameOver, won]);
-	useEffect(() => {
-		import("../../../assets/minesweeper/faces/smile.png").then((i) =>
-			setSmiley(i.default),
-		);
 		(async () => {
 			const images = await Promise.all(
 				Object.values(
@@ -126,7 +104,7 @@ function GameBoard({
 						{row.map((mine, y) => (
 							<div
 								onClick={() => {
-									if (!interactive) return;
+									if (!interactive || gameOver) return;
 									onCellClick?.(x, y);
 								}}
 								style={{
@@ -162,7 +140,7 @@ function Multiplayer({ win }: { win: Window }) {
 	const [id, setId] = useState("");
 	const [user, setUser] = useState<MinesweeperUser>();
 	const [opponent, setOpponent] = useState<MinesweeperUser>();
-	const [boards, setBoards] = useState<[MPBoard, MPBoard]>([] as any);
+	const [, setBoards] = useState<[MPBoard, MPBoard]>([] as any);
 
 	const [myBoard, setMyBoard] = useState<Board>();
 	const [opponentBoard, setOpponentBoard] = useState<Board>();
@@ -202,7 +180,7 @@ function Multiplayer({ win }: { win: Window }) {
 						const players = data.players as MinesweeperUser[];
 						const opponent = players.find((p) => p.id !== id);
 						if (!opponent) return;
-						let emptyBoard: Board = [];
+						const emptyBoard: Board = [];
 						for (let i = 0; i < BOARD_SIZE; i++) {
 							emptyBoard.push([]);
 							for (let j = 0; j < BOARD_SIZE; j++) {
@@ -257,7 +235,7 @@ function Multiplayer({ win }: { win: Window }) {
 			}, 1000);
 			return () => clearTimeout(timeout);
 		}
-	}, [gameState]);
+	}, [gameState, win]);
 	return (
 		<div className={extraStyles.window}>
 			{myBoard !== undefined && opponentBoard !== undefined ? (

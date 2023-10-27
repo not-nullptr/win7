@@ -23,56 +23,55 @@ export class MessengerManager {
 			const conn = this.getConnection(connection.id);
 			type InitializeData = Partial<MessengerConnection>;
 			if (json.type === "INITIALIZE") {
-				function initialize(id: string, data: InitializeData) {
-					const username = data.username || id;
-					const status = data.status || "active";
-					const statusMessage = data.statusMessage || "";
-					if (username.length > 64) return;
-					if (statusMessage.length > 128) return;
-					if (
-						status !== "active" &&
-						status !== "idle" &&
-						status !== "dnd" &&
-						status !== "invisible"
-					)
-						return;
-					if (MessengerManager.getConnection(id)) return;
-					const conn = {
+				const id = connection.id;
+				const data = json.data as InitializeData;
+				const username = data.username || id;
+				const status = data.status || "active";
+				const statusMessage = data.statusMessage || "";
+				if (username.length > 64) return;
+				if (statusMessage.length > 128) return;
+				if (
+					status !== "active" &&
+					status !== "idle" &&
+					status !== "dnd" &&
+					status !== "invisible"
+				)
+					return;
+				if (MessengerManager.getConnection(id)) return;
+				const conn = {
+					username,
+					status,
+					statusMessage,
+					socket: connection,
+				};
+				MessengerManager.connections.push(conn);
+				MessengerManager.broadcastExcept(conn.socket.id, {
+					type: "CONNECT",
+					data: {
+						id,
 						username,
 						status,
 						statusMessage,
-						socket: connection,
-					};
-					MessengerManager.connections.push(conn);
-					MessengerManager.broadcastExcept(conn.socket.id, {
-						type: "CONNECT",
+					},
+				});
+				conn.socket.send(
+					JSON.stringify({
+						type: "INITIALIZE",
 						data: {
 							id,
-							username,
 							status,
 							statusMessage,
+							username,
+							connections: MessengerManager.getConnections()
+								.filter((c) => c.socket.id !== conn.socket.id)
+								.map((c) => ({
+									id: c.socket.id,
+									...c,
+									socket: undefined,
+								})),
 						},
-					});
-					conn.socket.send(
-						JSON.stringify({
-							type: "INITIALIZE",
-							data: {
-								id,
-								status,
-								statusMessage,
-								username,
-								connections: MessengerManager.getConnections()
-									.filter((c) => c.socket.id !== conn.socket.id)
-									.map((c) => ({
-										id: c.socket.id,
-										...c,
-										socket: undefined,
-									})),
-							},
-						}),
-					);
-				}
-				initialize(connection.id, json.data);
+					}),
+				);
 			}
 			if (!conn) return;
 			handleMessageMessenger(json.type, conn, json.data);

@@ -16,7 +16,7 @@ function GettingStarted({ win }: { win: Window }) {
 			"Join the r/unixporn Discord server",
 			"https://discord.gg/unixporn",
 		);
-	}, []);
+	}, [win]);
 	return (
 		<div className={styles.window}>
 			<div className={styles.header}>
@@ -29,7 +29,11 @@ function GettingStarted({ win }: { win: Window }) {
 						<li>
 							Originally aiming to be a UI study for the Aero era of operating
 							system design, it has since become a more feature complete{" "}
-							<a href="https://en.wikipedia.org/wiki/Webtop" target="_blank">
+							<a
+								href="https://en.wikipedia.org/wiki/Webtop"
+								target="_blank"
+								rel="noreferrer"
+							>
 								webtop (web desktop)
 							</a>
 							.
@@ -43,8 +47,9 @@ function GettingStarted({ win }: { win: Window }) {
 				</div>
 			</div>
 			<div className={styles.programs}>
-				{programs.map((p) => (
+				{programs.map((p, i) => (
 					<div
+						key={i}
 						className={styles.program}
 						onMouseDown={(e) => {
 							const target = e.target as HTMLDivElement;

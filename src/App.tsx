@@ -17,8 +17,6 @@ import NotificationSender from "./windows/NotificationSender";
 import Notepad from "./windows/Notepad";
 import Explorer from "./windows/Explorer";
 import TaskManager from "./windows/TaskManager";
-import { Notification } from "./util/NotificationService";
-import { TrayService } from "./util/TrayService";
 
 export const programs = [
 	new Program(
@@ -146,11 +144,11 @@ function App() {
 	const [state, setState] = useState<State>({ zIndex: 1000, windows: [] });
 	const desktopRef = useRef<HTMLDivElement>(null);
 	const selectRef = useRef<HTMLDivElement>(null);
-	let windowOpened = false;
+	const windowOpenedRef = useRef(false);
 	useEffect(() => {
-		if (!windowOpened)
+		if (!windowOpenedRef.current)
 			programs.find((p) => p.name === "Getting Started")?.spawn();
-		windowOpened = true;
+		windowOpenedRef.current = true;
 	}, []);
 	function mouseMove(e: MouseEvent) {
 		let [width, height] = [

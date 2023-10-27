@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CreateCallbackPayload, Window } from "../../util/WindowManager";
 import { Context } from "../../util/Context";
 import styles from "../../css/Window.module.css";
@@ -13,7 +13,7 @@ export function useWindowState(win: Window) {
 		return () => {
 			win?.removeListener(id || "");
 		};
-	}, []);
+	}, [win]);
 	return winState;
 }
 
@@ -318,6 +318,7 @@ export function useWindowManagement(
 		savedTranslate.w,
 		savedTranslate.h,
 		fullscreenOnRelease,
+		windowFrame,
 	]);
 	return [savedTranslate, setsavedTranslate];
 }

@@ -52,6 +52,7 @@ export default function PfpBorder({
 		] as HTMLImageElement[];
 
 		if (!containerRef.current) return;
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 		state = getStateFromPath(state);
 		if (state !== prevActivity) {
 			setPrevActivity(state);
@@ -136,7 +137,7 @@ export default function PfpBorder({
 		return () => {
 			document.body.removeChild(cache);
 		};
-	}, []);
+	}, [variant]);
 	function getImageStyle(): React.CSSProperties {
 		switch (variant) {
 			case "default":

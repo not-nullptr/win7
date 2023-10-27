@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import styles from "../css/TestApp.module.css";
-import { Window } from "../util/WindowManager";
 
 export function Canvas(
 	props: React.DetailedHTMLProps<
@@ -45,13 +44,14 @@ export function Canvas(
 			document.removeEventListener("mouseup", mouseUp);
 			document.removeEventListener("mousemove", mouseMove);
 			canvasRef.current?.removeEventListener("mouseenter", mouseDown);
+			// eslint-disable-next-line react-hooks/exhaustive-deps
 			canvasRef.current?.removeEventListener("mouseleave", mouseUp);
 		};
-	}, []);
+	}, [props.color, props.lineWidth]);
 	return <canvas {...props} ref={canvasRef}></canvas>;
 }
 
-function TaskManager({ win }: { win: Window }) {
+function TaskManager() {
 	return (
 		<div className={styles.window}>
 			<h1>To-do list</h1>

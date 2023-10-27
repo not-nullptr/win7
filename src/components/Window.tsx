@@ -2,11 +2,7 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import styles from "../css/Window.module.css";
 import { Context } from "../util/Context";
 import { joinClasses } from "../util/Module";
-import {
-	CreateCallbackPayload,
-	Window,
-	WindowManager,
-} from "../util/WindowManager";
+import { CreateCallbackPayload, Window } from "../util/WindowManager";
 import {
 	WindowButtons,
 	WindowContents,
@@ -53,7 +49,7 @@ export default function WindowComponent({
 			...state,
 			zIndex: state.zIndex + 1,
 		});
-	}, []);
+	}, [state, setState]);
 	useEffect(() => {
 		if (!windowFrame.current) return;
 		windowFrame.current.style.top = `${
@@ -62,7 +58,7 @@ export default function WindowComponent({
 		windowFrame.current.style.left = `${
 			window.innerWidth / 2 - winState?.width / 2
 		}px`;
-	}, []);
+	}, [winState?.width, winState?.height]);
 
 	const [savedTranslate, setsavedTranslate] = useWindowManagement(
 		winState,
@@ -104,7 +100,12 @@ export default function WindowComponent({
 					{winState?.title}
 				</div>
 				<div className={styles.linkContainer}>
-					<a href={winState?.link.link} className={styles.link} target="_blank">
+					<a
+						href={winState?.link.link}
+						className={styles.link}
+						target="_blank"
+						rel="noreferrer"
+					>
 						{winState?.link.text}
 					</a>
 				</div>

@@ -39,7 +39,7 @@ function TaskbarIcon({ window }: { window: Window }) {
 				);
 			}
 		})();
-	}, [hoverRef]);
+	}, [hoverRef, w.icon]);
 	useEffect(() => {
 		function mouseMove(e: MouseEvent) {
 			if (!hoverRef.current) return;
@@ -99,6 +99,7 @@ function TaskbarIcon({ window }: { window: Window }) {
 			document.removeEventListener("mousemove", mouseMove);
 			hoverRef.current?.removeEventListener("mouseleave", mouseLeave);
 			hoverRef.current?.removeEventListener("mousedown", mouseDown);
+			// eslint-disable-next-line react-hooks/exhaustive-deps
 			hoverRef.current?.removeEventListener("mouseup", mouseUp);
 		};
 	}, [hoverRef]);

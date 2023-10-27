@@ -41,7 +41,7 @@ function Notification({ notification }: { notification: LiveNotification }) {
 			await sleep(750);
 			notificationRef.current.classList.remove(styles.hide);
 		})();
-	}, []);
+	}, [notification]);
 	return (
 		<div
 			key={notification.id}
@@ -80,7 +80,7 @@ function NotificationProvider() {
 	return (
 		<div className={styles.container}>
 			{notifications.map((notification) => (
-				<Notification notification={notification} />
+				<Notification key={notification.id} notification={notification} />
 			))}
 		</div>
 	);

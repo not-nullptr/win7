@@ -9,7 +9,6 @@ import {
 	ClientData,
 	ClientMessage,
 	DataType,
-	GameType,
 	Message,
 	MessageType,
 	ServerMessage,
@@ -66,7 +65,6 @@ function MessageComponent({ win }: { win?: Window }) {
 	const emoticonRef = useRef<HTMLDivElement>(null);
 	const [emoji, setEmoji] = useState<boolean>(false);
 	const messageBoxRef = useRef<HTMLTextAreaElement>(null);
-	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const [params] = useSearchParams();
 	const [liveState, setLiveStateWithoutBroadcast] = useState<State>(
 		JSON.parse(params.get("initialState") || "{}"),
@@ -93,21 +91,14 @@ function MessageComponent({ win }: { win?: Window }) {
 			const audio = new Audio("/ui/wlm/sounds/type.mp3");
 			audio.play();
 		}
-	}, [playedRef.current]);
+	}, [params]);
 	const messagesContainer = useRef<HTMLDivElement>(null);
 	const user = liveState.connections.find((c) => c.id === params.get("user"));
 	const conversationHash = hashCode(user?.id || "", liveState.id);
-	const [gameState, setGameState] = useState<{
-		playing: boolean;
-		state: any;
-	}>({
-		playing: false,
-		state: {},
-	});
-	const setLiveState = (state: State) => {
-		setLiveStateWithoutBroadcast(state);
-		win?.broadcast("live-state", state);
-	};
+	// const setLiveState = (state: State) => {
+	// 	setLiveStateWithoutBroadcast(state);
+	// 	win?.broadcast("live-state", state);
+	// };
 	const [messages, setMessages] = useState<ServerMessage[]>(
 		(() => {
 			try {
@@ -173,18 +164,18 @@ function MessageComponent({ win }: { win?: Window }) {
 				break;
 			}
 			case "GAME": {
-				const data = e.data;
-				if (data.conversationId !== conversationHash) return;
-				switch (e.data.gameType) {
-					case GameType.START_GAME_RESPONSE: {
-						setGameState({
-							playing: true,
-							state: data.gameState,
-						});
-						break;
-					}
-				}
-				break;
+				// const data = e.data;
+				// if (data.conversationId !== conversationHash) return;
+				// switch (e.data.gameType) {
+				// 	case GameType.START_GAME_RESPONSE: {
+				// 		setGameState({
+				// 			playing: true,
+				// 			state: data.gameState,
+				// 		});
+				// 		break;
+				// 	}
+				// }
+				// break;
 			}
 		}
 	}
@@ -201,6 +192,7 @@ function MessageComponent({ win }: { win?: Window }) {
 		return () => {
 			ids.forEach((id) => win.removeMessageListener(id));
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [win]);
 	// function groupMessages(messages: Message[]): GroupedMessage[] {
 	// 	const messages: GroupedMessage[] = [];
@@ -233,7 +225,7 @@ function MessageComponent({ win }: { win?: Window }) {
 	}, [messages]);
 	useEffect(() => {
 		if (!user) win?.close();
-	}, [user]);
+	}, [user, win]);
 	useEffect(() => {
 		function mouseDown(e: MouseEvent) {
 			if (
@@ -319,7 +311,7 @@ function MessageComponent({ win }: { win?: Window }) {
 																{parser.toReact(
 																	m.message
 																		.split(/(:.*?:)/g)
-																		.map((part, index) => {
+																		.map((part) => {
 																			if (
 																				part.startsWith(":") &&
 																				part.endsWith(":")
@@ -521,6 +513,7 @@ function MessageComponent({ win }: { win?: Window }) {
 						>
 							{images.map((i) => (
 								<ImageButton
+									key={i}
 									onClick={() => {
 										if (!messageBoxRef.current) return;
 										const emoticon = `:${i

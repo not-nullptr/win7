@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import styles from "../css/Select.module.css";
 import { hasParentWithClass } from "../util/Generic";
 
-export default function ({
+export default function SelectMenu({
 	items,
 	width,
 	id,
@@ -29,7 +29,7 @@ export default function ({
 		}
 		document.addEventListener("mousedown", mouseDownHandler);
 		return () => document.removeEventListener("mousedown", mouseDownHandler);
-	}, []);
+	}, [items]);
 	useEffect(() => {
 		if (rootRef.current === null) return;
 		(rootRef.current as any).value = selected.value;

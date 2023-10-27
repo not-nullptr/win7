@@ -1,6 +1,4 @@
-import { Window } from "../util/WindowManager";
 import styles from "../css/Personalization.module.css";
-import { useState } from "react";
 import { ThemingService } from "../util/ThemingService";
 
 /*
@@ -16,7 +14,7 @@ import { ThemingService } from "../util/ThemingService";
 	);
 */
 
-function Personalization({ win }: { win?: Window }) {
+function Personalization() {
 	function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
 		ThemingService.modifyTheme({
 			[e.target.name]: e.target.value,

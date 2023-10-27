@@ -1,4 +1,3 @@
-import { Window } from "../../../util/WindowManager";
 import styles from "../../../css/SingleplayerMinesweeper.module.css";
 import { useEffect, useState } from "react";
 import zero from "../../../assets/minesweeper/numbers/zero.png";
@@ -54,7 +53,8 @@ function generateBoard() {
 	return board;
 }
 
-function Minesweeper({ win }: { win: Window }) {
+function Minesweeper() {
+	const [images, setImages] = useState<string[]>([]);
 	useEffect(() => {
 		// preload images
 		const cache = document.createElement("CACHE");
@@ -74,10 +74,9 @@ function Minesweeper({ win }: { win: Window }) {
 		return () => {
 			document.body.removeChild(cache);
 		};
-	}, []);
+	}, [images]);
 	const [board, setBoard] = useState<Board>(generateBoard());
 	const [gameOver, setGameOver] = useState(false);
-	const [images, setImages] = useState<string[]>([]);
 	const [smiley, setSmiley] = useState("");
 	const [first, setFirst] = useState(true);
 	const [won, setWon] = useState(false);

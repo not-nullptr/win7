@@ -1,7 +1,5 @@
 import { v4 } from "uuid";
-import { Notification } from "./NotificationService";
 import { Program } from "./Program";
-import { TrayService } from "./TrayService";
 import { Window, WindowProps } from "./WindowManager";
 
 export class Process {

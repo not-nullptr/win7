@@ -64,7 +64,7 @@ function Home({ win }: { win?: Window }) {
 	}, [editingStatus]);
 	const [search, setSearch] = useState("");
 	const { sendJsonMessage } = useWebSocket(
-		"wss://win7api.nota-robot.com/messenger",
+		`${import.meta.env.VITE_WS_URL}/messenger`,
 		{
 			onOpen() {
 				const username = localStorage.getItem("username");

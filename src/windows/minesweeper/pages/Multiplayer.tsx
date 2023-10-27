@@ -156,7 +156,7 @@ function Multiplayer({ win }: { win: Window }) {
 		console.log(myBoard, opponentBoard);
 	}, [myBoard, opponentBoard]);
 	const { sendJsonMessage } = useWebSocket(
-		"wss://win7api.nota-robot.com/minesweeper",
+		`${import.meta.env.VITE_WS_URL}/minesweeper`,
 		{
 			onMessage(e) {
 				const { type, data } = JSON.parse(e.data) as {

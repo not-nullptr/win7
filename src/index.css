@@ -53,7 +53,6 @@
 
 body {
 	overflow: hidden;
-	background: url("./assets/bg.jpg") center center / cover no-repeat fixed;
 	margin: 0;
 	cursor: url("/cursors/default.cur"), auto;
 }

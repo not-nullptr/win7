@@ -148,7 +148,7 @@ export default function NotificationProvider() {
 					<div className={styles.notificationContent}>
 						<img
 							className={styles.notificationIcon}
-							src={`/icons/main/${notification.icon}`}
+							src={`${import.meta.env.BASE_URL}icons/main/${notification.icon}`}
 						/>
 						<div className={styles.notificationText}>
 							<h2 className={styles.header}>{notification.title}</h2>

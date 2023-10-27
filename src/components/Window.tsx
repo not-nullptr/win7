@@ -49,7 +49,8 @@ export default function WindowComponent({
 			...state,
 			zIndex: state.zIndex + 1,
 		});
-	}, [state, setState]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 	useEffect(() => {
 		if (!windowFrame.current) return;
 		windowFrame.current.style.top = `${
@@ -84,7 +85,7 @@ export default function WindowComponent({
 				className={joinClasses(styles.titleBar)}
 			>
 				<img
-					src={`/icons/window/${winState?.icon}`}
+					src={`${import.meta.env.BASE_URL}icons/window/${winState?.icon}`}
 					className={styles.windowIcon}
 					style={{
 						visibility: winState?.titleBarHeight === 28 ? "visible" : "hidden",

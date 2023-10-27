@@ -25,7 +25,11 @@ export default function Start({
 						}}
 						className={styles.startMenuProgram}
 					>
-						<img src={`/icons/main/${p.icon || "unknown.png"}`} />
+						<img
+							src={`${import.meta.env.BASE_URL}icons/main/${
+								p.icon || "unknown.png"
+							}`}
+						/>
 						<div>{p.name}</div>
 					</div>
 				))}

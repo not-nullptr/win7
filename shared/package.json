@@ -6,5 +6,9 @@
 	"license": "ISC",
 	"dependencies": {
 		"typescript": "^5.2.2"
+	},
+	"scripts": {
+		"build-linux": "rm tsconfig.tsbuildinfo && tsc --p .",
+		"build-windows": "del tsconfig.tsbuildinfo && tsc --p ."
 	}
 }

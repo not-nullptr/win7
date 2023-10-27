@@ -67,7 +67,7 @@ function GettingStarted({ win }: { win: Window }) {
 							p.spawn();
 						}}
 					>
-						<img src={`/icons/main/${p.icon}`} />
+						<img src={`${import.meta.env.BASE_URL}icons/main/${p.icon}`} />
 						<div>{p.name}</div>
 					</div>
 				))}

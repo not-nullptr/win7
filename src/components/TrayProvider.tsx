@@ -30,7 +30,7 @@ export default function TrayProvider() {
 						id={i.id}
 						title={i.label}
 						className={styles.icon}
-						src={`/icons/main/${i.icon}`}
+						src={`${import.meta.env.BASE_URL}icons/main/${i.icon}`}
 					/>
 				))}
 				<Time />

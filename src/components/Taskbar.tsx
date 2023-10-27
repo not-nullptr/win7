@@ -189,11 +189,11 @@ function TaskbarIcon({ window }: { window: Window }) {
 			}}
 			key={w.id}
 		>
-			<img src={`/icons/main/${w.icon}`} />
+			<img src={`${import.meta.env.BASE_URL}icons/main/${w.icon}`} />
 			{w.activity !== "" ? (
 				<img
 					className="taskbar-icon-activity"
-					src={`/icons/activities/${w.activity}`}
+					src={`${import.meta.env.BASE_URL}icons/activities/${w.activity}`}
 				/>
 			) : null}
 			<div ref={hoverRef} className="taskbar-icon-hover" />

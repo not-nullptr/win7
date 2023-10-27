@@ -88,7 +88,9 @@ function Home({ win }: { win?: Window }) {
 							break;
 						}
 						case "CONNECT": {
-							const sound = new Audio("/ui/wlm/sounds/online.mp3");
+							const sound = new Audio(
+								`${import.meta.env.BASE_URL}ui/wlm/sounds/online.mp3`,
+							);
 							sound.play();
 							const data = e.data.data;
 							LiveNotificationHandler.notify({

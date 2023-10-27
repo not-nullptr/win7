@@ -177,13 +177,13 @@ export default function PfpBorder({
 			/>
 			<img
 				ref={borderDummy2Ref}
-				src={borderDummy2}
+				src={`${import.meta.env.BASE_URL}.${borderDummy2}`}
 				id="borderDummy2"
 				className={styles.borderDummy2}
 			/>
 			<img
 				ref={borderDummy1Ref}
-				src={borderDummy1}
+				src={`${import.meta.env.BASE_URL}.${borderDummy1}`}
 				id="borderDummy1"
 				className={styles.borderDummy1}
 			/>

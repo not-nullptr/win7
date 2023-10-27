@@ -88,7 +88,9 @@ function MessageComponent({ win }: { win?: Window }) {
 	useEffect(() => {
 		if (params.get("initialMessages") && !playedRef.current) {
 			playedRef.current = true;
-			const audio = new Audio("/ui/wlm/sounds/type.mp3");
+			const audio = new Audio(
+				`${import.meta.env.BASE_URL}/ui/wlm/sounds/type.mp3`,
+			);
 			audio.play();
 		}
 	}, [params]);
@@ -118,7 +120,9 @@ function MessageComponent({ win }: { win?: Window }) {
 					setOtherTyping(false);
 					switch (data.messageType) {
 						case MessageType.NUDGE_RESPONSE: {
-							const audio = new Audio("/ui/wlm/sounds/nudge.mp3");
+							const audio = new Audio(
+								`${import.meta.env.BASE_URL}ui/wlm/sounds/nudge.mp3`,
+							);
 							audio.play();
 							const frame = document.getElementById(
 								win?.id || "",
@@ -139,7 +143,9 @@ function MessageComponent({ win }: { win?: Window }) {
 						}
 						default: {
 							if (data.from !== liveState.id) {
-								const audio = new Audio("/ui/wlm/sounds/type.mp3");
+								const audio = new Audio(
+									`${import.meta.env.BASE_URL}ui/wlm/sounds/type.mp3`,
+								);
 								audio.play();
 							}
 						}
@@ -483,7 +489,9 @@ function MessageComponent({ win }: { win?: Window }) {
 											to: user.id,
 										} as ClientMessage);
 									}}
-									image="/ui/wlm/icons/messenger/nudge.png"
+									image={`${
+										import.meta.env.BASE_URL
+									}ui/wlm/icons/messenger/nudge.png`}
 								/>
 								<ImageButton
 									className="emoji-button"

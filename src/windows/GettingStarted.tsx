@@ -7,7 +7,7 @@ import { Window } from "../util/WindowManager";
 function GettingStarted({ win }: { win: Window }) {
 	const [programs, setPrograms] = useState<Program[]>([]);
 	useEffect(() => {
-		import("../App").then((a) => {
+		import("../util/Program").then((a) => {
 			setPrograms(a.programs);
 		});
 	}, []);

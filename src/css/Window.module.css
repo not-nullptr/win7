@@ -3,8 +3,8 @@
 		180deg,
 		rgba(255, 255, 255, 0.688) 0%,
 		rgba(255, 255, 255, 0.357) 41%,
-		rgba(143, 153, 164, 0.294) 41%,
-		rgba(206, 219, 235, 0.42) 100%
+		rgba(124, 124, 124, 0.123) 41%,
+		rgba(58, 58, 58, 0.185) 100%
 	);
 }
 
@@ -45,17 +45,44 @@
 		inset 0px 0px 0px 2px #d9e2eb;
 	/* overflow: hidden; */
 	background: linear-gradient(
-			139deg,
-			rgba(255, 255, 255, 0.463) 0%,
+			-139deg,
+			rgba(135, 173, 190, 0.47) 0%,
 			rgba(0, 0, 0, 0) 25%
 		),
-		linear-gradient(-139deg, rgba(135, 173, 190, 0.47) 0%, rgba(0, 0, 0, 0) 25%),
 		var(--aero-accent);
 	border-radius: 6px;
 	position: absolute;
 	top: 0;
 	left: 0;
 	backdrop-filter: blur(3px);
+}
+
+.windowFrameGradientLeft {
+	background: linear-gradient(
+		139deg,
+		rgba(255, 255, 255, 0.568) 0%,
+		rgba(255, 255, 255, 0.192) 25%,
+		rgba(0, 0, 0, 0) 50%
+	);
+	width: 256px;
+	height: 256px;
+	position: absolute;
+	left: 0;
+	border-top-left-radius: 6px;
+}
+
+.windowFrameGradientRight {
+	background: linear-gradient(
+		-139deg,
+		rgba(255, 255, 255, 0.315) 0%,
+		rgba(255, 255, 255, 0.192) 25%,
+		rgba(0, 0, 0, 0) 50%
+	);
+	width: 256px;
+	height: 256px;
+	position: absolute;
+	right: 0;
+	border-top-right-radius: 6px;
 }
 
 .windowClosing {
@@ -119,6 +146,14 @@
 	padding-top: 20px;
 	width: calc(100% - 1px * 4);
 	height: calc(100% - 2px * 4 - 32px);
+}
+
+.windowFrame.fullscreen .windowFrameGradientRight {
+	border-radius: 0px;
+}
+
+.windowFrame.fullscreen .windowFrameGradientLeft {
+	border-radius: 0px;
 }
 
 .windowFrame.fullscreen > .contentsContainer > .windowContents {
@@ -245,6 +280,7 @@
 	box-shadow: inset 0px 0px 0px 1px var(--aero-white);
 	border-top: none;
 	transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+	image-rendering: pixelated;
 }
 
 .windowButton:hover {
@@ -349,7 +385,6 @@
 	box-sizing: border-box;
 	top: 0px;
 	background: #ffffff36;
-	box-shadow: 0px 5px 20px 5px #ffffffad;
 	border-radius: 5px;
 }
 

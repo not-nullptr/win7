@@ -2,7 +2,7 @@ import { WindowManager } from "../util/WindowManager";
 import styles from "../css/CommandPrompt.module.css";
 import { useEffect, useRef, useState } from "react";
 import { ProcessManager } from "../util/Process";
-import { programs } from "../App";
+import { programs } from "../util/Program";
 
 interface Output {
 	text: string; // \n should work here?

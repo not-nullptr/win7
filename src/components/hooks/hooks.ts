@@ -322,3 +322,35 @@ export function useWindowManagement(
 	]);
 	return [savedTranslate, setsavedTranslate];
 }
+
+export function useSize(elementRef: React.RefObject<HTMLDivElement>) {
+	const box = elementRef.current?.getBoundingClientRect();
+
+	const [size, setSize] = useState<{ w: number; h: number }>({
+		w: box?.width || 0,
+		h: box?.height || 0,
+	});
+
+	useEffect(() => {
+		const ref = elementRef.current;
+		if (!ref) return;
+		const resizeObserver = new ResizeObserver((entries) => {
+			for (const entry of entries) {
+				setSize({
+					w: entry.contentRect.width,
+					h: entry.contentRect.height,
+				});
+			}
+		});
+
+		resizeObserver.observe(ref);
+
+		return () => {
+			if (!ref) return;
+			resizeObserver.unobserve(ref);
+			resizeObserver.disconnect();
+		};
+	}, [elementRef]);
+
+	return size;
+}

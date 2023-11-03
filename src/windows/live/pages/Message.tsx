@@ -82,6 +82,7 @@ function MessageComponent({ win }: { win?: Window }) {
 						.catch(() => ""),
 				),
 			);
+			console.log(images);
 			setImages(images);
 		})();
 	}, []);

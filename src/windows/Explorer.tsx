@@ -55,7 +55,7 @@ function Explorer({ win }: { win: Window }) {
 						</div>
 						<DirectorySearch />
 						<input
-							placeholder={`Search Not porn...`}
+							placeholder={`Search nullptr...`}
 							className={styles.search}
 							type="text"
 						/>

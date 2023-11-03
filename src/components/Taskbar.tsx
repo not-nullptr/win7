@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef, useState } from "react";
-import { programs } from "../App";
+import { programs } from "../util/Program";
 import startActive from "../assets/taskbar/start-active.png";
 import startHover from "../assets/taskbar/start-hover.png";
 import startNormal from "../assets/taskbar/start-normal.png";

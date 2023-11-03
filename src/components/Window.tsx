@@ -8,7 +8,7 @@ import {
 	WindowContents,
 	WindowHandles,
 } from "./WindowComponents";
-import { useWindowManagement } from "./hooks/hooks";
+import { useSize, useWindowManagement } from "./hooks/hooks";
 
 export default function WindowComponent({
 	win,
@@ -65,6 +65,7 @@ export default function WindowComponent({
 		winState,
 		windowFrame,
 	);
+	const size = useSize(windowFrame);
 	return (
 		<div
 			style={{
@@ -78,9 +79,7 @@ export default function WindowComponent({
 			<WindowHandles />
 			<div
 				style={{
-					height: windowFrame.current?.classList.contains(styles.fullscreen)
-						? 20
-						: 28,
+					height: winState?.titleBarHeight || 28,
 				}}
 				className={joinClasses(styles.titleBar)}
 			>
@@ -116,6 +115,21 @@ export default function WindowComponent({
 					winState={winState}
 				/>
 			</div>
+			<div
+				style={{
+					maxWidth: size.w,
+					maxHeight: size.h,
+				}}
+				className={styles.windowFrameGradientLeft}
+			/>
+			<div
+				style={{
+					maxWidth: size.w,
+					maxHeight: size.h,
+				}}
+				className={styles.windowFrameGradientRight}
+			/>
+
 			<WindowContents winState={winState}>{children}</WindowContents>
 		</div>
 	);

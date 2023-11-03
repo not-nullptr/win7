@@ -2,6 +2,28 @@ import styles from "../../../css/SingleplayerMinesweeper.module.css";
 import { useEffect, useRef, useState } from "react";
 import zero from "../../../assets/minesweeper/numbers/zero.png";
 import off from "../../../assets/minesweeper/numbers/off.png";
+import red from "../../../assets/minesweeper/buttons/red-mine.png";
+import zeroButton from "../../../assets/minesweeper/buttons/0.png";
+import oneButton from "../../../assets/minesweeper/buttons/1.png";
+import twoButton from "../../../assets/minesweeper/buttons/2.png";
+import threeButton from "../../../assets/minesweeper/buttons/3.png";
+import fourButton from "../../../assets/minesweeper/buttons/4.png";
+import fiveButton from "../../../assets/minesweeper/buttons/5.png";
+import sixButton from "../../../assets/minesweeper/buttons/6.png";
+import sevenButton from "../../../assets/minesweeper/buttons/7.png";
+import eightButton from "../../../assets/minesweeper/buttons/8.png";
+
+const buttons = [
+	zeroButton,
+	oneButton,
+	twoButton,
+	threeButton,
+	fourButton,
+	fiveButton,
+	sixButton,
+	sevenButton,
+	eightButton,
+];
 
 enum CellState {
 	Unrevealed,
@@ -54,27 +76,6 @@ function generateBoard() {
 }
 
 function Minesweeper() {
-	const [images, setImages] = useState<string[]>([]);
-	useEffect(() => {
-		// preload images
-		const cache = document.createElement("CACHE");
-		cache.style.position = "absolute";
-		cache.style.zIndex = "-1000";
-		cache.style.opacity = "0";
-		document.body.appendChild(cache);
-		function preloadImage(url: string) {
-			const img = new Image();
-			img.src = url;
-			img.style.position = "absolute";
-			cache.appendChild(img);
-		}
-		images.forEach((img) => {
-			preloadImage(img);
-		});
-		return () => {
-			document.body.removeChild(cache);
-		};
-	}, [images]);
 	const [board, setBoard] = useState<Board>(generateBoard());
 	const [gameOver, setGameOver] = useState(false);
 	const [smiley, setSmiley] = useState("");
@@ -130,23 +131,6 @@ function Minesweeper() {
 			}
 		}
 	}, [gameOver, won]);
-	useEffect(() => {
-		import("../../../assets/minesweeper/faces/smile.png").then((i) =>
-			setSmiley(i.default),
-		);
-		(async () => {
-			const images = await Promise.all(
-				Object.values(
-					import.meta.glob("../../../assets/minesweeper/buttons/*.png"),
-				).map((p) =>
-					p()
-						.then((m: any) => m.default)
-						.catch(() => ""),
-				),
-			);
-			setImages(images);
-		})();
-	}, []);
 	return (
 		<div className={styles.window}>
 			<div className={styles.info}>
@@ -217,14 +201,8 @@ function Minesweeper() {
 									backgroundImage:
 										mine.state === CellState.Revealed
 											? mine.isBomb
-												? `url(${images.find((i) =>
-														i.endsWith("/red-mine.png"),
-												  )})`
-												: `url(${images.find((i) =>
-														i.endsWith(
-															`${evaluateSurrounding(board, x, y)}.png`,
-														),
-												  )})`
+												? `url(${red})`
+												: `url(${buttons[evaluateSurrounding(board, x, y)]})`
 											: undefined,
 								}}
 								key={y}

@@ -1,0 +1,309 @@
+@keyframes tab-open {
+	from {
+		width: 0px;
+	}
+	to {
+		width: 128px;
+	}
+}
+
+@keyframes tab-close {
+	from {
+		width: 128px;
+	}
+	to {
+		width: 0px;
+	}
+}
+
+:root {
+	--tabs-height: 32px;
+}
+
+.window {
+	z-index: 9999;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	box-sizing: border-box;
+	height: calc(100% - var(--tabs-height) - 18px);
+	margin-top: calc(18px + var(--tabs-height));
+	padding: 0px 6px 6px 6px;
+}
+
+.tab {
+	display: flex;
+	height: 24px;
+	width: fit-content;
+	filter: drop-shadow(0px 0px 2px #000000cc);
+	margin-right: -8px;
+}
+
+.tab.unselected {
+	filter: drop-shadow(0px 0px 1px #000000d0);
+}
+
+.tab.unselected:not(:nth-child(2n)) {
+	z-index: 9999;
+}
+
+.tab.unselected:nth-child(2n) {
+	z-index: 9998;
+}
+
+.tabContainer:not(.unselected) {
+	z-index: 100000;
+}
+
+.tab.unselected > * {
+	background-color: rgba(255, 255, 255, 0.75);
+	z-index: 9997;
+	transition: none;
+}
+
+.tab.unselected:hover > * {
+	background-color: rgba(255, 255, 255, 0.85);
+	z-index: 9997;
+	transition: 0.25s linear background-color;
+}
+
+.tab:not(.unselected) .tabBorderLeft,
+.tab:not(.unselected) .tabBorderRight,
+.tab:not(.unselected) .tabCenter {
+	background: linear-gradient(180deg, #ffffff 0%, #f9f9fa 100%);
+}
+
+.tabBorderLeft {
+	width: 12px;
+	height: 100%;
+	clip-path: polygon(
+		0 100%,
+		10% 98%,
+		18% 93%,
+		25% 86%,
+		48% 42%,
+		67% 7%,
+		81% 1%,
+		100% 0,
+		100% 100%
+	);
+	position: relative;
+}
+
+.tabCenter {
+	height: 100%;
+	position: relative;
+	animation: 0.15s cubic-bezier(0.44, 0.91, 0.7, 1) tab-open forwards;
+	display: flex;
+}
+
+.tab.closing .tabCenter {
+	animation: 0.1s ease-out tab-close forwards;
+}
+
+.title {
+	width: calc(100% - 40px);
+	height: 100%;
+	box-sizing: border-box;
+	padding: 4px 4px 4px 4px;
+	color: black;
+	overflow: hidden;
+	white-space: nowrap;
+	position: absolute;
+	background-color: transparent !important;
+	left: 12px;
+	mask-image: linear-gradient(90deg, #000 75%, transparent);
+}
+
+.x {
+	color: rgb(0, 0, 0);
+	margin-top: 5px;
+	font-size: 10px;
+	opacity: 45%;
+	pointer-events: all !important;
+	z-index: 10001;
+	width: 15px;
+	height: 16px;
+	border-radius: 50%;
+	box-sizing: border-box;
+	padding-left: 4px;
+	padding-top: -1px;
+	height: fit-content;
+	position: absolute;
+	right: 2px;
+	top: 0px;
+}
+
+.x:hover {
+	opacity: 100%;
+	background-color: #c13535;
+	color: #f9ebeb;
+}
+
+.x:active {
+	background-color: #431e20;
+	color: #ede9e9;
+}
+
+.tab.unselected .title {
+	color: #0000008f;
+}
+
+.tabBorderRight {
+	transform: scaleX(-1);
+	width: 12px;
+	height: 100%;
+	clip-path: polygon(
+		0 100%,
+		10% 98%,
+		18% 93%,
+		25% 86%,
+		48% 42%,
+		67% 7%,
+		81% 1%,
+		100% 0,
+		100% 100%
+	);
+	position: relative;
+}
+
+.potentialShadow {
+	position: absolute;
+	bottom: -1px;
+	width: 100%;
+	height: 1px;
+	box-shadow: 0px 0px 3px 0px #000000cc;
+	z-index: 10000;
+}
+
+.windowContents {
+	width: calc(100% - 2px);
+	background-color: white;
+	border-radius: 4px;
+	height: calc(100% - 2px);
+	z-index: 10000;
+	position: relative;
+	border: solid thin #93979d;
+	border-top: none;
+}
+
+.windowContentsBg {
+	width: calc(100% - 12px);
+	border-radius: 4px;
+	height: calc(100% - 7px);
+	z-index: 9998;
+	position: absolute;
+	box-shadow: 0px 0px 2px #000000cc;
+	outline: solid thin #93979d;
+}
+
+.titleBarElements * {
+	pointer-events: auto;
+}
+
+.titleBarExtension {
+	color: white;
+	display: flex;
+	align-items: flex-end;
+	pointer-events: none;
+	position: relative;
+	z-index: 9999;
+	margin-top: calc(0px - var(--tabs-height));
+	height: var(--tabs-height);
+	-ms-overflow-style: none;
+	scrollbar-width: none;
+	overflow-x: auto;
+	overflow-y: hidden;
+}
+
+.titleBarExtension::-webkit-scrollbar {
+	display: none;
+}
+
+.titleBarElements {
+	width: fit-content;
+	box-sizing: border-box;
+	position: relative;
+	display: flex;
+	align-items: center;
+	padding: 0px 8px;
+}
+
+.radialGradientOverlay {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	z-index: 10001;
+	pointer-events: none;
+	transition: 0.25s linear opacity;
+}
+
+.radialGradientRef {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	z-index: 10001 !important;
+	top: 0;
+	left: 10px;
+	margin-left: -10px;
+	background-color: transparent !important;
+}
+
+.tabAdder {
+	width: 22px;
+	height: 15px;
+	background-color: rgba(255, 255, 255, 0.75);
+	margin-left: 10px;
+	display: flex;
+	transform: skewX(20deg);
+	border-radius: 2px 5px;
+	margin-bottom: 2px;
+	transition: 0.1s linear background-color;
+}
+
+.tabAdder:hover {
+	background-color: rgba(255, 255, 255, 0.85);
+}
+
+.tabAdder:active {
+	background-color: rgba(255, 255, 255, 0.65);
+	box-shadow: inset 0px 0px 2px 0px #272727a8;
+	transition: none;
+}
+
+.toolbar {
+	border-radius: 2px 2px 0px 0px;
+	height: 36px;
+	background: linear-gradient(180deg, #f9f9fa 0%, #e4e4e4 100%);
+	border-bottom: solid thin #b6bac0;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	box-sizing: border-box;
+	padding: 0px 4px 0px 32px;
+}
+
+.toolbar > input[type="search"] {
+	outline: none;
+	border: none;
+	border: solid thin #cdcdcd;
+	height: 28px;
+	width: 100%;
+	box-shadow: 0px 1px 0px 0px #ffffff7a;
+	padding: 6px;
+	font-size: 15px;
+}
+
+.tabContainer {
+	margin-bottom: -1px;
+	position: relative;
+	transition: 0.25s cubic-bezier(0.165, 0.84, 0.44, 1) transform;
+}
+
+.webView {
+	width: 100%;
+	height: calc(100% - 36px);
+	border: none;
+	outline: none;
+}

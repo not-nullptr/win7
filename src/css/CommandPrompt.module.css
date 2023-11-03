@@ -8,7 +8,7 @@
 .window * {
 	font-family: VGA;
 	color: rgb(211, 210, 210);
-	font-size: 15px;
+	font-size: 16px;
 	user-select: text;
 	white-space: pre-wrap;
 }
@@ -35,7 +35,7 @@
 }
 
 .history * {
-	min-height: 15px;
+	min-height: 16px;
 	white-space: pre-wrap;
 }
 

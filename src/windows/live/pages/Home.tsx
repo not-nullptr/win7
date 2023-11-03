@@ -336,7 +336,7 @@ function Home({ win }: { win?: Window }) {
 												},
 											});
 										},
-										icon: `${import.meta.env.BASE_URL}/ui/wlm/icons/idle.png`,
+										icon: `${import.meta.env.BASE_URL}ui/wlm/icons/idle.png`,
 									},
 									{
 										label: "Appear offline",

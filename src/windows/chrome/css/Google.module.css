@@ -1,0 +1,133 @@
+.ghead {
+	box-sizing: border-box;
+	padding: 6px;
+	margin-bottom: 18px;
+}
+
+.windowContainer {
+	width: 100%;
+	height: calc(100% - 36px);
+	border-radius: 0px 0px 4px 4px;
+	position: relative;
+}
+
+.windowContainer * {
+	font-family: Arial, sans-serif;
+}
+
+.gbar {
+	float: left;
+	height: 22px;
+}
+
+.gbar *,
+.guser * {
+	font-size: 13px;
+	padding-top: 1px !important;
+}
+
+.guser {
+	text-align: right;
+	padding-bottom: 7px !important;
+}
+
+.gbar,
+.guser {
+}
+
+.guser {
+	width: 100%;
+}
+
+.gbh:nth-child(1) {
+	left: 0;
+}
+
+.gbh:nth-child(2) {
+	right: 0;
+}
+
+.gbh {
+	height: 0;
+	position: absolute;
+	top: 24px;
+	width: 100%;
+	left: 0;
+}
+
+.gbh,
+.gbd {
+	border-top: 1px solid #c9d7f1;
+	font-size: 1px;
+}
+
+.gb1,
+.gb3,
+.gb3i,
+.gb3f {
+	margin-right: 0.5em;
+	color: #0000cc;
+	text-decoration: underline;
+}
+
+.gb3 > small {
+	text-decoration: solid underline white;
+}
+
+b.gb1 {
+	color: black;
+	text-decoration: none;
+}
+
+.gbar * {
+	display: inline;
+}
+
+.pageContent {
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	overflow: auto;
+	height: calc(100% - 37px);
+	width: 100%;
+	border-radius: 0px 0px 4px 4px;
+}
+
+.pageContent *:not(span) {
+	display: block;
+}
+
+.search {
+	font:
+		17px arial,
+		sans-serif;
+	margin-top: 28px;
+	border: solid thin #e3e9ef;
+	border-top: solid thin #abadb3;
+}
+
+.search:hover,
+.search:focus {
+	outline: none;
+	border: solid thin #b7d9ed;
+	border-top: solid thin #3d7bad;
+}
+
+.buttons {
+	display: flex !important;
+	width: 100%;
+	justify-content: center;
+	align-items: center;
+	margin-top: 4px;
+}
+
+.buttons > button {
+	font:
+		15px arial,
+		sans-serif;
+	margin: 0.2em;
+	height: 28px;
+	padding-left: 6px;
+	padding-right: 6px;
+}

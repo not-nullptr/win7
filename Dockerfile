@@ -10,11 +10,13 @@ ENV VITE_BASE_URL=${VITE_BASE_URL}
 
 COPY package.json ./
 
+RUN mkdir -p /app/shared
+COPY shared/package.json ./shared/package.json
+RUN bun install --cwd ./shared
+
 RUN bun install
 
 COPY . ./
-
-RUN cd shared && bun install && cd ..
 
 RUN bun run build
 

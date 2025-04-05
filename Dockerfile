@@ -1,4 +1,4 @@
-FROM oven/bun AS builder
+FROM oven/bun:1.2.2 AS builder
 
 WORKDIR /app
 

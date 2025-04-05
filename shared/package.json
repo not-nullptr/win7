@@ -5,6 +5,7 @@
 	"author": "",
 	"license": "ISC",
 	"dependencies": {
+		"@types/node": "^22.14.0",
 		"typescript": "^5.2.2"
 	},
 	"scripts": {

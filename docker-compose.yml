@@ -1,0 +1,16 @@
+services:
+  win7-frontend:
+    container_name: win7-frontend
+    image: win7-frontend:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    args:
+      VITE_WS_URL: ${VITE_WS_URL:-ws://localhost:3000}
+      VITE_BASE_URL: ${VITE_BASE_URL:-/}
+    ports:
+      - "80:80"
+    environment:
+      - VITE_WS_URL=${VITE_WS_URL:-ws://localhost:3000}
+      - VITE_BASE_URL=${VITE_BASE_URL:-/}
+    restart: unless-stopped

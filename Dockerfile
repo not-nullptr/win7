@@ -14,6 +14,8 @@ RUN bun install
 
 COPY . ./
 
+RUN cd shared && bun install && cd ..
+
 RUN bun run build
 
 FROM nginx:stable-alpine

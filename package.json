@@ -5,7 +5,7 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
-		"build": "cd shared && tsc --p . && cd .. && tsc && vite build",
+		"build": "cd shared && tsc --p . && rm tsconfig.tsbuildinfo && cd .. && tsc && vite build",
 		"build-moondust": "cd shared && tsc --p . && cd .. && tsc && vite build && rm -rf ../public_html/* && cp -a dist/. ../public_html/",
 		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
 		"format": "prettier --write .",

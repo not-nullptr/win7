@@ -5,6 +5,9 @@
 		"outDir": "./dist",
 		"declaration": true,
 		"emitDeclarationOnly": true,
-		"lib": ["ES2024", "DOM"]
+		"lib": ["ES2021", "DOM"],
+		"target": "ES2021",
+		"moduleResolution": "nodenext",
+		"module": "NodeNext"
 	}
 }

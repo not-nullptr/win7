@@ -10,7 +10,7 @@ services:
         VITE_BASE_URL: ${VITE_BASE_URL:-/}
         PORT=${PORT:-80}
     ports:
-      - "${PORT:-80}:${PORT:-80}"
+      - ${PORT:-80}:12754
     environment:
       - VITE_WS_URL=${VITE_WS_URL:-ws://localhost:3000}
       - VITE_BASE_URL=${VITE_BASE_URL:-/}

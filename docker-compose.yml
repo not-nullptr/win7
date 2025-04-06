@@ -8,10 +8,23 @@ services:
       args:
         VITE_WS_URL: ${VITE_WS_URL:-ws://localhost:3000}
         VITE_BASE_URL: ${VITE_BASE_URL:-/}
-        PORT: ${PORT:-80}
+        PORT: ${PORT:-12754}
     ports:
-      - ${PORT:-80}:12754
+      - 80:${PORT:-12754}
     environment:
       - VITE_WS_URL=${VITE_WS_URL:-ws://localhost:3000}
       - VITE_BASE_URL=${VITE_BASE_URL:-/}
+    restart: unless-stopped
+  win7-backend:
+    container_name: win7-backend
+    image: win7-backend:latest
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      args:
+        PORT: ${BACKEND_PORT:-24241}
+    ports:
+      - ${BACKEND_PORT:-24241}:${BACKEND_PORT:-24241}
+    environment:
+      - PORT=${BACKEND_PORT:-24241}
     restart: unless-stopped
